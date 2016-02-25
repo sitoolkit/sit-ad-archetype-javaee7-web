@@ -1,0 +1,7 @@
+CREATE TABLE content (
+    id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+    value VARCHAR(64),
+    PRIMARY KEY (id)
+);
+
+INSERT INTO content (value) VALUES('Content');

@@ -1,0 +1,5 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+admin;{SSHA256}PmLFAnIsoSh4KN55Xpn5z+/D5SDdLTYIkeIkRF4Zc1O386bZkUQr2w==;group001,group002
+user;{SSHA256}PmLFAnIsoSh4KN55Xpn5z+/D5SDdLTYIkeIkRF4Zc1O386bZkUQr2w==;group001

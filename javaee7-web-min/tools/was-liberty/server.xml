@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server description="new server">
+
+  <!-- Enable features -->
+  <featureManager>
+    <!-- <feature>javaee-7.0</feature> -->
+    <feature>jsf-2.2</feature>
+    <feature>jpa-2.1</feature>
+    <feature>cdi-1.2</feature>
+  </featureManager>
+
+  <!-- This template enables security. To get the full use of all the capabilities,
+    a keystore and user registry are required. -->
+
+  <!-- For the keystore, default keys are generated and stored in a keystore.
+    To provide the keystore password, generate an encoded password using bin/securityUtility
+    encode and add it below in the password attribute of the keyStore element.
+    Then uncomment the keyStore element. -->
+  <!-- <keyStore password=""/> -->
+
+  <!--For a user registry configuration, configure your user registry. For
+    example, configure a basic user registry using the basicRegistry element.
+    Specify your own user name below in the name attribute of the user element.
+    For the password, generate an encoded password using bin/securityUtility
+    encode and add it in the password attribute of the user element. Then uncomment
+    the user element. -->
+  <basicRegistry id="basic" realm="BasicRealm">
+    <!-- <user name="yourUserName" password="" /> -->
+  </basicRegistry>
+
+  <!-- To access this server from a remote client add a host attribute to
+    the following element, e.g. host="*" -->
+  <httpEndpoint id="defaultHttpEndpoint" httpPort="${as.port}" />
+
+  <dataSource id="javaee7-min-ds" jndiName="jdbc/javaee7-min-ds"
+    type="javax.sql.XADataSource">
+    <jdbcDriver libraryRef="DerbyLib" />
+    <properties.derby.client createDatabase="create"
+      databaseName="${db.name}" serverName="${db.host}" portNumber="${db.port}"
+      user="${db.username}" password="${db.password}" />
+  </dataSource>
+
+  <library id="DerbyLib">
+    <fileset dir="${settings.localRepository}/org/apache/derby/derbyclient/${derby.client.version}" />
+  </library>
+
+  <webApplication id="${project.artifactId}" location="${webappDirectory}" name="${project.artifactId}" contextRoot="/"/>
+</server>

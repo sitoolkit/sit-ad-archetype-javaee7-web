@@ -1,0 +1,31 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:cmp="http://java.sun.com/jsf/composite/cmp" xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="/WEB-INF/templates/input-template.xhtml">
+  <ui:param name="inputController" value="${symbol_pound}{userInputController}" />
+
+  <ui:define name="title">ユーザー登録</ui:define>
+
+  <f:metadata>
+    <f:viewParam name="userId" value="${symbol_pound}{userInputController.userId}" />
+    <f:viewAction action="${symbol_pound}{userInputController.init}" />
+  </f:metadata>
+
+  <ui:define name="inputForm">
+
+    <cmp:inputText id="userId" label="ユーザーID" value="${symbol_pound}{userInputController.entity.userId}" />
+    <cmp:inputSecret id="password" label="パスワード" value="${symbol_pound}{userInputController.entity.password}"
+      redisplay="true" />
+    <cmp:inputText id="lastName" label="姓" value="${symbol_pound}{userInputController.entity.lastName}" />
+    <cmp:inputText id="firstName" label="名" value="${symbol_pound}{userInputController.entity.firstName}" />
+    <cmp:selectOneRadio id="gender" label="性別" value="${symbol_pound}{userInputController.entity.gender}"
+      selectItems="${symbol_pound}{userInputController.性別}" />
+
+  </ui:define>
+</ui:composition>
+</html>

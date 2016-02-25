@@ -1,0 +1,21 @@
+table.jsf-select {
+	border-collapse: collapse;
+}
+
+table.jsf-select tbody tr td {
+	border: none;
+}
+
+ul.msg {
+	list-style-type: none;
+	padding-left: 0;
+}
+
+ul.msg>li {
+	padding: 15px;
+}
+
+p.errmsg {
+	margin-top: 10rem;
+	text-align: center;
+}

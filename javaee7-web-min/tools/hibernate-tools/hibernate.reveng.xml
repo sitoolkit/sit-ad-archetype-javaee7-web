@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<!-- See also -->
+<!-- http://docs.jboss.org/tools/4.0.0.Final/en/hibernatetools/html_single/index.html#hibernaterevengxmlfile -->
+
+<hibernate-reverse-engineering>
+    <table-filter match-name="schema_version" exclude="true"/>
+    
+    <table-filter match-name="CONTENT" package="org.sitoolkit.ad.archetype.javaee7min" ></table-filter>
+</hibernate-reverse-engineering>

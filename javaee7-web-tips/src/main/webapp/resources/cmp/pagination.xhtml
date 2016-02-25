@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:composite="http://xmlns.jcp.org/jsf/composite" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+  xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+<composite:interface>
+  <composite:attribute name="model" required="true" />
+</composite:interface>
+<composite:implementation>
+  <c:set var="model" value="#{cc.attrs.model}" />
+  <c:set var="pageCtrl" value="#{model.condition.pageCtrl}" />
+
+  #{pageCtrl.totalRowCnt}件中#{pageCtrl.rowNumFrom + 1}件目から#{pageCtrl.rowNumTo + 1}件目を表示
+  <nav>
+    <ul class="pagination">
+      <li class="#{pageCtrl.currentPageNum eq 1 ? 'disabled' : ''}"><h:commandLink id="first" disabled="#{pageCtrl.currentPageNum eq 1}"
+          action="#{model.goToPage(1)}" p:area-label="First">
+          <f:ajax render="@form" />
+          <span aria-hidden="true">&#171;</span>
+        </h:commandLink></li>
+
+      <ui:repeat var="page" value="#{pageCtrl.pageNums}">
+        <li class="#{page eq pageCtrl.currentPageNum ? 'active' : ''}" ><h:commandLink id="page" value="#{page}" action="#{model.goToPage(page)}"
+            disabled="#{page eq pageCtrl.currentPageNum}">
+            <f:ajax render="@form" />
+          </h:commandLink></li>
+      </ui:repeat>
+      <li class="#{pageCtrl.lastPage ? 'disabled' : ''}"><h:commandLink id="last" disabled="#{pageCtrl.lastPage}"
+          action="#{model.goToPage(pageCtrl.lastPageNum)}" p:aria-label="Last">
+          <f:ajax render="@form" />
+          <span aria-hidden="true">&#187;</span>
+        </h:commandLink></li>
+    </ul>
+
+  </nav>
+  <div class="pageCtrl">
+
+    <!--     <h:commandLink id="prev" value="&lt;" rendered="#{pageCtrl.currentPageNum ne 1}" -->
+    <!--       action="#{model.goToPage(pageCtrl.currentPageNum - 1)}"> -->
+    <!--       <f:ajax render="@form" /> -->
+    <!--     </h:commandLink> -->
+  </div>
+</composite:implementation>
+</html>

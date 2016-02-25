@@ -1,0 +1,28 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:composite="http://xmlns.jcp.org/jsf/composite" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+  xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+<composite:interface>
+  <composite:attribute name="label" required="true" />
+  <composite:attribute name="value" required="true" />
+  <composite:attribute name="selectItems" required="true" />
+</composite:interface>
+<composite:implementation>
+
+  <ui:decorate template="/WEB-INF/templates/inputItem.xhtml">
+    <ui:param name="label" value="${symbol_pound}{cc.attrs.label}" />
+    <ui:define name="item">
+      <h:selectOneRadio id="radio" value="${symbol_pound}{cc.attrs.value}" label="${symbol_pound}{cc.attrs.label}" styleClass="jsf-select">
+        <f:selectItems value="${symbol_pound}{cc.attrs.selectItems}" var="item" itemLabel="${symbol_pound}{item.label}"
+          itemValue="${symbol_pound}{item.value}" />
+      </h:selectOneRadio>
+    </ui:define>
+  </ui:decorate>
+
+</composite:implementation>
+</html>

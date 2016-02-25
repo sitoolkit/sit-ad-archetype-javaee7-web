@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:cmp="http://java.sun.com/jsf/composite/cmp" xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="/WEB-INF/templates/form-template.xhtml">
+  <ui:define name="title">ユーザーリスト</ui:define>
+
+  <ui:define name="form">
+  
+    <cmp:inputText id="userId" label="ユーザー" value="#{userListController.condition.params.sw_userId}" />
+    
+    <div class="col-sm-offset-2 col-sm-8">
+      <h:commandButton id="search" action="#{userListController.search}" value="検索" immediate="false"
+        styleClass="btn btn-default">
+        <f:ajax execute="@form" render="@form" />
+      </h:commandButton>
+      <h:commandButton id="clear" action="#{userListController.clear}" value="クリア" immediate="true"
+        styleClass="btn btn-default">
+        <f:ajax execute="@form" render="@form" />
+      </h:commandButton>
+    </div>
+
+    <h:dataTable var="u" value="#{userListController.list}" rendered="#{not empty userListController.list}"
+      styleClass="table table-hover">
+      <f:facet name="caption">
+        <cmp:pagination model="#{userListController}" />
+      </f:facet>
+
+      <h:column>
+        <f:facet name="header">表示</f:facet>
+        <h:link outcome="user-input" value="表示">
+          <f:param name="userId" value="#{u.userId}" />
+          <f:param name="cid" value="#{javax.enterprise.context.conversation.id}" />
+        </h:link>
+        <h:commandLink action="user-input" value="表示">
+          <f:setPropertyActionListener value="#{u.userId}" target="#{entityUpdateConversation.entityId}"/>
+        </h:commandLink>
+      </h:column>
+
+      <h:column>
+        <f:facet name="header">
+          <h:commandLink action="#{userListController.sort('userId')}" value="ユーザーID">
+            <f:ajax render="@form" />
+          </h:commandLink>
+        </f:facet>
+        <h:outputText id="user-userId" value="#{u.userId}" styleClass="user-userId ">
+        </h:outputText>
+      </h:column>
+
+      <h:column>
+        <f:facet name="header">
+          <h:commandLink action="#{userListController.sort('lastName')}" value="姓">
+            <f:ajax render="@form" />
+          </h:commandLink>
+        </f:facet>
+        <h:outputText id="user-lastName" value="#{u.lastName}" styleClass="user-lastName ">
+        </h:outputText>
+      </h:column>
+
+      <h:column>
+        <f:facet name="header">
+          <h:commandLink action="#{userListController.sort('firstName')}" value="名">
+            <f:ajax render="@form" />
+          </h:commandLink>
+        </f:facet>
+        <h:outputText id="user-firstName" value="#{u.firstName}" styleClass="user-firstName ">
+        </h:outputText>
+      </h:column>
+
+      <h:column>
+        <f:facet name="header">
+          <h:commandLink action="#{userListController.sort('gender')}" value="性別">
+            <f:ajax render="@form" />
+          </h:commandLink>
+        </f:facet>
+        <h:outputText id="user-gender" value="#{u.gender}" styleClass="user-gender ">
+        </h:outputText>
+      </h:column>
+
+    </h:dataTable>
+
+  </ui:define>
+</ui:composition>
+</html>

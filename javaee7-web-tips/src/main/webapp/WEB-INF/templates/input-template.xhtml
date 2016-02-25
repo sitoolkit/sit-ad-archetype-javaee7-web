@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="/WEB-INF/templates/form-template.xhtml">
+
+  <ui:define name="form">
+  
+    <ui:insert name="inputForm"/>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-8">
+        <h:commandButton id="create" action="#{inputController.create}" value="作成"
+          rendered="#{inputController.mode.create}" immediate="false" class="btn btn-default">
+        </h:commandButton>
+        <h:commandButton id="update" action="#{inputController.update}" value="更新"
+          rendered="#{inputController.mode.update}" immediate="false" class="btn btn-default">
+        </h:commandButton>
+        <h:commandButton id="delete" action="#{inputController.delete}" value="削除"
+          rendered="#{inputController.mode.update}" immediate="false" class="btn btn-default">
+        </h:commandButton>
+
+        <h:link outcome="user-list" value="一覧へ戻る" class="btn btn-default" p:role="button">
+          <f:param name="cid"
+            value="#{empty javax.enterprise.context.conversation.id ? '' : javax.enterprise.context.conversation.id}" />
+        </h:link>
+      </div>
+    </div>
+
+  </ui:define>
+
+</ui:composition>
+</html>

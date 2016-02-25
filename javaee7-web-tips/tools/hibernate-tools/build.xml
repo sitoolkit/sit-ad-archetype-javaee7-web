@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="javaee7-web-min-hibernate-tools" default="hbm2java">
+
+
+  <property name="outdir" value="${hibernate-tools.basedir}/target" />
+  <property name="classdir" value="${outdir}/classes" />
+
+
+  <taskdef name="hibernatetool"
+           classname="org.hibernate.tool.ant.HibernateToolTask"/>
+
+  <target name="hbm2java">
+
+    <delete dir="${classdir}" />
+    <mkdir dir="${classdir}" />
+    
+    <javac classpath="${maven.classpath}"
+           srcdir="${hibernate-tools.basedir}/src/main/java"
+           fork="true"
+           destdir="${classdir}"
+           includeantruntime="false" />
+
+    <copy file="${hibernate-tools.basedir}/hibernate.properties" todir="${outdir}" overwrite="true">
+      <filterset>
+        <filter token="db.jdbc.driver" value="${db.jdbc.driver}" />
+        <filter token="db.jdbc.url" value="${db.jdbc.url}" />
+        <filter token="db.username" value="${db.username}" />
+        <filter token="db.password" value="${db.password}" />
+      </filterset>
+    </copy>
+
+    <hibernatetool destdir="${hibernate-tools.destdir}">
+      
+      <classpath location="${classdir}"/>
+        
+      <jdbcconfiguration packagename="package.name"
+                         revengfile="${hibernate-tools.basedir}/hibernate.reveng.xml"
+                         reversestrategy="CustomReverseEngineeringStrategy"
+                         propertyFile="${outdir}//hibernate.properties" />
+
+      <hbm2java jdk5="true" ejb3="true" />
+
+    </hibernatetool>
+
+  </target>
+
+
+</project>
