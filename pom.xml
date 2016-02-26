@@ -415,7 +415,7 @@
               <assemblyArtifact>
                 <groupId>com.ibm.websphere.appserver.runtime</groupId>
                 <artifactId>wlp-javaee7</artifactId>
-                <version>8.5.5.7</version>
+                <version>8.5.5.8</version>
                 <type>zip</type>
               </assemblyArtifact>
               <configFile>${project.build.directory}/server.xml</configFile>
