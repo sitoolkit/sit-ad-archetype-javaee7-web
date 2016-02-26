@@ -8,7 +8,7 @@
   <groupId>org.sitoolkit.ad.archetype</groupId>
   <artifactId>javaee7-web-tips</artifactId>
   <packaging>maven-archetype</packaging>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.9</version>
 
   <build>
     <extensions>
