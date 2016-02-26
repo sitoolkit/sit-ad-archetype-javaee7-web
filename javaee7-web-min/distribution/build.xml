@@ -6,7 +6,7 @@
   <property name="workdir" value="${basedir}/../target/work" />
   <property name="resdir" value="${basedir}/archetype/src" />
   <property name="testArtifactId" value="javaee7-web-min-test" />
-  <property name="testdir" value="${basedir}/../target/acceptance-test" />
+  <property name="testdir" value="${basedir}/../target" />
 
 
   <condition property="mvn.cmd" value="${env.MAVEN_HOME}/bin/mvn.cmd" else="/usr/local/bin/mvn">

@@ -6,7 +6,7 @@
   <property name="workdir" value="${basedir}/../target/work" />
   <property name="resdir" value="${basedir}/archetype/src" />
   <property name="testArtifactId" value="javaee7-web-tips-test" />
-  <property name="testdir" value="${basedir}/target/${testArtifactId}" />
+  <property name="testdir" value="${basedir}/../target" />
 
   
   <!-- TODO else~を修正 -->
