@@ -10,7 +10,7 @@
 
   
   <!-- TODO else~を修正 -->
-  <condition property="mvn.cmd" value="${mvn.home}/bin/mvn.bat" else="/usr/local/bin/mvn">
+  <condition property="mvn.cmd" value="${mvn.home}/bin/mvn.cmd" else="/usr/local/bin/mvn">
     <os family="windows"/>
   </condition>
 

@@ -70,6 +70,7 @@
           <version>1.10</version>
           <configuration>
             <derbyHome>${basedir}/tools/derby/target</derbyHome>
+            <port>${db.port}</port>
           </configuration>
         </plugin>
         <plugin>
