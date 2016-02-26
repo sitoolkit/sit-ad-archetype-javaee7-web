@@ -141,7 +141,8 @@
       <arg value="-Pdb-migrate,was-liberty,it"/>
       <arg value="-Dmaven.test.skip=false"/>
       <arg value="-Devidence.open=false" />
-      <arg value="-Das.port=8090"/>
+      <arg value="-Ddb.port=1530"/>
+      <arg value="-Das.port=8093"/>
       <arg value="-Dfile.encoding=UTF-8"/>
       <arg value="clean"/>
       <arg value="verify"/>
