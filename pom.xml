@@ -148,8 +148,73 @@
     </plugins>
   </build>
 
+  <!-- More Project Information -->
+  <name>sit-ad-archetype-javaee7-web</name>
+  <description>parent pom for javaee7 web application,
+     useful for self study and developing new application.</description>
+  <url>http://sitoolkit.org</url>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+      <comments>A business-friendly OSS license</comments>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>yuichi.kuwahara</id>
+      <name>Yuichi Kuwahara</name>
+      <email>yuichi.kuwahara.0@gmail.com</email>
+    </developer>
+  </developers>
+
   <!-- Environment Settings -->
+  <scm>
+    <connection>scm:git:git//github.com/sitoolkit/sit-ad-archetype-javaee7.git</connection>
+    <developerConnection>scm:git:git//github.com/sitoolkit/sit-ad-archetype-javaee7.git</developerConnection>
+    <url>https://github.com/sitoolkit/sit-ad-archetype-javaee7.git</url>
+  </scm>
+  <distributionManagement>
+    <snapshotRepository>
+      <id>sonatype-nexus-snapshots</id>
+      <name>Snapshot Repository</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>sonatype-nexus-staging</id>
+      <name>Maven Central Repository</name>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
   <profiles>
+    <profile>
+      <id>release</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.4</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>db-migrate</id>
       <build>
