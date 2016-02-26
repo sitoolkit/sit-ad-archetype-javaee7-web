@@ -35,7 +35,7 @@ public abstract class EntityListController<E extends BaseEntity, I extends Seria
     /**
      * 検索条件
      */
-    // @Inject
+    @Inject
     protected SearchConditionDo condition;
 
     /**

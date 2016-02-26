@@ -7,7 +7,6 @@ import javax.inject.Named;
 import org.sitoolkit.ad.archetype.tips.application.user.UserService;
 import org.sitoolkit.ad.archetype.tips.domain.user.UserEntity;
 import org.sitoolkit.ad.archetype.tips.infrastructure.entitycrud.EntityListController;
-import org.sitoolkit.ad.archetype.tips.infrastructure.search.SearchConditionDo;
 
 @Named
 @RequestScoped
@@ -15,9 +14,6 @@ public class UserListController extends EntityListController<UserEntity, String,
 
     @Inject
     UserService service;
-
-    @Inject
-    SearchConditionDo condition;
 
     @Override
     protected UserService getService() {
