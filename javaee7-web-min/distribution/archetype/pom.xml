@@ -6,7 +6,7 @@
   <!-- The Basics -->
   <groupId>org.sitoolkit.ad.archetype</groupId>
   <artifactId>javaee7-web-min</artifactId>
-  <version>0.9</version>
+  <version>0.10-SNAPSHOT</version>
   <packaging>maven-archetype</packaging>
   <properties>
     <project.report.encoding>UTF-8</project.report.encoding>

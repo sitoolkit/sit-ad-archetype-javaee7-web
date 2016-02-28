@@ -114,7 +114,7 @@
       <env key="JAVA_HOME" value="${java.home}" />
       <arg value="-DarchetypeGroupId=org.sitoolkit.ad.archetype" />
       <arg value="-DarchetypeArtifactId=javaee7-web-min" />
-      <arg value="-DarchetypeVersion=0.9" />
+      <arg value="-DarchetypeVersion=0.10-SNAPSHOT" />
       <arg value="-DgroupId=a.b.c" />
       <arg value="-DartifactId=${testArtifactId}" />
       <arg value="-Darchetype.interactive=false" />
