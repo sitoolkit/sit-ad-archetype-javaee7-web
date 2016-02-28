@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:if="ant:if"
+         xmlns:unless="ant:unless"
+         name="javaee7-web-distribution"
+         basedir="."
+         default="install">
+
+  <input addproperty="artifactId"
+         validargs="javaee7-web-min,javaee7-web-tips"
+         defaultvalue="javaee7-web-min" />
+  <property name="newVersion" value="0.10-SNAPSHOT"/>
+  <property environment="env" />
+  <property name="workdir" value="${basedir}/${artifactId}/target" />
+  <property name="archresdir"
+            value="${workdir}/generated-sources/archetype/src"
+            description="「mvn archetye:create-from-project」コマンドで作成された、アーキタイプとして格納される資源のディレクトリ" />
+  <property name="newarchdir" value="${workdir}/newarch" description="新しいアーキタイプを作成するディレクトリ"/>
+  <property name="resdir" value="${newarchdir}/src" />
+  <property name="testArtifactId" value="${artifactId}-test" />
+
+  <condition property="mvn.cmd" value="${env.MAVEN_HOME}/bin/mvn.cmd" else="/usr/local/bin/mvn">
+    <os family="windows" />
+  </condition>
+
+  <condition property="glassfish">
+    <equals arg1="${artifactId}" arg2="javaee7-web-min" />
+  </condition>
+
+  <target name="install">
+    <property name="mvn.phase" value="install" />
+    <property name="mvn.performRelease" value="false" />
+    <antcall target="process-all" />
+  </target>
+
+
+  <target name="deploy">
+    <property name="mvn.phase" value="deploy" />
+    <property name="mvn.performRelease" value="true" />
+    <antcall target="process-all" />
+  </target>
+
+
+  <target name="process-all">
+    <antcall target="01_create-from-archetype" />
+    <antcall target="02_copy-archetype-resource" />
+    <antcall target="03_process-archetype" />
+    <antcall target="04_acceptance-test" />
+  </target>
+
+
+  <target name="01_create-from-archetype">
+
+    <exec executable="${mvn.cmd}" dir="${basedir}/${artifactId}" failonerror="true">
+      <env key="JAVA_HOME" value="${java.home}" />
+      <arg value="-Darchetype.filteredExtentions=java,xml,txt,groovy,cs,mdo,aj,jsp,gsp,vm,html,xhtml,properties,.classpath,.project,launch,component" />
+      <arg value="clean" />
+      <arg value="archetype:create-from-project" />
+    </exec>
+
+  </target>
+
+
+
+  <target name="02_copy-archetype-resource">
+
+    <copy todir="${resdir}">
+      <fileset dir="${archresdir}">
+        <exclude name=".git" />
+        <exclude name=".gitignore" />
+        <exclude name="/archetype/**" />
+        <exclude name="generated-sources/archetype/target" />
+        <exclude name="LICENSE" />
+        <exclude name="NOTICE" />
+        <exclude name="README.md" />
+        <exclude name="**/target/**" />
+      </fileset>
+    </copy>
+
+    <property name="settings" value="${resdir}/main/resources/archetype-resources/.settings" />
+
+    <move todir="${settings}" includeemptydirs="false">
+      <fileset dir="${settings}" includes="*.launch" />
+      <globmapper from="${artifactId}*.launch" to="__artifactId__*.launch" />
+    </move>
+
+    <copy file="${basedir}/${artifactId}/distribution/pom.xml" todir="${newarchdir}"/>
+    
+  </target>
+
+
+
+  <target name="03_process-archetype">
+    
+    <exec executable="${mvn.cmd}" dir="${newarchdir}" failonerror="true">
+      <env key="JAVA_HOME" value="${java.home}" />
+      <arg value="-DnewVersion=${newVersion}"/>
+      <arg value="versions:set" />
+    </exec>
+
+    <condition property="mvn.phase" value="install">
+      <not>
+        <isset property="mvn.phase"/>
+      </not>
+    </condition>
+
+    <exec executable="${mvn.cmd}" dir="${newarchdir}" failonerror="true">
+      <env key="JAVA_HOME" value="${java.home}" />
+      <arg value="-DperformRelease=${mvn.performRelease}" />
+      <arg value="${mvn.phase}" />
+    </exec>
+
+  </target>
+
+
+  <target name="04_acceptance-test">
+
+    <exec executable="${mvn.cmd}" dir="${workdir}" failonerror="true">
+      <env key="JAVA_HOME" value="${java.home}" />
+      <arg value="-DarchetypeGroupId=org.sitoolkit.ad.archetype" />
+      <arg value="-DarchetypeArtifactId=${artifactId}" />
+      <arg value="-DarchetypeVersion=${newVersion}" />
+      <arg value="-DgroupId=a.b.c" />
+      <arg value="-DartifactId=${testArtifactId}" />
+      <arg value="-Darchetype.interactive=false" />
+      <arg value="-DarchetypeCatalog=local" />
+      <arg value="-B" />
+      <arg value="archetype:generate" />
+    </exec>
+
+    <exec executable="${mvn.cmd}"
+          dir="${workdir}/${testArtifactId}"
+          failonerror="true"
+          if:set="glassfish">
+      <env key="JAVA_HOME" value="${java.home}" />
+      <arg value="-Pdb-migrate,embedded-glassfish,it" />
+      <arg value="-Dmaven.test.skip=false" />
+      <arg value="-Devidence.open=false" />
+      <arg value="-Ddb.port=1528" />
+      <arg value="-Das.port=8081" />
+      <arg value="-Dfile.encoding=UTF-8" />
+      <arg value="verify" />
+    </exec>
+
+    <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}" failonerror="true">
+      <env key="JAVA_HOME" value="${java.home}" />
+      <arg value="-Pdb-migrate,was-liberty,it" />
+      <arg value="-Dmaven.test.skip=false" />
+      <arg value="-Devidence.open=false" />
+      <arg value="-Ddb.port=1529" />
+      <arg value="-Das.port=8082" />
+      <arg value="-Dfile.encoding=UTF-8" />
+      <arg value="clean" />
+      <arg value="verify" />
+    </exec>
+
+  </target>
+
+</project>
