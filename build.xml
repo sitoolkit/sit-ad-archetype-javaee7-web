@@ -132,7 +132,7 @@
           failonerror="true"
           if:set="glassfish">
       <env key="JAVA_HOME" value="${java.home}" />
-      <arg value="-Pdb-migrate,embedded-glassfish,it" />
+      <arg value="-Pdb-migrate,derby,embedded-glassfish,it" />
       <arg value="-Dmaven.test.skip=false" />
       <arg value="-Devidence.open=false" />
       <arg value="-Ddb.port=1528" />
@@ -143,7 +143,7 @@
 
     <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}" failonerror="true">
       <env key="JAVA_HOME" value="${java.home}" />
-      <arg value="-Pdb-migrate,was-liberty,it" />
+      <arg value="-Pdb-migrate,derby,was-liberty,it" />
       <arg value="-Dmaven.test.skip=false" />
       <arg value="-Devidence.open=false" />
       <arg value="-Ddb.port=1529" />

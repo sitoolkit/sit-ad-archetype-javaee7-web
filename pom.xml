@@ -34,15 +34,6 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <webappDirectory>${project.build.directory}/webapp</webappDirectory>
-    <derby.client.version>10.10.1.1</derby.client.version>
-    <db.jdbc.driver>org.apache.derby.jdbc.ClientDriver</db.jdbc.driver>
-    <db.jdbc.dsclass>org.apache.derby.jdbc.ClientConnectionPoolDataSource40</db.jdbc.dsclass>
-    <db.name>${project.artifactId}-db</db.name>
-    <db.host>localhost</db.host>
-    <db.port>1527</db.port>
-    <db.jdbc.url>jdbc:derby://${db.host}:${db.port}/${db.name};create=true</db.jdbc.url>
-    <db.username>app</db.username>
-    <db.password>app</db.password>
     <as.host>localhost</as.host>
     <as.port>8080</as.port>
     <hibernate-tools.basedir>${project.basedir}/tools/hibernate-tools</hibernate-tools.basedir>
@@ -89,9 +80,9 @@
           </configuration>
           <dependencies>
             <dependency>
-              <groupId>org.apache.derby</groupId>
-              <artifactId>derbyclient</artifactId>
-              <version>${derby.client.version}</version>
+              <groupId>${db.client.groupId}</groupId>
+              <artifactId>${db.client.artifactId}</artifactId>
+              <version>${db.client.version}</version>
             </dependency>
           </dependencies>
         </plugin>
@@ -102,7 +93,6 @@
           <version>1.8</version>
           <configuration>
             <target>
-              <property name="maven.classpath" refid="maven.plugin.classpath" />
               <ant antfile="${hibernate-tools.basedir}/build.xml" />
             </target>
           </configuration>
@@ -118,9 +108,9 @@
               <version>4.3.1.Final</version>
             </dependency>
             <dependency>
-              <groupId>org.apache.derby</groupId>
-              <artifactId>derbyclient</artifactId>
-              <version>${derby.client.version}</version>
+              <groupId>${db.client.groupId}</groupId>
+              <artifactId>${db.client.artifactId}</artifactId>
+              <version>${db.client.version}</version>
             </dependency>
           </dependencies>
         </plugin>
@@ -216,10 +206,38 @@
         </plugins>
       </build>
     </profile>
+
     <profile>
-      <id>db-migrate</id>
+      <id>derby</id>
+      <properties>
+        <db.client.groupId>org.apache.derby</db.client.groupId>
+        <db.client.artifactId>derbyclient</db.client.artifactId>
+        <db.client.version>10.10.1.1</db.client.version>
+        <db.client.lib>${settings.localRepository}/org/apache/derby/derbyclient/${db.client.version}</db.client.lib>
+        <db.jdbc.driver>org.apache.derby.jdbc.ClientDriver</db.jdbc.driver>
+        <db.jdbc.dsclass>org.apache.derby.jdbc.ClientConnectionPoolDataSource40</db.jdbc.dsclass>
+        <db.name>${project.artifactId}-db</db.name>
+        <db.host>localhost</db.host>
+        <db.port>1527</db.port>
+        <db.jdbc.url>jdbc:derby://${db.host}:${db.port}/${db.name};create=true</db.jdbc.url>
+        <db.username>app</db.username>
+        <db.password>app</db.password>
+      </properties>
       <build>
-        <defaultGoal>compile</defaultGoal>
+        <defaultGoal>derby:run</defaultGoal>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.carlspring.maven</groupId>
+              <artifactId>derby-maven-plugin</artifactId>
+              <version>1.10</version>
+              <configuration>
+                <derbyHome>${basedir}/tools/derby/target</derbyHome>
+                <port>${db.port}</port>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
         <plugins>
           <plugin>
             <groupId>org.carlspring.maven</groupId>
@@ -255,6 +273,15 @@
               </execution>
             </executions>
           </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>db-migrate</id>
+      <build>
+        <defaultGoal>compile</defaultGoal>
+        <plugins>
           <plugin>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-maven-plugin</artifactId>

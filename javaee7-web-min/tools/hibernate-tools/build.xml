@@ -3,13 +3,11 @@
 
 
   <property name="outdir" value="${basedir}/target"/>
-    
-    
-  <taskdef name="hibernatetool"
-           classname="org.hibernate.tool.ant.HibernateToolTask"
-           classpath="${maven.classpath}" />
-
   
+  <taskdef name="hibernatetool"
+           classname="org.hibernate.tool.ant.HibernateToolTask" />
+
+
   <target name="hbm2java">
   
     <copy file="${hibernate-tools.basedir}/hibernate.properties" todir="${outdir}" overwrite="true">
