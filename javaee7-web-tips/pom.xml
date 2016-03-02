@@ -31,6 +31,21 @@
     <version>0.10-SNAPSHOT</version>
   </parent>
   <properties>
+    <db.client.groupId>org.apache.derby</db.client.groupId>
+    <db.client.artifactId>derbyclient</db.client.artifactId>
+    <db.client.version>10.10.1.1</db.client.version>
+    <db.client.lib>${settings.localRepository}/org/apache/derby/derbyclient/${db.client.version}</db.client.lib>
+    <db.jdbc.driver>org.apache.derby.jdbc.ClientDriver</db.jdbc.driver>
+    <db.jdbc.dsclass>org.apache.derby.jdbc.ClientConnectionPoolDataSource40</db.jdbc.dsclass>
+    <db.name>${project.artifactId}-db</db.name>
+    <db.host>localhost</db.host>
+    <db.port>1527</db.port>
+    <db.jdbc.url>jdbc:derby://${db.host}:${db.port}/${db.name};create=true</db.jdbc.url>
+    <db.username>app</db.username>
+    <db.password>app</db.password>
+    <db.flyway.comment></db.flyway.comment>
+    <db.was-liberty.ds-properties><![CDATA[<properties.derby.client createDatabase="create" databaseName="${db.name}" serverName="${db.host}" portNumber="${db.port}" user="${db.username}" password="${db.password}" />]]></db.was-liberty.ds-properties>
+    <db.was-liberty.fileset><![CDATA[<fileset dir="${db.client.lib}" />]]></db.was-liberty.fileset>
   </properties>
 
   <!-- Build Settings -->
@@ -56,5 +71,33 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+
+    <profile>
+      <id>oracle</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <db.client.groupId>com.oracle</db.client.groupId>
+        <db.client.artifactId>ojdbc6</db.client.artifactId>
+        <db.client.version>11.2.0</db.client.version>
+        <db.client.lib>${settings.localRepository}/com/oracle/ojdbc6/${db.client.version}</db.client.lib>
+        <db.jdbc.driver>oracle.jdbc.OracleDriver</db.jdbc.driver>
+        <db.jdbc.dsclass>oracle.jdbc.pool.OracleDataSource</db.jdbc.dsclass>
+        <db.name>XE</db.name>
+        <db.host>localhost</db.host>
+        <db.port>1521</db.port>
+        <db.jdbc.url>jdbc:oracle:thin://@${db.host}:${db.port}:${db.name}</db.jdbc.url>
+        <db.username>app</db.username>
+        <db.password>app</db.password>
+        <db.flyway.comment>--</db.flyway.comment>
+        <db.was-liberty.ds-properties><![CDATA[<properties.oracle URL="${db.jdbc.url}" user="${db.username}" password="${db.password}"/>]]></db.was-liberty.ds-properties>
+        <db.was-liberty.fileset><![CDATA[<fileset dir="${db.client.lib}" includes="ojdbc6-${db.client.version}.jar"/>]]></db.was-liberty.fileset>
+      </properties>
+    </profile>
+
+  </profiles>
 
 </project>

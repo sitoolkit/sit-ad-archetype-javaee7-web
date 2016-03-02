@@ -22,7 +22,7 @@ import org.sitoolkit.ad.archetype.tips.infrastructure.code.FlagCD;
 public class BaseEntity implements Serializable {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -33,12 +33,6 @@ public class BaseEntity implements Serializable {
     private boolean deleted;
 
     /**
-     * バージョン(楽観的排他制御用)
-     */
-    @Version
-    private int version;
-
-    /**
      * 作成日時
      */
     @Column(updatable = false)
@@ -47,6 +41,7 @@ public class BaseEntity implements Serializable {
     /**
      * 更新日時
      */
+    @Version
     private Timestamp updated;
 
     /**
@@ -71,16 +66,12 @@ public class BaseEntity implements Serializable {
 
     @Column(name = "deleted_flg")
     @Access(AccessType.PROPERTY)
-    public short getDeletedFlg() {
+    public char getDeletedFlg() {
         return FlagCD.toFlag(isDeleted());
     }
 
-    public void setDeletedFlg(short deletedFlg) {
+    public void setDeletedFlg(char deletedFlg) {
         this.deleted = FlagCD.toBoolean(deletedFlg);
-    }
-
-    public int getVersion() {
-        return version;
     }
 
     public Timestamp getCreated() {

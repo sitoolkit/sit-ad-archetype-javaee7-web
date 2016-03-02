@@ -71,6 +71,7 @@
       <property name="password" value="${db.password}" />
       <property name="portNumber" value="${db.port}" />
       <property name="serverName" value="${db.host}" />
+      <property name="url" value="${db.jdbc.url}" />
       <property name="characterEncoding" value="utf8" />
     </jdbc-connection-pool>
   </resources>

@@ -15,13 +15,12 @@ public class BaseEntityListener {
     @PrePersist
     public void prePersist(BaseEntity entity) {
         preUpdate(entity);
-        entity.setCreated(entity.getUpdated());
+        entity.setCreated(new Timestamp(System.currentTimeMillis()));
         entity.setCreatedBy(entity.getUpdatedBy());
     }
 
     @PreUpdate
     public void preUpdate(BaseEntity entity) {
-        entity.setUpdated(new Timestamp(System.currentTimeMillis()));
         entity.setUpdatedBy(principal.getName());
     }
 }

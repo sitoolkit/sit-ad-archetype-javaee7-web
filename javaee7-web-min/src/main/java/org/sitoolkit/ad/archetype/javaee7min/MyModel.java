@@ -13,7 +13,7 @@ public class MyModel {
     private EntityManager em;
 
     public Object getValue() {
-        Content content = em.find(Content.class, 1);
+        Content content = em.find(Content.class, "001");
         return content.getValue();
     }
 
