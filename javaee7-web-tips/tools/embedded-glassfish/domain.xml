@@ -34,7 +34,7 @@
   <resources>
     <jdbc-resource pool-name="__TimerPool" jndi-name="jdbc/__TimerPool" object-type="system-admin" />
     <jdbc-resource pool-name="DerbyPool" jndi-name="jdbc/__default" object-type="system-all" />
-    <jdbc-resource pool-name="javaee7-min-pool" jndi-name="jdbc/javaee7-web-tips-ds" />
+    <jdbc-resource pool-name="${project.artifactId}-pool" jndi-name="jdbc/${project.artifactId}-ds" />
     <jdbc-connection-pool name="__TimerPool" datasource-classname="org.apache.derby.jdbc.EmbeddedXADataSource"
       res-type="javax.sql.XADataSource">
       <property value="${com.sun.aas.instanceRoot}/lib/databases/ejbtimer" name="databaseName" />
@@ -45,7 +45,7 @@
       <property name="databaseName" value="${com.sun.aas.instanceRoot}/lib/databases/embedded_default" />
       <property name="connectionAttributes" value=";create=true" />
     </jdbc-connection-pool>
-    <jdbc-connection-pool is-isolation-level-guaranteed="false" name="javaee7-min-pool"
+    <jdbc-connection-pool is-isolation-level-guaranteed="false" name="${project.artifactId}-pool"
       datasource-classname="${db.jdbc.dsclass}" res-type="javax.sql.DataSource">
       <property name="databaseName" value="${db.name}" />
       <property name="user" value="${db.username}" />
