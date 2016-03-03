@@ -441,9 +441,7 @@
                 <type>zip</type>
               </assemblyArtifact>
               <configFile>${project.build.directory}/server.xml</configFile>
-              <jvmOptions>
-                <jvmOption>-Dfile.encoding=UTF-8</jvmOption>
-              </jvmOptions>
+              <jvmOptionsFile>${project.basedir}/tools/was-liberty/jvm.options</jvmOptionsFile>
             </configuration>
             <executions>
               <execution>
