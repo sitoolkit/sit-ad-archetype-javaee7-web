@@ -9,7 +9,7 @@ import javax.persistence.PersistenceContext;
 @RequestScoped
 public class MyModel {
 
-    @PersistenceContext(unitName = "javaee7-min-pu")
+    @PersistenceContext(unitName = "javaee7-web-min-pu")
     private EntityManager em;
 
     public Object getValue() {

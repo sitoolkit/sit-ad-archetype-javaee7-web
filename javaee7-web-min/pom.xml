@@ -30,6 +30,29 @@
   </properties>
 
   <profiles>
+    <profile>
+      <id>db2</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <db.client.groupId>com.ibm.db2</db.client.groupId>
+        <db.client.artifactId>db2jcc</db.client.artifactId>
+        <db.client.version>3.69.24</db.client.version>
+        <db.client.lib>${settings.localRepository}/com/ibm/db2/db2jcc/${db.client.version}</db.client.lib>
+        <db.jdbc.driver>com.ibm.db2.jcc.DB2Driver</db.jdbc.driver>
+        <db.jdbc.dsclass>com.ibm.db2.jcc.DB2ConnectionPoolDataSource</db.jdbc.dsclass>
+        <db.name>SAMPLE</db.name>
+        <db.host>localhost</db.host>
+        <db.port>50000</db.port>
+        <db.jdbc.url>jdbc:db2://${db.host}:${db.port}/${db.name}</db.jdbc.url>
+        <db.username>app</db.username>
+        <db.password>app</db.password>
+        <db.flyway.comment>--</db.flyway.comment>
+        <db.was-liberty.ds-properties><![CDATA[<properties.db2.jcc databaseName="${db.name}" serverName="${db.host}" portNumber="${db.port}" driverType="4" user="${db.username}" password="${db.password}"/>]]></db.was-liberty.ds-properties>
+        <db.was-liberty.fileset><![CDATA[<fileset dir="${db.client.lib}" includes="db2jcc-${db.client.version}.jar"/>]]></db.was-liberty.fileset>
+      </properties>
+    </profile>
 
     <profile>
       <id>oracle</id>
@@ -54,7 +77,6 @@
         <db.was-liberty.fileset><![CDATA[<fileset dir="${db.client.lib}" includes="ojdbc6-${db.client.version}.jar"/>]]></db.was-liberty.fileset>
       </properties>
     </profile>
-
   </profiles>
 
 </project>
