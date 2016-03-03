@@ -8,7 +8,7 @@
   <input addproperty="artifactId"
          validargs="javaee7-web-min,javaee7-web-tips"
          defaultvalue="javaee7-web-min" />
-  <property name="newVersion" value="0.10-SNAPSHOT"/>
+  <property name="newVersion" value="0.10"/>
   <property environment="env" />
   <property name="workdir" value="${basedir}/${artifactId}/target" />
   <property name="archresdir"
