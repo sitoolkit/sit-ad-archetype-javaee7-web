@@ -29,7 +29,7 @@
       </filterset>
     </copy>
 
-    <hibernatetool destdir="${hibernate-tools.destdir}">
+    <hibernatetool destdir="${hibernate-tools.destdir}" templatepath="${hibernate-tools.basedir}/template">
       
       <classpath location="${classdir}"/>
         
@@ -38,7 +38,12 @@
                          reversestrategy="CustomReverseEngineeringStrategy"
                          propertyFile="${outdir}//hibernate.properties" />
 
-      <hbm2java jdk5="true" ejb3="true" />
+      <hbmtemplate exporterclass="org.hibernate.tool.hbm2x.POJOExporter"
+                   templateprefix="pojo/"
+                   template="pojo/BaseEntity.ftl">
+        <property key="jdk5" value="true" />
+        <property key="ejb3" value="true" />
+      </hbmtemplate>
 
     </hibernatetool>
 
