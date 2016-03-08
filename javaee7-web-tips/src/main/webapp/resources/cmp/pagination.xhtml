@@ -9,37 +9,31 @@
 </composite:interface>
 <composite:implementation>
   <c:set var="model" value="#{cc.attrs.model}" />
-  <c:set var="pageCtrl" value="#{model.condition.pageCtrl}" />
+  <c:set var="pagination" value="#{model.condition.pagination}" />
 
-  #{pageCtrl.totalRowCnt}件中#{pageCtrl.rowNumFrom + 1}件目から#{pageCtrl.rowNumTo + 1}件目を表示
+  #{pagination.totalRowCnt}件中#{pagination.rowNumFrom + 1}件目から#{pagination.rowNumTo + 1}件目を表示
   <nav>
     <ul class="pagination">
-      <li class="#{pageCtrl.currentPageNum eq 1 ? 'disabled' : ''}"><h:commandLink id="first" disabled="#{pageCtrl.currentPageNum eq 1}"
+      <li class="#{pagination.currentPageNum eq 1 ? 'disabled' : ''}"><h:commandLink id="first" disabled="#{pagination.currentPageNum eq 1}"
           action="#{model.goToPage(1)}" p:area-label="First">
           <f:ajax render="@form" />
-          <span aria-hidden="true">&#171;</span>
+          <span>&#171;</span>
         </h:commandLink></li>
 
-      <ui:repeat var="page" value="#{pageCtrl.pageNums}">
-        <li class="#{page eq pageCtrl.currentPageNum ? 'active' : ''}" ><h:commandLink id="page" value="#{page}" action="#{model.goToPage(page)}"
-            disabled="#{page eq pageCtrl.currentPageNum}">
+      <ui:repeat var="page" value="#{pagination.pageNums}">
+        <li class="#{page eq pagination.currentPageNum ? 'active' : ''}" ><h:commandLink id="page" value="#{page}" action="#{model.goToPage(page)}"
+            disabled="#{page eq pagination.currentPageNum}">
             <f:ajax render="@form" />
           </h:commandLink></li>
       </ui:repeat>
-      <li class="#{pageCtrl.lastPage ? 'disabled' : ''}"><h:commandLink id="last" disabled="#{pageCtrl.lastPage}"
-          action="#{model.goToPage(pageCtrl.lastPageNum)}" p:aria-label="Last">
+      <li class="#{pagination.lastPage ? 'disabled' : ''}"><h:commandLink id="last" disabled="#{pagination.lastPage}"
+          action="#{model.goToPage(pagination.lastPageNum)}" p:aria-label="Last">
           <f:ajax render="@form" />
           <span aria-hidden="true">&#187;</span>
         </h:commandLink></li>
     </ul>
 
   </nav>
-  <div class="pageCtrl">
 
-    <!--     <h:commandLink id="prev" value="&lt;" rendered="#{pageCtrl.currentPageNum ne 1}" -->
-    <!--       action="#{model.goToPage(pageCtrl.currentPageNum - 1)}"> -->
-    <!--       <f:ajax render="@form" /> -->
-    <!--     </h:commandLink> -->
-  </div>
 </composite:implementation>
 </html>

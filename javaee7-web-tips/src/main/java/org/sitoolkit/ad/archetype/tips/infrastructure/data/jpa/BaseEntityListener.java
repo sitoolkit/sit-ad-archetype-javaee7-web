@@ -12,6 +12,11 @@ public class BaseEntityListener {
     @Inject
     Principal principal;
 
+    /**
+     * 
+     * @param entity
+     *            エンティティ
+     */
     @PrePersist
     public void prePersist(BaseEntity entity) {
         preUpdate(entity);

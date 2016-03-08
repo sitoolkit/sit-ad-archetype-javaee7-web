@@ -8,7 +8,7 @@
 
   <ui:define name="form">
 
-    <cmp:inputText id="userId" label="ユーザー" value="#{userListController.condition.params.sw_userId}" />
+    <cmp:inputText id="userId" label="ユーザー" value="#{userListController.condition.params.lk_userId}" />
 
     <div class="col-sm-offset-2 col-sm-8">
       <h:commandButton id="search" action="#{userListController.search}" value="検索" immediate="false"

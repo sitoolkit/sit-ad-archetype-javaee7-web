@@ -6,10 +6,15 @@ import org.sitoolkit.ad.archetype.tips.infrastructure.layer.Repository;
 /**
  * このクラスは、ユーザーマスターのDAOです。
  * 
- * @author
+ * @author SIToolkit
  */
 @Repository
 public class UserRepository extends BaseRepository<UserEntity, String> {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 2225666869914977661L;
 
     @Override
     public Class<UserEntity> getEntityType() {

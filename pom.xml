@@ -1,5 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.sitoolkit.ad.archetype</groupId>
   <artifactId>javaee7-web</artifactId>
@@ -26,6 +27,17 @@
       <artifactId>junit</artifactId>
       <version>4.12</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.hamcrest</groupId>
+          <artifactId>hamcrest-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-all</artifactId>
+      <version>1.3</version>
     </dependency>
   </dependencies>
   <properties>
@@ -35,7 +47,8 @@
     <webappDirectory>${project.build.directory}/webapp</webappDirectory>
     <as.host>localhost</as.host>
     <as.port>8080</as.port>
-    <hibernate-tools.basedir>${project.basedir}/tools/hibernate-tools</hibernate-tools.basedir>
+    <toolsdir>${project.basedir}/tools</toolsdir>
+    <hibernate-tools.basedir>${toolsdir}/hibernate-tools</hibernate-tools.basedir>
     <hibernate-tools.destdir>${project.build.directory}/generated-sources/hibernate-tools</hibernate-tools.destdir>
     <payara.version>4.1.153</payara.version>
   </properties>
@@ -59,7 +72,7 @@
           <artifactId>derby-maven-plugin</artifactId>
           <version>1.10</version>
           <configuration>
-            <derbyHome>${basedir}/tools/derby/target</derbyHome>
+            <derbyHome>${toolsdir}/derby/target</derbyHome>
             <port>${db.port}</port>
           </configuration>
         </plugin>
@@ -72,10 +85,10 @@
             <user>${db.username}</user>
             <password>${db.password}</password>
             <locations>
-              <location>filesystem:${basedir}/tools/flyway</location>
+              <location>filesystem:${toolsdir}/flyway</location>
             </locations>
             <placeholders>
-              <data>${project.basedir}/tools/flyway/data</data>
+              <data>${toolsdir}/flyway/data</data>
               <comment>${db.flyway.comment}</comment>
             </placeholders>
             <driver>${db.jdbc.driver}</driver>
@@ -117,6 +130,11 @@
             </dependency>
           </dependencies>
         </plugin>
+        <plugin>
+          <groupId>org.sonarsource.scanner.maven</groupId>
+          <artifactId>sonar-maven-plugin</artifactId>
+          <version>3.0.1</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -139,30 +157,24 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>3.5</version>
-      </plugin>
     </plugins>
   </build>
   <reporting>
     <plugins>
       <plugin>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.0.1</version>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>2.17</version>
         <configuration>
-          <configLocation>${project.basedir}/tools/checkstyle/sit_checkes.xml</configLocation>
+          <configLocation>${toolsdir}/checkstyle/sit_checks.xml</configLocation>
         </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
+        <configuration>
+          <excludeFilterFile>${toolsdir}/findbugs/findbugs-exclude.xml</excludeFilterFile>
+        </configuration>
         <version>3.0.3</version>
       </plugin>
       <plugin>
@@ -174,6 +186,16 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.10.3</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>2.5</version>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>taglist-maven-plugin</artifactId>
+        <version>2.4</version>
       </plugin>
     </plugins>
   </reporting>
@@ -257,7 +279,7 @@
               <artifactId>derby-maven-plugin</artifactId>
               <version>1.10</version>
               <configuration>
-                <derbyHome>${basedir}/tools/derby/target</derbyHome>
+                <derbyHome>${toolsdir}/derby/target</derbyHome>
                 <port>${db.port}</port>
               </configuration>
             </plugin>
@@ -347,13 +369,13 @@
       </dependencies>
       <properties>
         <maven.test.skip>true</maven.test.skip>
-        <fileRealm.keyfile>${project.basedir}/tools/embedded-glassfish/keyfile.txt</fileRealm.keyfile>
+        <fileRealm.keyfile>${toolsdir}/embedded-glassfish/keyfile.txt</fileRealm.keyfile>
       </properties>
       <build>
         <defaultGoal>package embedded-glassfish:run</defaultGoal>
         <resources>
           <resource>
-            <directory>${project.basedir}/tools/embedded-glassfish</directory>
+            <directory>${toolsdir}/embedded-glassfish</directory>
             <includes>
               <include>domain.xml</include>
             </includes>
@@ -442,7 +464,7 @@
             <enabled>false</enabled>
             <updatePolicy>never</updatePolicy>
           </snapshots>
-          <url>file://${project.basedir}/tools/embedded-glassfish/repository</url>
+          <url>file://${toolsdir}/embedded-glassfish/repository</url>
         </pluginRepository>
       </pluginRepositories>
     </profile>
@@ -456,7 +478,7 @@
         <defaultGoal>package liberty:run-server</defaultGoal>
         <resources>
           <resource>
-            <directory>${basedir}/tools/was-liberty</directory>
+            <directory>${toolsdir}/was-liberty</directory>
             <includes>
               <include>server.xml</include>
             </includes>
@@ -477,7 +499,7 @@
                 <type>zip</type>
               </assemblyArtifact>
               <configFile>${project.build.directory}/server.xml</configFile>
-              <jvmOptionsFile>${project.basedir}/tools/was-liberty/jvm.options</jvmOptionsFile>
+              <jvmOptionsFile>${toolsdir}/was-liberty/jvm.options</jvmOptionsFile>
             </configuration>
             <executions>
               <execution>

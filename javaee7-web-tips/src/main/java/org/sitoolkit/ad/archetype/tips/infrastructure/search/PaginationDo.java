@@ -5,25 +5,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * このクラスは、ページ制御のためのDOです。
- * 「ページ制御」とは、ユーザーの画面操作によってデータベースから抽出する
- * エンティティの件数、開始行番号、終了行番号件数を制御することを指します。
- *
- * <br>
- * このクラスで実装されるページ制御の画面は以下のようなものを想定しています。
- *
- *
+ * このクラスはページネーション処理の各種パラメーターを演算するDOです。
+ * <p>
+ * このクラスを使用したページネーションのUIは例えば以下の様なものです。
+ * 
  * <pre>
  *
- * &lt;&lt; &lt; <u>3</u> <u>4</u> 5 <u>6</u> <u>7</u> &gt; &gt;&gt;
+ * <u>&lt;&lt;</u> <u>&lt;</u> <u>3</u> 4 <u>5</u> <u>6</u> <u>7</u> <u>&gt;</u> <u>&gt;&gt;</u>
  *
  * </pre>
- * 並んだ数字3～7は、ページ番号を表します。
- * 下線付きの数字はリンクを表し、下線無しは現在表示しているページ番号を表します。
+ * 
+ * 並んだ数字3～7は、ページ番号を表します。 下線付きの数字はリンクを表し、下線無しは現在表示しているページ番号を表します。
+ * 
+ * <h3>使用方法</h3> 主要なプロパティとそれらを使用するタイミングを説明します。
+ * 以下のプロパティは検索画面の共通仕様としてアプリや画面ごとに決まった値を設定します。
+ * 
+ * <ul>
+ * <li>pageNumCount : UIに表示するページ番号の数です。上記の例では「５」が設定されています。
+ * <li>rowCntPerPage : 1ページに表示する検索結果の行数の上限です。
+ * </ul>
+ * 
+ * 以下のプロパティは1回の検索処理ごとに設定します。
+ * <ul>
+ * <li>currentPageNum : UIでクリックされたページ番号を設定します。上記の例では「4」が設定されています。
+ * <li>totalRowCnt : 検索条件に一致したDBのレコードの件数を設定します。
+ * </ul>
+ * 
+ * 上記のプロパティが設定されると、以下の演算結果が取得できるようになります。
+ * <ul>
+ * <li>rowNumFrom : 検索結果としてDBから抽出するレコードの開始位置を返します。番号は0から数えます。
+ * この値はjavax.persistence.Query.setFirstResult(int)に指定することを想定しています。
+ * <li>pageNums : UIに表示するページ番号のリストを返します上記の例では[3, 4, 5, 6, 7]です。
+ * </ul>
  *
  * @author SIToolkit
  */
-public class PageControlDo implements Serializable {
+public class PaginationDo implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 7895288898589369244L;
 
     /**
      * 現在のページ番号 1から開始
@@ -49,23 +71,27 @@ public class PageControlDo implements Serializable {
     /**
      * デフォルトコンストラクタです。特に処理は行いません。
      */
-    public PageControlDo() {
+    public PaginationDo() {
         super();
     }
 
     /**
      * 現在のページ番号と1ページ当たりの行数を設定してインスタンスを生成します。
-     * @param currentPage 現在のページ数
-     * @param rowCntPerPage 1ページ当たりの行数
+     * 
+     * @param pageNumCount
+     *            現在のページ数
+     * @param rowCntPerPage
+     *            1ページ当たりの行数
      */
-    public PageControlDo(int currentPage, int rowCntPerPage) {
-        super();
-        this.currentPageNum = currentPage;
-        this.rowCntPerPage = rowCntPerPage;
+    public PaginationDo(int pageNumCount, int rowCntPerPage) {
+        this();
+        this.setPageNumCnt(pageNumCount);
+        this.setRowCntPerPage(rowCntPerPage);
     }
 
     /**
      * 現在のページ番号を返します。
+     * 
      * @return 現在のページ番号
      */
     public int getCurrentPageNum() {
@@ -74,7 +100,9 @@ public class PageControlDo implements Serializable {
 
     /**
      * 現在のページ番号を設定します。
-     * @param currentPageNum 現在のページ番号
+     * 
+     * @param currentPageNum
+     *            現在のページ番号
      */
     public void setCurrentPageNum(int currentPageNum) {
         this.currentPageNum = currentPageNum;
@@ -83,6 +111,7 @@ public class PageControlDo implements Serializable {
 
     /**
      * 1ページ当たりの行数を返します。
+     * 
      * @return 1ページ当たりの行数
      */
     public int getRowCntPerPage() {
@@ -91,7 +120,9 @@ public class PageControlDo implements Serializable {
 
     /**
      * 1ページ当たりの行数を設定します。
-     * @param rowCntPerPage 1ページ当たりの行数
+     * 
+     * @param rowCntPerPage
+     *            1ページ当たりの行数
      */
     public void setRowCntPerPage(int rowCntPerPage) {
         this.rowCntPerPage = rowCntPerPage;
@@ -100,6 +131,7 @@ public class PageControlDo implements Serializable {
 
     /**
      * 開始行番号を返します。
+     * 
      * @return 開始行番号
      */
     public int getRowNumFrom() {
@@ -108,6 +140,7 @@ public class PageControlDo implements Serializable {
 
     /**
      * 終了行番号を返します。
+     * 
      * @return 終了行番号
      */
     public int getRowNumTo() {
@@ -116,14 +149,17 @@ public class PageControlDo implements Serializable {
 
     /**
      * 開始ページ番号を返します。
+     * 
      * @return 開始ページ番号
      */
     public int getPageNumFrom() {
-        return Math.max(1, Math.min(getCurrentPageNum() - ( getPageNumCnt() / 2 ), getLastPageNum() - getPageNumCnt() + 1));
+        return Math.max(1, Math.min(getCurrentPageNum() - (getPageNumCnt() / 2),
+                getLastPageNum() - getPageNumCnt() + 1));
     }
 
     /**
      * 終了ページ番号を返します。
+     * 
      * @return 終了ページ番号
      */
     public int getPageNumTo() {
@@ -132,14 +168,16 @@ public class PageControlDo implements Serializable {
 
     /**
      * 最後のページ番号を返します。
+     * 
      * @return 最後のページ番号
      */
     public int getLastPageNum() {
-        return ( getTotalRowCnt() - 1 ) / getRowCntPerPage() + 1;
+        return (getTotalRowCnt() - 1) / getRowCntPerPage() + 1;
     }
 
     /**
      * 現在のページが最後のページであるか否かを判定します。
+     * 
      * @return true:最後のページである。
      */
     public boolean isLastPage() {
@@ -147,8 +185,9 @@ public class PageControlDo implements Serializable {
     }
 
     /**
-     * 全行数を返します。
-     * @return 全行数
+     * 総行数を返します。
+     * 
+     * @return 総行数
      */
     public int getTotalRowCnt() {
         return totalRowCnt;
@@ -156,7 +195,9 @@ public class PageControlDo implements Serializable {
 
     /**
      * 全行数を設定します。
-     * @param totalRowCnt 全行数
+     * 
+     * @param totalRowCnt
+     *            全行数
      */
     public void setTotalRowCnt(int totalRowCnt) {
         this.totalRowCnt = totalRowCnt;
@@ -164,8 +205,8 @@ public class PageControlDo implements Serializable {
     }
 
     /**
-     * ページ番号数を返します。
-     * 初期値は5です。
+     * ページ番号数を返します。 初期値は5です。
+     * 
      * @return ページ番号数
      */
     public int getPageNumCnt() {
@@ -174,7 +215,9 @@ public class PageControlDo implements Serializable {
 
     /**
      * ページ番号数を設定します。
-     * @param pageNumCnt ページ番号数
+     * 
+     * @param pageNumCnt
+     *            ページ番号数
      */
     public void setPageNumCnt(int pageNumCnt) {
         this.pageNumCnt = pageNumCnt;
@@ -182,8 +225,8 @@ public class PageControlDo implements Serializable {
     }
 
     /**
-     * ページ番号のリストを返します。
-     * このリストの要素は、開始ページ番号から終了ページ番号までの連続する整数です。
+     * ページ番号のリストを返します。 このリストの要素は、開始ページ番号から終了ページ番号までの連続する整数です。
+     * 
      * @return ページ番号のリスト
      */
     public List<Integer> getPageNums() {
@@ -196,7 +239,6 @@ public class PageControlDo implements Serializable {
         }
         return pages;
     }
-
 
     private void setPageNums(List<Integer> pageNums) {
         this.pages = pageNums;

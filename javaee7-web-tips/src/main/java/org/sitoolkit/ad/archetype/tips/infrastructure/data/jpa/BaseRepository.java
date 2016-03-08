@@ -14,7 +14,7 @@ import org.sitoolkit.ad.archetype.tips.infrastructure.search.SearchConditionDo;
  *
  * @author SIToolkit
  */
-public abstract class BaseRepository<E extends BaseEntity, ID extends Serializable>
+public abstract class BaseRepository<E extends BaseEntity, I extends Serializable>
         implements Serializable {
 
     /**
@@ -30,7 +30,7 @@ public abstract class BaseRepository<E extends BaseEntity, ID extends Serializab
 
     /**
      *
-     * @return
+     * @return EntityManager
      */
     protected EntityManager em() {
         return em;
@@ -43,7 +43,7 @@ public abstract class BaseRepository<E extends BaseEntity, ID extends Serializab
      *            エンティティのID
      * @return IDを持つエンティティ
      */
-    public E find(ID id) {
+    public E find(I id) {
         return id == null ? null : em().find(getEntityType(), id);
     }
 
@@ -61,6 +61,7 @@ public abstract class BaseRepository<E extends BaseEntity, ID extends Serializab
      * エンティティの更新命令を永続化コンテキストに送ります。 更新処理は永続化コンテキストがコミットされた後に実行されます。
      * 
      * @param entity
+     *            エンティティ
      */
     public void update(E entity) {
         em().merge(entity);
@@ -72,11 +73,17 @@ public abstract class BaseRepository<E extends BaseEntity, ID extends Serializab
      * @param id
      *            エンティティのID
      */
-    public void delete(ID id) {
+    public void delete(I id) {
         E entity = find(id);
         entity.setDeleted(true);
     }
 
+    /**
+     * 
+     * @param condition
+     *            検索条件
+     * @return 検索条件に一致した件数
+     */
     public int count(SearchConditionDo condition) {
         Query query = em().createQuery(condition.getCountQuery());
         for (Entry<String, Object> param : condition.getQueryParams().entrySet()) {
@@ -85,6 +92,12 @@ public abstract class BaseRepository<E extends BaseEntity, ID extends Serializab
         return ((Long) query.getSingleResult()).intValue();
     }
 
+    /**
+     * 
+     * @param condition
+     *            検索条件
+     * @return 検索結果
+     */
     @SuppressWarnings("unchecked")
     public List<E> search(SearchConditionDo condition) {
         Query query = em().createQuery(condition.getSearchQuery());
@@ -93,8 +106,8 @@ public abstract class BaseRepository<E extends BaseEntity, ID extends Serializab
             query.setParameter(param.getKey(), param.getValue());
         }
 
-        query.setFirstResult(condition.getPageCtrl().getRowNumFrom());
-        query.setMaxResults(condition.getPageCtrl().getRowCntPerPage());
+        query.setFirstResult(condition.getPagination().getRowNumFrom());
+        query.setMaxResults(condition.getPagination().getRowCntPerPage());
 
         return query.getResultList();
     }

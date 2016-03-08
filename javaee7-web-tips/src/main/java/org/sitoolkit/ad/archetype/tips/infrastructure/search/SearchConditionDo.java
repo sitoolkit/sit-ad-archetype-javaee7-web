@@ -11,9 +11,6 @@ import java.util.Map.Entry;
 import javax.enterprise.context.ConversationScoped;
 import javax.inject.Named;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * このクラスは、検索画面で入力される検索条件を格納するDOです。
  *
@@ -28,12 +25,10 @@ public class SearchConditionDo implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
-    private static final Logger LOG = LoggerFactory.getLogger(SearchConditionDo.class);
-
     /**
      * ページ制御DO
      */
-    private PageControlDo pageCtrl = new PageControlDo();
+    private PaginationDo pagination = new PaginationDo();
 
     /**
      * 画面入力された検索条件のマップ キー：演算子 + "_" + 検索フィールド、値：検索に使用する値
@@ -65,27 +60,14 @@ public class SearchConditionDo implements Serializable {
      */
     private int sortHistory = 3;
 
-    public PageControlDo getPageCtrl() {
-        return pageCtrl;
-    }
-
-    public void setPageCtrl(PageControlDo pageCtrl) {
-        this.pageCtrl = pageCtrl;
-    }
-
-    public Map<String, Object> getParams() {
-        return params;
-    }
-
-    public void setParams(Map<String, Object> params) {
-        this.params = params;
-    }
-
+    /**
+     * 検索条件を初期化します。
+     */
     public void init() {
         searchQuery = "";
         countQuery = "";
         queryParams.clear();
-        pageCtrl.setCurrentPageNum(1);
+        pagination.setCurrentPageNum(1);
         sortList.clear();
     }
 
@@ -97,16 +79,16 @@ public class SearchConditionDo implements Serializable {
      */
     public void buildQuery(String entityName) {
         StringBuilder search = new StringBuilder();
-        search.append("SELECT e FROM ").append(entityName).append(" e ");
+        search.append("SELECT e FROM ").append(entityName).append(" e");
         String where = buildWhere("e");
         if (where.length() > 0) {
-            search.append("WHERE ").append(where);
+            search.append(" WHERE ").append(where);
         }
         search.append(buildOrderBy("e"));
         setSearchQuery(search.toString());
 
         StringBuilder count = new StringBuilder();
-        count.append("SELECT COUNT(e) FROM ").append(entityName).append(" e ");
+        count.append("SELECT COUNT(e) FROM ").append(entityName).append(" e");
         if (where.length() > 0) {
             count.append(" WHERE ").append(where);
         }
@@ -114,9 +96,11 @@ public class SearchConditionDo implements Serializable {
     }
 
     /**
-     *
+     * WHERE節を構築します。
+     * 
      * @param shortName
-     * @return
+     *            WHERE節の中でフィールドの接頭辞として使用するエンティティの省略名
+     * @return WHERE節
      */
     protected String buildWhere(String shortName) {
         StringBuilder sb = new StringBuilder();
@@ -130,38 +114,35 @@ public class SearchConditionDo implements Serializable {
             if (sb.length() > 0) {
                 sb.append(" AND ");
             }
-            String[] values = param.getKey().split("_");
-            String opeStr = values[0].toLowerCase();
-            String field = values[1];
-            OperatorVo ope = OperatorVo.valueOf(opeStr);
+            String[] operatorAndField = param.getKey().split("_");
+
+            if (operatorAndField.length != 2) {
+                throw new IllegalArgumentException("Map paramsに不正なキー:" + param.getKey()
+                        + "が含まれています。" + "キーは「OperatorCd + \"_\" + endityField」で指定してください。");
+            }
+            String opeStr = operatorAndField[0].toUpperCase();
+            String field = operatorAndField[1];
+            OperatorCd ope = OperatorCd.valueOf(opeStr);
 
             sb.append(shortName).append(".");
             sb.append(field).append(" ").append(ope).append(" ");
 
-            if (OperatorVo.in.equals(ope)) {
+            if (OperatorCd.IN.equals(ope)) {
                 StringBuilder inSb = new StringBuilder();
                 String[] inValues = (String[]) param.getValue();
-                int i = 0;
+                int paramSufix = 1;
                 for (String inValue : inValues) {
                     if (inSb.length() > 0) {
-                        inSb.append(",");
+                        inSb.append(", ");
                     }
-                    String placeHolder = field + i++;
+                    String placeHolder = field + "_" + paramSufix++;
                     inSb.append(":").append(placeHolder);
                     queryParams.put(placeHolder, inValue);
                 }
                 sb.append("(").append(inSb).append(")");
             } else {
-                sb.append(" :");
+                sb.append(":");
                 sb.append(field);
-
-                switch (ope) {
-                case sw:
-                    value = value + "%";
-                    break;
-                default:
-                }
-
                 queryParams.put(field, value);
             }
 
@@ -173,10 +154,11 @@ public class SearchConditionDo implements Serializable {
     /**
      * ORDER BY節を構築します。
      * 
-     * @param sortName
-     * @return
+     * @param shortName
+     *            ORDER BY節の中でフィールドの接頭辞として使用するエンティティの省略名
+     * @return ORDER BY節
      */
-    protected String buildOrderBy(String sortName) {
+    protected String buildOrderBy(String shortName) {
         if (sortList.isEmpty()) {
             return "";
         }
@@ -185,35 +167,11 @@ public class SearchConditionDo implements Serializable {
             if (sb.length() > 0) {
                 sb.append(", ");
             }
-            sb.append(sortName).append(".").append(sort.getField()).append(" ");
+            sb.append(shortName).append(".").append(sort.getField()).append(" ");
             sb.append(sort.isAsc() ? "ASC" : "DESC");
         }
         sb.insert(0, " ORDER BY ");
         return sb.toString();
-    }
-
-    public String getCountQuery() {
-        return countQuery;
-    }
-
-    public void setCountQuery(String countQuery) {
-        this.countQuery = countQuery;
-    }
-
-    public String getSearchQuery() {
-        return searchQuery;
-    }
-
-    public void setSearchQuery(String searchQuery) {
-        this.searchQuery = searchQuery;
-    }
-
-    public Map<String, Object> getQueryParams() {
-        return queryParams;
-    }
-
-    public void setQueryParams(Map<String, Object> queryParams) {
-        this.queryParams = queryParams;
     }
 
     /**
@@ -249,6 +207,26 @@ public class SearchConditionDo implements Serializable {
         }
     }
 
+    public Object addParam(String key, Object value) {
+        return params.put(key, value);
+    }
+
+    public PaginationDo getPagination() {
+        return pagination;
+    }
+
+    public void setPagination(PaginationDo pagination) {
+        this.pagination = pagination;
+    }
+
+    public Map<String, Object> getParams() {
+        return params;
+    }
+
+    public void setParams(Map<String, Object> params) {
+        this.params = params;
+    }
+
     public int getSortHistory() {
         return sortHistory;
     }
@@ -256,4 +234,29 @@ public class SearchConditionDo implements Serializable {
     public void setSortHistory(int sortHistory) {
         this.sortHistory = sortHistory;
     }
+
+    public String getCountQuery() {
+        return countQuery;
+    }
+
+    public void setCountQuery(String countQuery) {
+        this.countQuery = countQuery;
+    }
+
+    public String getSearchQuery() {
+        return searchQuery;
+    }
+
+    public void setSearchQuery(String searchQuery) {
+        this.searchQuery = searchQuery;
+    }
+
+    public Map<String, Object> getQueryParams() {
+        return queryParams;
+    }
+
+    public void setQueryParams(Map<String, Object> queryParams) {
+        this.queryParams = queryParams;
+    }
+
 }

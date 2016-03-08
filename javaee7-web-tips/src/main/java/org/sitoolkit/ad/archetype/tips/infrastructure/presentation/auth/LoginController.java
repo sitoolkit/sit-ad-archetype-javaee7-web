@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.sitoolkit.ad.archetype.tips.infrastructure.Controller;
-import org.sitoolkit.ad.archetype.tips.infrastructure.presentation.jsf.JSFUtils;
+import org.sitoolkit.ad.archetype.tips.infrastructure.presentation.jsf.JsfUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,17 +42,17 @@ public class LoginController {
      */
     public String login() {
         try {
-            JSFUtils.req().login(getLoginId(), getPassword());
-            JSFUtils.info("ログインしました。");
+            JsfUtils.req().login(getLoginId(), getPassword());
+            JsfUtils.info("ログインしました。");
 
             if (StringUtils.isEmpty(getRequestedViewId())) {
-                return JSFUtils.viewId();
+                return JsfUtils.viewId();
             } else {
-                return JSFUtils.redirect(getRequestedViewId());
+                return JsfUtils.redirect(getRequestedViewId());
             }
         } catch (ServletException e) {
-            JSFUtils.error("ログインIDまたはパスワードが不正です。");
-            return JSFUtils.viewId();
+            JsfUtils.error("ログインIDまたはパスワードが不正です。");
+            return JsfUtils.viewId();
         }
     }
 
@@ -60,12 +60,12 @@ public class LoginController {
      * 認証済ユーザーのログアウト処理を行います。 処理は{@link HttpServletRequest#logout()}メソッドに委譲します。
      * ログアウト処理後は、コンテキストルート直下にリダイレクトします。
      *
-     * @see JSFUtils#redirectHome()
+     * @see JsfUtils#redirectHome()
      */
     public void logout() {
         try {
             request.logout();
-            JSFUtils.info("ログアウトしました。");
+            JsfUtils.info("ログアウトしました。");
         } catch (ServletException e) {
             LOG.error("ログアウト処理で例外が発生しました。", e);
         }
@@ -77,7 +77,7 @@ public class LoginController {
      * @return ユーザーが認証済である場合にtrue
      */
     public boolean isLoggedIn() {
-        return JSFUtils.ext().getRemoteUser() != null;
+        return JsfUtils.ext().getRemoteUser() != null;
     }
 
     /**
@@ -87,7 +87,7 @@ public class LoginController {
      */
     public String getRequestedViewId() {
         if (requestedViewId == null) {
-            requestedViewId = JSFUtils.forwardSrcPath();
+            requestedViewId = JsfUtils.forwardSrcPath();
         }
         return requestedViewId;
     }

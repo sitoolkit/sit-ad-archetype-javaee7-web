@@ -8,7 +8,7 @@ import javax.transaction.RollbackException;
 import javax.validation.Valid;
 
 import org.sitoolkit.ad.archetype.tips.infrastructure.data.jpa.BaseEntity;
-import org.sitoolkit.ad.archetype.tips.infrastructure.presentation.jsf.JSFUtils;
+import org.sitoolkit.ad.archetype.tips.infrastructure.presentation.jsf.JsfUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +25,7 @@ public abstract class EntityInputController<E extends BaseEntity, I extends Seri
     private static final long serialVersionUID = 1L;
 
     /**
-     * ロガー
+     * ロガーです。
      */
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -60,9 +60,9 @@ public abstract class EntityInputController<E extends BaseEntity, I extends Seri
      */
     public void init() {
         if (getEntityId() == null || "".equals(getEntityId())) {
-            setMode(EntityInputPageMode.create);
+            setMode(EntityInputPageMode.CREATE);
         } else {
-            setMode(EntityInputPageMode.update);
+            setMode(EntityInputPageMode.UPDATE);
         }
         if (getMode().isCreate()) {
             setEntity(getService().newInstance());
@@ -79,14 +79,14 @@ public abstract class EntityInputController<E extends BaseEntity, I extends Seri
     public String create() {
         try {
             getService().create(getEntity());
-            JSFUtils.info("登録しました。", getEntityId());
+            JsfUtils.info("登録しました。", getEntityId());
         } catch (EJBException e) {
             if (e.getCause() instanceof RollbackException) {
-                JSFUtils.error("登録時にエラーが発生しました。");
+                JsfUtils.error("登録時にエラーが発生しました。");
                 log.error("エラー内容：", e);
             }
         }
-        return JSFUtils.redirect(getListPageViewId());
+        return JsfUtils.redirect(getListPageViewId());
     }
 
     /**
@@ -97,15 +97,15 @@ public abstract class EntityInputController<E extends BaseEntity, I extends Seri
     public String update() {
         try {
             getService().update(getEntity());
-            JSFUtils.info("{0}を更新しました。", getEntityId());
+            JsfUtils.info("{0}を更新しました。", getEntityId());
         } catch (EJBException e) {
             if (e.getCause() instanceof OptimisticLockException) {
-                JSFUtils.error("{0}は他のユーザーによって更新されています。", getEntityId());
+                JsfUtils.error("{0}は他のユーザーによって更新されています。", getEntityId());
             } else {
                 throw e;
             }
         }
-        return JSFUtils.redirect(getListPageViewId());
+        return JsfUtils.redirect(getListPageViewId());
     }
 
     /**
@@ -115,8 +115,8 @@ public abstract class EntityInputController<E extends BaseEntity, I extends Seri
      */
     public String delete() {
         getService().delete(getEntityId());
-        JSFUtils.info("{0}を削除しました。", getEntityId());
-        return JSFUtils.redirect(getListPageViewId());
+        JsfUtils.info("{0}を削除しました。", getEntityId());
+        return JsfUtils.redirect(getListPageViewId());
     }
 
     /**

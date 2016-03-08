@@ -7,13 +7,13 @@ package org.sitoolkit.ad.archetype.tips.infrastructure.entitycrud;
  */
 public enum EntityInputPageMode {
     /**
-     * 作成モード
+     * 作成モードです。
      */
-    create,
+    CREATE,
     /**
-     * 更新モード
+     * 更新モードです。
      */
-    update;
+    UPDATE;
 
     /**
      * 作成モードである場合にtrueを返します。
@@ -21,7 +21,7 @@ public enum EntityInputPageMode {
      * @return 作成モードである場合にtrue
      */
     public boolean isCreate() {
-        return create.equals(this);
+        return CREATE.equals(this);
     }
 
     /**
@@ -30,7 +30,7 @@ public enum EntityInputPageMode {
      * @return 更新モードである場合にtrue
      */
     public boolean isUpdate() {
-        return update.equals(this);
+        return UPDATE.equals(this);
     }
 
     public boolean isAny() {

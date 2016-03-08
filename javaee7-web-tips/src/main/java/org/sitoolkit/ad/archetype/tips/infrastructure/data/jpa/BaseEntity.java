@@ -10,7 +10,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.sitoolkit.ad.archetype.tips.infrastructure.code.FlagCD;
+import org.sitoolkit.ad.archetype.tips.infrastructure.code.FlagCd;
 
 /**
  * このクラスは、エンティティクラスが継承すべき基底クラスです。 全エンティティが持つ共通の属性を定義します。
@@ -67,27 +67,27 @@ public class BaseEntity implements Serializable {
     @Column(name = "deleted_flg")
     @Access(AccessType.PROPERTY)
     public char getDeletedFlg() {
-        return FlagCD.toFlag(isDeleted());
+        return FlagCd.toFlag(isDeleted());
     }
 
     public void setDeletedFlg(char deletedFlg) {
-        this.deleted = FlagCD.toBoolean(deletedFlg);
+        this.deleted = FlagCd.toBoolean(deletedFlg);
     }
 
     public Timestamp getCreated() {
-        return created;
+        return (Timestamp) created.clone();
     }
 
     public void setCreated(Timestamp created) {
-        this.created = created;
+        this.created = (created == null ? null : (Timestamp) created.clone());
     }
 
     public Timestamp getUpdated() {
-        return updated;
+        return (Timestamp) updated.clone();
     }
 
     public void setUpdated(Timestamp updated) {
-        this.updated = updated;
+        this.updated = (updated == null ? null : (Timestamp) updated.clone());
     }
 
     public String getCreatedBy() {
