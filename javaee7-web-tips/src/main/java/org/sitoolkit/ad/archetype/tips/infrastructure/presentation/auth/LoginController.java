@@ -32,13 +32,13 @@ public class LoginController {
     private HttpServletRequest request;
 
     /**
-     * 内部保持するログインID、パスワードを用いて認証を行います。 認証処理は{@link HttpServletRequest.login}
+     * 内部保持するログインID、パスワードを用いて認証を行います。 認証処理は{@link HttpServletRequest#login(String, String)}
      * メソッドに委譲します。
      *
      * @return 認証が成功し、かつ直接ログイン画面に遷移して認証を行っている場合は、ログイン画面のViewIdを返します。
      *         認証が成功し、かつログイン画面とは別の画面への遷移でログイン画面にフォワードされた場合は、
      *         元々遷移しようとしていた画面のViewIdを返します。 認証が失敗した場合はログイン画面のViewIdを返します。
-     * @see HttpServletRequest#login
+     * @see HttpServletRequest#login(String, String)
      */
     public String login() {
         try {
@@ -57,10 +57,9 @@ public class LoginController {
     }
 
     /**
-     * 認証済ユーザーのログアウト処理を行います。 処理は{@link HttpServletRequest.logout}メソッドに委譲します。
+     * 認証済ユーザーのログアウト処理を行います。 処理は{@link HttpServletRequest#logout()}メソッドに委譲します。
      * ログアウト処理後は、コンテキストルート直下にリダイレクトします。
      *
-     * @return 空文字
      * @see JSFUtils#redirectHome()
      */
     public void logout() {
