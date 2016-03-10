@@ -8,16 +8,16 @@
   <input addproperty="artifactId"
          validargs="javaee7-web-min,javaee7-web-tips"
          defaultvalue="javaee7-web-min" />
-  <property name="newVersion" value="0.11-SNAPSHOT"/>
+  <property name="newVersion" value="0.11-SNAPSHOT" />
   <property environment="env" />
   <property name="workdir" value="${basedir}/${artifactId}/target" />
   <property name="archresdir"
             value="${workdir}/generated-sources/archetype/src"
             description="「mvn archetye:create-from-project」コマンドで作成された、アーキタイプとして格納される資源のディレクトリ" />
-  <property name="newarchdir" value="${workdir}/newarch" description="新しいアーキタイプを作成するディレクトリ"/>
+  <property name="newarchdir" value="${workdir}/newarch" description="新しいアーキタイプを作成するディレクトリ" />
   <property name="resdir" value="${newarchdir}/src" />
   <property name="testArtifactId" value="${artifactId}-test" />
-  <property name="db" value="derby"/>
+  <property name="db" value="derby" />
 
   <condition property="mvn.cmd" value="${env.MAVEN_HOME}/bin/mvn.cmd" else="/usr/local/bin/mvn">
     <os family="windows" />
@@ -85,7 +85,7 @@
       <globmapper from="${artifactId}*.launch" to="__artifactId__*.launch" />
     </move>
 
-    <copy file="${basedir}/${artifactId}/distribution/pom.xml" todir="${newarchdir}"/>
+    <copy file="${basedir}/${artifactId}/distribution/pom.xml" todir="${newarchdir}" />
 
   </target>
 
@@ -95,13 +95,13 @@
 
     <exec executable="${mvn.cmd}" dir="${newarchdir}" failonerror="true">
       <env key="JAVA_HOME" value="${java.home}" />
-      <arg value="-DnewVersion=${newVersion}"/>
+      <arg value="-DnewVersion=${newVersion}" />
       <arg value="versions:set" />
     </exec>
 
     <condition property="mvn.phase" value="install">
       <not>
-        <isset property="mvn.phase"/>
+        <isset property="mvn.phase" />
       </not>
     </condition>
 
@@ -129,27 +129,43 @@
       <arg value="archetype:generate" />
     </exec>
 
+    <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}" failonerror="true">
+      <env key="JAVA_HOME" value="${java.home}" />
+      <arg value="-Pdb-migrate,${db}" />
+      <arg value="-Dfile.encoding=UTF-8" />
+      <arg value="-Das.port=8082" />
+      <arg value="compile" />
+    </exec>
+
+    <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}" failonerror="true">
+      <env key="JAVA_HOME" value="${java.home}" />
+      <arg value="-Dfile.encoding=UTF-8" />
+      <arg value="-Das.port=8082" />
+      <arg value="derby:start" />
+      <arg value="site" />
+      <arg value="derby:stop" />
+    </exec>
+
+    <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}" failonerror="true">
+      <env key="JAVA_HOME" value="${java.home}" />
+      <arg value="-P${db},was-liberty,it" />
+      <arg value="-Dmaven.test.skip=false" />
+      <arg value="-Devidence.open=false" />
+      <arg value="-Dfile.encoding=UTF-8" />
+      <arg value="-Das.port=8082" />
+      <arg value="verify" />
+    </exec>
+
     <exec executable="${mvn.cmd}"
           dir="${workdir}/${testArtifactId}"
           failonerror="true"
           if:set="glassfish">
       <env key="JAVA_HOME" value="${java.home}" />
-      <arg value="-Pdb-migrate,${db},embedded-glassfish,it" />
+      <arg value="-P${db},embedded-glassfish,it" />
       <arg value="-Dmaven.test.skip=false" />
       <arg value="-Devidence.open=false" />
       <arg value="-Dfile.encoding=UTF-8" />
       <arg value="-Das.port=8081" />
-      <arg value="verify" />
-    </exec>
-
-    <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}" failonerror="true">
-      <env key="JAVA_HOME" value="${java.home}" />
-      <arg value="-Pdb-migrate,${db},was-liberty,it" />
-      <arg value="-Dmaven.test.skip=false" />
-      <arg value="-Devidence.open=false" />
-      <arg value="-Dfile.encoding=UTF-8" />
-      <arg value="-Das.port=8082" />
-      <arg value="clean" />
       <arg value="verify" />
     </exec>
 

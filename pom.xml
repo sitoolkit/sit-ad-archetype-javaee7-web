@@ -1,6 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
->
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.sitoolkit.ad.archetype</groupId>
   <artifactId>javaee7-web</artifactId>
@@ -45,6 +44,12 @@
       <artifactId>cdi-unit</artifactId>
       <version>3.1.3</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>httpclient</artifactId>
+          <groupId>org.apache.httpcomponents</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.deltaspike.core</groupId>
@@ -349,20 +354,6 @@
               <execution>
                 <id>start</id>
                 <phase>initialize</phase>
-                <goals>
-                  <goal>start</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>stop</id>
-                <phase>compile</phase>
-                <goals>
-                  <goal>stop</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>start-on-pre-integration-test</id>
-                <phase>pre-integration-test</phase>
                 <goals>
                   <goal>start</goal>
                 </goals>

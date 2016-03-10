@@ -48,12 +48,11 @@ public class SearchConditionDoTest {
     /**
      * 以下の順に、ソートフィールドを追加しORDER BY節が期待どおりに構築されることを確認します。
      * <ol>
-     * <li>インスタンス生成直後 -> ORDER BY節は空文字である
-     * <li>field1をソートフィールドに追加する。-> ORDER BY entity.field1 ASC
-     * <li>field1をソートフィールドに追加する。-> ORDER BY entity.field1 DESC
-     * <li>field2をソートフィールドに追加する。-> ORDER BY entity.field2 ASC, entity.field1
-     * DESC
-     * <li>field2をソートフィールドに追加する。-> ORDER BY entity.field2 DESC, entity.field1
+     * <li>インスタンス生成直後 → ORDER BY節は空文字である
+     * <li>field1をソートフィールドに追加する。→ ORDER BY entity.field1 ASC
+     * <li>field1をソートフィールドに追加する。→ ORDER BY entity.field1 DESC
+     * <li>field2をソートフィールドに追加する。→ ORDER BY entity.field2 ASC, entity.field1 DESC
+     * <li>field2をソートフィールドに追加する。→ ORDER BY entity.field2 DESC, entity.field1
      * DESC
      * </ol>
      */

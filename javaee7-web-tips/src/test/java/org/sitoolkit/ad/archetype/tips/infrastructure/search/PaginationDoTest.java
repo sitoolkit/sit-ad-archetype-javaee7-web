@@ -83,7 +83,7 @@ public class PaginationDoTest {
      * コンディション : 期待値
      * <ul>
      * <li>初期状態 : false
-     * <li>検索結果の行数>=0 : true
+     * <li>検索結果の行数が0以上 : true
      * </ul>
      */
     @Test
