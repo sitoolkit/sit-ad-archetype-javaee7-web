@@ -18,9 +18,7 @@ import org.sitoolkit.ad.archetype.tips.infrastructure.FrameworkException;
  * @author SIToolkit
  *
  */
-public class JSFUtils {
-
-    private static final String MESSAGES = "facesMessages";
+public class JsfUtils {
 
     /**
      * 処理中のリクエストに応じた{@code FacesContext}インスタンスを返します。
@@ -42,7 +40,7 @@ public class JSFUtils {
      * {@code FacesContext.getExternalContext()}を返します。
      * 
      * @return FacesContext.getCurrentInstance().getExternalContext()
-     * @see JSFUtils#ctx()
+     * @see JsfUtils#ctx()
      */
     public static ExternalContext ext() {
         return ctx().getExternalContext();
@@ -76,11 +74,16 @@ public class JSFUtils {
     }
 
     /**
+     * {@code FacesContext}にメッセージを追加します。
      * 
      * @param clientId
+     *            メッセージの発生元となったUIコンポーネントのクライアントID
      * @param severity
+     *            重要度
      * @param summary
+     *            概要メッセージ
      * @param detail
+     *            詳細メッセージ
      */
     public static void msg(String clientId, Severity severity, String summary, String detail) {
         ctx().addMessage(clientId, new FacesMessage(severity, summary, detail));
@@ -91,10 +94,15 @@ public class JSFUtils {
     }
 
     /**
-     *
+     * {@code FacesContext}にメッセージを追加します。
+     * 
      * @param severity
+     *            重要度
      * @param format
+     *            メッセージの書式
      * @param params
+     *            書式に適用するパラメーター
+     * @see MessageFormat#format(String, Object...)
      */
     public static void msg(Severity severity, String format, Object... params) {
         msg(null, severity, MessageFormat.format(format, params));
@@ -111,7 +119,7 @@ public class JSFUtils {
     /**
      * 処理中のリクエストに応じた{@code HttpServletResponse}インスタンスを返します。
      * 
-     * @return
+     * @return 処理中のリクエストに応じた{@code HttpServletResponse}インスタンス
      */
     public static HttpServletResponse res() {
         return (HttpServletResponse) ext().getResponse();
@@ -120,7 +128,7 @@ public class JSFUtils {
     /**
      * 処理中のリクエストに応じた{@code HttpServletRequest}インスタンスを返します。
      * 
-     * @return
+     * @return 処理中のリクエストに応じた{@code HttpServletRequest}インスタンス
      */
     public static HttpServletRequest req() {
         return (HttpServletRequest) ext().getRequest();
@@ -182,7 +190,7 @@ public class JSFUtils {
      * @return 元のサーブレットのパス
      */
     public static String forwardSrcPath() {
-        Object obj = JSFUtils.req().getAttribute("javax.servlet.forward.servlet_path");
+        Object obj = JsfUtils.req().getAttribute("javax.servlet.forward.servlet_path");
         return obj == null ? null : obj.toString();
     }
 }

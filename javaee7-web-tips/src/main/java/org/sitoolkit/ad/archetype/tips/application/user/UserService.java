@@ -7,15 +7,15 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
 
-import org.sitoolkit.ad.archetype.tips.domain.user.UserRepository;
 import org.sitoolkit.ad.archetype.tips.domain.user.UserEntity;
+import org.sitoolkit.ad.archetype.tips.domain.user.UserRepository;
 import org.sitoolkit.ad.archetype.tips.infrastructure.data.jpa.BaseRepository;
 import org.sitoolkit.ad.archetype.tips.infrastructure.entitycrud.BaseService;
 
 /**
  * このクラスは、ユーザーマスターのサービスです。
  * 
- * @author
+ * @author SIToolkit
  **/
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)

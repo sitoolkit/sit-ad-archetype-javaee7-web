@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.sitoolkit.ad.archetype.tips.infrastructure.Controller;
-import org.sitoolkit.ad.archetype.tips.infrastructure.presentation.jsf.JSFUtils;
+import org.sitoolkit.ad.archetype.tips.infrastructure.presentation.jsf.JsfUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,41 +32,40 @@ public class LoginController {
     private HttpServletRequest request;
 
     /**
-     * 内部保持するログインID、パスワードを用いて認証を行います。 認証処理は{@link HttpServletRequest.login}
+     * 内部保持するログインID、パスワードを用いて認証を行います。 認証処理は{@link HttpServletRequest#login(String, String)}
      * メソッドに委譲します。
      *
      * @return 認証が成功し、かつ直接ログイン画面に遷移して認証を行っている場合は、ログイン画面のViewIdを返します。
      *         認証が成功し、かつログイン画面とは別の画面への遷移でログイン画面にフォワードされた場合は、
      *         元々遷移しようとしていた画面のViewIdを返します。 認証が失敗した場合はログイン画面のViewIdを返します。
-     * @see HttpServletRequest#login
+     * @see HttpServletRequest#login(String, String)
      */
     public String login() {
         try {
-            JSFUtils.req().login(getLoginId(), getPassword());
-            JSFUtils.info("ログインしました。");
+            JsfUtils.req().login(getLoginId(), getPassword());
+            JsfUtils.info("ログインしました。");
 
             if (StringUtils.isEmpty(getRequestedViewId())) {
-                return JSFUtils.viewId();
+                return JsfUtils.viewId();
             } else {
-                return JSFUtils.redirect(getRequestedViewId());
+                return JsfUtils.redirect(getRequestedViewId());
             }
         } catch (ServletException e) {
-            JSFUtils.error("ログインIDまたはパスワードが不正です。");
-            return JSFUtils.viewId();
+            JsfUtils.error("ログインIDまたはパスワードが不正です。");
+            return JsfUtils.viewId();
         }
     }
 
     /**
-     * 認証済ユーザーのログアウト処理を行います。 処理は{@link HttpServletRequest.logout}メソッドに委譲します。
+     * 認証済ユーザーのログアウト処理を行います。 処理は{@link HttpServletRequest#logout()}メソッドに委譲します。
      * ログアウト処理後は、コンテキストルート直下にリダイレクトします。
      *
-     * @return 空文字
-     * @see JSFUtils#redirectHome()
+     * @see JsfUtils#redirectHome()
      */
     public void logout() {
         try {
             request.logout();
-            JSFUtils.info("ログアウトしました。");
+            JsfUtils.info("ログアウトしました。");
         } catch (ServletException e) {
             LOG.error("ログアウト処理で例外が発生しました。", e);
         }
@@ -78,7 +77,7 @@ public class LoginController {
      * @return ユーザーが認証済である場合にtrue
      */
     public boolean isLoggedIn() {
-        return JSFUtils.ext().getRemoteUser() != null;
+        return JsfUtils.ext().getRemoteUser() != null;
     }
 
     /**
@@ -88,7 +87,7 @@ public class LoginController {
      */
     public String getRequestedViewId() {
         if (requestedViewId == null) {
-            requestedViewId = JSFUtils.forwardSrcPath();
+            requestedViewId = JsfUtils.forwardSrcPath();
         }
         return requestedViewId;
     }

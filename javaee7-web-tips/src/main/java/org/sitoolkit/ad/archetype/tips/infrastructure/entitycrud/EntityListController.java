@@ -7,12 +7,10 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.Conversation;
 import javax.inject.Inject;
 
-import org.sitoolkit.ad.archetype.tips.infrastructure.code.FlagCD;
+import org.sitoolkit.ad.archetype.tips.infrastructure.code.FlagCd;
 import org.sitoolkit.ad.archetype.tips.infrastructure.data.jpa.BaseEntity;
-import org.sitoolkit.ad.archetype.tips.infrastructure.presentation.jsf.JSFUtils;
+import org.sitoolkit.ad.archetype.tips.infrastructure.presentation.jsf.JsfUtils;
 import org.sitoolkit.ad.archetype.tips.infrastructure.search.SearchConditionDo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * このクラスは、エンティティ一覧画面の機能を実装するコントローラーです。
@@ -22,18 +20,13 @@ import org.slf4j.LoggerFactory;
 public abstract class EntityListController<E extends BaseEntity, I extends Serializable, S extends BaseService<E, I>> {
 
     /**
-     * ロガー
-     */
-    protected final Logger log = LoggerFactory.getLogger(getClass());
-
-    /**
-     * カンバセーション
+     * CDIのカンバセーションオブジェクトです。
      */
     @Inject
     protected Conversation conversation;
 
     /**
-     * 検索条件
+     * 画面入力を保持し検索処理に使用するDOです。
      */
     @Inject
     protected SearchConditionDo condition;
@@ -52,6 +45,8 @@ public abstract class EntityListController<E extends BaseEntity, I extends Seria
 
     /**
      * 検索条件をもとに検索処理を行い、結果を内部保持します。
+     * 
+     * @return null
      */
     public String search() {
         if (!conversation.isTransient()) {
@@ -59,18 +54,20 @@ public abstract class EntityListController<E extends BaseEntity, I extends Seria
         }
         conversation.begin();
         getCondition().init();
-        getCondition().getParams().put("eq_deletedFlg", FlagCD.No.getFlag());
+        getCondition().getParams().put("eq_deletedFlg", FlagCd.No.getFlag());
 
         setList(getService().search(getCondition()));
 
         if (getList().isEmpty()) {
-            JSFUtils.info("検索結果はありません。条件を変えて再検索してください。");
+            JsfUtils.info("検索結果はありません。条件を変えて再検索してください。");
         }
         return null;
     }
 
     /**
      * カンバセーションを終了し、 検索条件、検索結果をクリアします。
+     * 
+     * @return null
      */
     public String clear() {
         if (!conversation.isTransient()) {
@@ -87,9 +84,11 @@ public abstract class EntityListController<E extends BaseEntity, I extends Seria
      * 
      * @param pageNum
      *            ページ番号
+     * 
+     * @return null
      */
     public String goToPage(int pageNum) {
-        getCondition().getPageCtrl().setCurrentPageNum(pageNum);
+        getCondition().getPagination().setCurrentPageNum(pageNum);
         setList(getService().search(getCondition()));
         return null;
     }
@@ -99,6 +98,8 @@ public abstract class EntityListController<E extends BaseEntity, I extends Seria
      * 
      * @param field
      *            ソートキーに追加するエンティティのフィールド名
+     * 
+     * @return null
      */
     public String sort(String field) {
         getCondition().setNewSortField(field);
