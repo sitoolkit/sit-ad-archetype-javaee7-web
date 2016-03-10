@@ -3,7 +3,7 @@
   xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
              http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
   version="2.1">
-  <persistence-unit name="javaee7-web-tips-pu">
+  <persistence-unit name="javaee7-web-tips-pu" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>jdbc/javaee7-web-tips-ds</jta-data-source>
     <properties>

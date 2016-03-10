@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.sitoolkit.ad.archetype.tips.infrastructure.search.SearchConditionDo;
@@ -14,8 +14,7 @@ import org.sitoolkit.ad.archetype.tips.infrastructure.search.SearchConditionDo;
  *
  * @author SIToolkit
  */
-public abstract class BaseRepository<E extends BaseEntity, I extends Serializable>
-        implements Serializable {
+public abstract class BaseRepository<E extends BaseEntity, I extends Serializable> implements Serializable {
 
     /**
      * 
@@ -25,14 +24,14 @@ public abstract class BaseRepository<E extends BaseEntity, I extends Serializabl
     /**
      *
      */
-    @PersistenceContext(unitName = "javaee7-web-tips-pu")
+    @Inject
     private EntityManager em;
 
     /**
      *
      * @return EntityManager
      */
-    protected EntityManager em() {
+    public EntityManager em() {
         return em;
     }
 

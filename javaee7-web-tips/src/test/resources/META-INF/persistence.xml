@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+  version="2.1"
+>
+
+  <persistence-unit name="javaee7-web-tips-pu-test" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <!-- exclude-unlisted-classesをfalseにしてもUseEntityがJPA Entityとして検出されないため個別に列挙しています。 -->
+    <!-- 検出されない原因は「検出範囲がpersistence.xmlのあるフォルダ以下のclassファイル」というJPAの仕様のためです。 -->
+    <!-- このファイルはtarget/test-classes以下にコピーされて実行時に読み込まれるため、target/classes以下のUserEntityは検出されません。 -->
+    <class>org.sitoolkit.ad.archetype.tips.domain.user.UserEntity</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="eclipselink.logging.logger" value="JavaLogger" />
+      <property name="eclipselink.logging.level" value="FINE" />
+      <property name="eclipselink.logging.parameters" value="true" />
+      <property name="javax.persistence.jdbc.driver" value="${db.jdbc.driver}" />
+      <property name="javax.persistence.jdbc.url" value="${db.jdbc.url}" />
+      <property name="javax.persistence.jdbc.user" value="${db.username}" />
+      <property name="javax.persistence.jdbc.password" value="${db.password}" />
+    </properties>
+  </persistence-unit>
+</persistence>

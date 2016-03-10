@@ -1,11 +1,8 @@
 package org.sitoolkit.ad.archetype.tips.application.user;
 
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import org.sitoolkit.ad.archetype.tips.domain.user.UserEntity;
 import org.sitoolkit.ad.archetype.tips.domain.user.UserRepository;
@@ -17,9 +14,8 @@ import org.sitoolkit.ad.archetype.tips.infrastructure.entitycrud.BaseService;
  * 
  * @author SIToolkit
  **/
-@Stateless
-@TransactionManagement(TransactionManagementType.CONTAINER)
-@TransactionAttribute(TransactionAttributeType.REQUIRED)
+@ApplicationScoped
+@Transactional
 public class UserService extends BaseService<UserEntity, String> {
 
     @Inject

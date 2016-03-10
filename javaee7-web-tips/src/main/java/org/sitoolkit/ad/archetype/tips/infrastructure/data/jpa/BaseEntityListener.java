@@ -26,6 +26,10 @@ public class BaseEntityListener {
 
     @PreUpdate
     public void preUpdate(BaseEntity entity) {
-        entity.setUpdatedBy(principal.getName());
+        if (principal == null) {
+            entity.setUpdatedBy("system");
+        } else {
+            entity.setUpdatedBy(principal.getName());
+        }
     }
 }
