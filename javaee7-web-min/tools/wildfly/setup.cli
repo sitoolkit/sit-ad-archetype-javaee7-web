@@ -1,0 +1,10 @@
+connect
+
+module add --name=derby --resources=${db.client.lib}/${db.client.artifactId}-${db.client.version}.jar --dependencies=javax.api,javax.transaction.api
+
+/subsystem=datasources/jdbc-driver=derby:add(driver-name=derby,driver-module-name=derby)
+
+data-source add --jndi-name=java:/jdbc/${project.artifactId}-ds --name=${project.artifactId}-ds --connection-url=${db.jdbc.url} --driver-name=derby --user-name=${db.username} --password=${db.password}
+
+/subsystem=datasources:read-resource
+

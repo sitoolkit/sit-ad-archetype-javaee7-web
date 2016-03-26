@@ -45,7 +45,8 @@
     <res-type>javax.sql.DataSource</res-type>
     <res-auth>Container</res-auth>
     <res-sharing-scope>Shareable</res-sharing-scope>
-    <lookup-name>java:module/env/jdbc/javaee7-web-tips-ds</lookup-name>
+<!--     <lookup-name>java:module/env/jdbc/javaee7-web-tips-ds</lookup-name> -->
+    <lookup-name>java:/jdbc/javaee7-web-tips-ds</lookup-name>
   </resource-ref>
 
   <security-role>
@@ -58,7 +59,7 @@
   </security-role>
   <security-constraint>
     <web-resource-collection>
-      <web-resource-name>pages for both users and admins</web-resource-name>
+      <web-resource-name>pages for only admins</web-resource-name>
       <url-pattern>/pages/management/*</url-pattern>
     </web-resource-collection>
     <auth-constraint>
@@ -67,7 +68,7 @@
   </security-constraint>
   <security-constraint>
     <web-resource-collection>
-      <web-resource-name>pages for only admins</web-resource-name>
+      <web-resource-name>pages for both users and admins</web-resource-name>
       <url-pattern>/pages/*</url-pattern>
     </web-resource-collection>
     <auth-constraint>

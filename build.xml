@@ -10,13 +10,12 @@
          defaultvalue="javaee7-web-min" />
   <property name="newVersion" value="0.12-SNAPSHOT" />
   <property environment="env" />
-  <property name="workdir" value="${basedir}/${artifactId}/target" />
+  <property name="workdir" value="${basedir}/target" />
   <property name="archresdir"
-            value="${workdir}/generated-sources/archetype/src"
+            value="${artifactId}/target/generated-sources/archetype/src"
             description="「mvn archetye:create-from-project」コマンドで作成された、アーキタイプとして格納される資源のディレクトリ" />
-  <property name="newarchdir" value="${workdir}/newarch" description="新しいアーキタイプを作成するディレクトリ" />
+  <property name="newarchdir" value="${workdir}/${artifactId}/newarch" description="新しいアーキタイプを作成するディレクトリ" />
   <property name="resdir" value="${newarchdir}/src" />
-  <property name="testArtifactId" value="${artifactId}-test" />
   <property name="db" value="derby" />
 
   <condition property="mvn.cmd" value="${env.MAVEN_HOME}/bin/mvn.cmd" else="/usr/local/bin/mvn">
@@ -116,6 +115,18 @@
 
   <target name="04_acceptance-test">
 
+    <antcall target="test-site"/>
+    <antcall target="test-glassfish"/>
+    <antcall target="test-was-liberty"/>
+    <antcall target="test-wildfly"/>
+
+  </target>
+  
+  
+  <target name="archetype-generate">
+    
+    <delete dir="${workdir}/${testArtifactId}"/>
+    
     <exec executable="${mvn.cmd}" dir="${workdir}" failonerror="true">
       <env key="JAVA_HOME" value="${java.home}" />
       <arg value="-DarchetypeGroupId=org.sitoolkit.ad.archetype" />
@@ -129,47 +140,83 @@
       <arg value="archetype:generate" />
     </exec>
 
-    <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}" failonerror="true">
-      <env key="JAVA_HOME" value="${java.home}" />
-      <arg value="-Pdb-migrate,${db}" />
-      <arg value="-Dfile.encoding=UTF-8" />
-      <arg value="-Das.port=8082" />
-      <arg value="compile" />
-    </exec>
+  </target>
+
+  
+  <target name="test-site">
+
+    <property name="testArtifactId" value="${artifactId}-test-site"/>
+    <antcall target="archetype-generate"/>    
 
     <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}" failonerror="true">
       <env key="JAVA_HOME" value="${java.home}" />
       <arg value="-Dfile.encoding=UTF-8" />
-      <arg value="-Das.port=8082" />
-      <arg value="-P${db}" />
+      <arg value="-Ddb.port=1528" />
+      <arg value="-P${db},db-migrate" />
       <arg value="site" />
     </exec>
 
-    <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}" failonerror="true">
-      <env key="JAVA_HOME" value="${java.home}" />
-      <arg value="-P${db},was-liberty,it" />
-      <arg value="-Dmaven.test.skip=false" />
-      <arg value="-Devidence.open=false" />
-      <arg value="-Dfile.encoding=UTF-8" />
-      <arg value="-Das.port=8082" />
-      <arg value="verify" />
-    </exec>
+  </target>
 
+
+  <target name="test-glassfish">
+  
+    <property name="testArtifactId" value="${artifactId}-test-glassfish"/>
+    <antcall target="archetype-generate"/>    
+  
     <exec executable="${mvn.cmd}"
           dir="${workdir}/${testArtifactId}"
           failonerror="true"
           if:set="glassfish">
       <env key="JAVA_HOME" value="${java.home}" />
-      <arg value="-P${db},embedded-glassfish,it" />
-      <arg value="-Dmaven.test.skip=false" />
+      <arg value="-P${db},db-migrate,embedded-glassfish,it" />
       <arg value="-Devidence.open=false" />
       <arg value="-Dfile.encoding=UTF-8" />
+      <arg value="-Ddb.port=1528" />
       <arg value="-Das.port=8081" />
+      <arg value="verify" />
+    </exec>
+    
+  </target>
+  
+  
+  <target name="test-was-liberty">
+    
+    <property name="testArtifactId" value="${artifactId}-test-was-liberty"/>
+    <antcall target="archetype-generate"/>    
+
+    <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}" failonerror="true">
+      <env key="JAVA_HOME" value="${java.home}" />
+      <arg value="-P${db},db-migrate,was-liberty,it" />
+      <arg value="-Devidence.open=false" />
+      <arg value="-Dfile.encoding=UTF-8" />
+      <arg value="-Ddb.port=1529" />
+      <arg value="-Das.port=8082" />
       <arg value="verify" />
     </exec>
 
   </target>
 
+  
+  <target name="test-wildfly">
+
+    <property name="testArtifactId" value="${artifactId}-test-wildfly"/>
+    <antcall target="archetype-generate"/>    
+
+    <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}" failonerror="true">
+      <env key="JAVA_HOME" value="${java.home}" />
+      <env key="JBOSS_HOME" value="${workdir}/${testArtifactId}/target/wildfly-run/wildfly-10.0.0.Final" />
+      <arg value="-P${db},db-migrate,wildfly,it" />
+      <arg value="-Dmaven.test.skip=false" />
+      <arg value="-Devidence.open=false" />
+      <arg value="-Dfile.encoding=UTF-8" />
+      <arg value="-Ddb.port=1530" />
+      <arg value="-Das.port=8083" />
+      <arg value="verify" />
+    </exec>
+    
+  </target>
+  
   
   <target name="set-version">
     

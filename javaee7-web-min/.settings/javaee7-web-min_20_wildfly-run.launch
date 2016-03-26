@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.m2e.Maven2LaunchConfigurationType">
 <booleanAttribute key="M2_DEBUG_OUTPUT" value="false"/>
-<stringAttribute key="M2_GOALS" value="clean verify"/>
+<stringAttribute key="M2_GOALS" value="package wildfly:run"/>
 <booleanAttribute key="M2_NON_RECURSIVE" value="false"/>
 <booleanAttribute key="M2_OFFLINE" value="false"/>
-<stringAttribute key="M2_PROFILES" value="db-migrate,derby,wildfly,it"/>
+<stringAttribute key="M2_PROFILES" value="wildfly"/>
 <listAttribute key="M2_PROPERTIES"/>
 <stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
@@ -13,11 +13,11 @@
 <stringAttribute key="M2_USER_SETTINGS" value=""/>
 <booleanAttribute key="M2_WORKSPACE_RESOLUTION" value="false"/>
 <mapAttribute key="org.eclipse.debug.core.environmentVariables">
-<mapEntry key="JBOSS_HOME" value="${workspace_loc:/javaee7-web-tips}/target/wildfly-run/wildfly-10.0.0.Final"/>
+<mapEntry key="JBOSS_HOME" value="${workspace_loc:/javaee7-web-min}/target/wildfly-run/wildfly-10.0.0.Final"/>
 </mapAttribute>
 <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
 <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
 </listAttribute>
 <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
-<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:/javaee7-web-tips/}"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:/javaee7-web-min}"/>
 </launchConfiguration>

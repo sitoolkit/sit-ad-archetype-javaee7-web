@@ -106,6 +106,7 @@
     <hibernate-tools.destdir>${project.build.directory}/generated-sources/hibernate-tools</hibernate-tools.destdir>
     <payara.version>4.1.153</payara.version>
     <deltaspike.version>1.5.4</deltaspike.version>
+    <jpa.provider>org.eclipse.persistence.jpa.PersistenceProvider</jpa.provider>
     <skipUTs>false</skipUTs>
   </properties>
 
@@ -115,6 +116,13 @@
     <resources>
       <resource>
         <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>META-INF/persistence.xml</include>
+        </includes>
+        <filtering>true</filtering>
       </resource>
       <resource>
         <directory>src/main/webapp</directory>
@@ -163,34 +171,10 @@
             </dependency>
           </dependencies>
         </plugin>
-        <!-- Hibernate Tools -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-antrun-plugin</artifactId>
           <version>1.8</version>
-          <configuration>
-            <target>
-              <property name="maven.classpath" refid="maven.plugin.classpath" />
-              <ant antfile="${hibernate-tools.basedir}/build.xml" />
-            </target>
-          </configuration>
-          <dependencies>
-            <dependency>
-              <groupId>org.apache.ant</groupId>
-              <artifactId>ant</artifactId>
-              <version>1.9.6</version>
-            </dependency>
-            <dependency>
-              <groupId>org.hibernate</groupId>
-              <artifactId>hibernate-tools</artifactId>
-              <version>4.3.1.Final</version>
-            </dependency>
-            <dependency>
-              <groupId>${db.client.groupId}</groupId>
-              <artifactId>${db.client.artifactId}</artifactId>
-              <version>${db.client.version}</version>
-            </dependency>
-          </dependencies>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -414,12 +398,37 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-antrun-plugin</artifactId>
+            <dependencies>
+              <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-tools</artifactId>
+                <version>4.3.2.Final</version>
+                <exclusions>
+                  <exclusion>
+                    <groupId>ant</groupId>
+                    <artifactId>ant</artifactId>
+                  </exclusion>
+                </exclusions>
+              </dependency>
+              <dependency>
+                <groupId>${db.client.groupId}</groupId>
+                <artifactId>${db.client.artifactId}</artifactId>
+                <version>${db.client.version}</version>
+              </dependency>
+            </dependencies>
             <executions>
               <execution>
+                <id>run-hibernate-tools</id>
                 <phase>generate-sources</phase>
                 <goals>
                   <goal>run</goal>
                 </goals>
+                <configuration>
+                  <target>
+                    <property name="maven.classpath" refid="maven.plugin.classpath" />
+                    <ant antfile="${hibernate-tools.basedir}/build.xml" />
+                  </target>
+                </configuration>
               </execution>
             </executions>
           </plugin>
@@ -629,6 +638,79 @@
           </releases>
         </pluginRepository>
       </pluginRepositories>
+    </profile>
+
+    <profile>
+      <id>wildfly</id>
+      <properties>
+        <maven.test.skip>true</maven.test.skip>
+        <jpa.provider>org.hibernate.ejb.HibernatePersistence</jpa.provider>
+      </properties>
+      <build>
+        <defaultGoal>package wildfly:run</defaultGoal>
+        <resources>
+          <resource>
+            <directory>${toolsdir}/wildfly</directory>
+            <includes>
+              <include>setup.cli</include>
+              <include>wildfly.properties</include>
+            </includes>
+            <filtering>true</filtering>
+            <targetPath>${project.build.directory}</targetPath>
+          </resource>
+        </resources>
+        <plugins>
+          <plugin>
+            <groupId>org.wildfly.plugins</groupId>
+            <artifactId>wildfly-maven-plugin</artifactId>
+            <version>1.0.2.Final</version>
+            <configuration>
+              <propertiesFile>${project.build.directory}/wildfly.properties</propertiesFile>
+              <beforeDeployment>
+                <batch>false</batch>
+                <scripts>
+                  <script>${project.build.directory}/setup.cli</script>
+                </scripts>
+              </beforeDeployment>
+            </configuration>
+            <executions>
+              <execution>
+                <id>start-server</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>start</goal>
+                  <goal>deploy</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>stop-server</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>shutdown</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>run-wildfly-settings</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                  <configuration>
+                    <target>
+                      <ant antfile="${toolsdir}/wildfly/build.xml" />
+                    </target>
+                  </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
 
     <profile>
