@@ -701,11 +701,11 @@
                 <goals>
                   <goal>run</goal>
                 </goals>
-                  <configuration>
-                    <target>
-                      <ant antfile="${toolsdir}/wildfly/build.xml" />
-                    </target>
-                  </configuration>
+                <configuration>
+                  <target>
+                    <ant antfile="${toolsdir}/wildfly/build.xml" />
+                  </target>
+                </configuration>
               </execution>
             </executions>
           </plugin>
@@ -720,6 +720,18 @@
           <groupId>org.sitoolkit.wt</groupId>
           <artifactId>sit-wt-runtime</artifactId>
           <version>${sitwt.version}</version>
+          <scope>test</scope>
+          <exclusions>
+            <exclusion>
+              <groupId>org.seleniumhq.selenium</groupId>
+              <artifactId>selenium-java</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+        <dependency>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-java</artifactId>
+          <version>${selenium.version}</version>
           <scope>test</scope>
         </dependency>
       </dependencies>
