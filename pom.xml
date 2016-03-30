@@ -98,7 +98,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <webappDirectory>${project.build.directory}/webapp</webappDirectory>
+    <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
     <as.host>localhost</as.host>
     <as.port>8080</as.port>
     <toolsdir>${project.basedir}/tools</toolsdir>
