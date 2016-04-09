@@ -574,7 +574,7 @@
               <assemblyArtifact>
                 <groupId>com.ibm.websphere.appserver.runtime</groupId>
                 <artifactId>wlp-javaee7</artifactId>
-                <version>8.5.5.8</version>
+                <version>8.5.5.9</version>
                 <type>zip</type>
               </assemblyArtifact>
               <configFile>${project.build.directory}/server.xml</configFile>
@@ -764,6 +764,92 @@
                   <goal>integration-test</goal>
                   <goal>verify</goal>
                 </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>bluemix</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.cloudfoundry</groupId>
+            <artifactId>cf-maven-plugin</artifactId>
+            <version>1.1.2</version>
+            <configuration>
+              <target>${cf.target}</target>
+              <appname>${cf.appname}</appname>
+              <org>${cf.org}</org>
+              <space>${cf.space}</space>
+              <username>${cf.username}</username>
+              <password>${cf.password}</password>
+              <instances>${cf.instances}</instances>
+              <memory>${cf.memory}</memory>
+              <services>
+                <!-- Add services you want to create and bind here -->
+                <service>
+                  <name>javaee7-web-min-ds</name>
+                  <label>sqldb</label>
+                  <plan>sqldb_free</plan>
+                </service>
+              </services>
+              <env>
+                <!-- Set any environment variables -->
+                <!--
+                <myvar>myvalue</myvar>
+                -->
+              </env>
+            </configuration>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>push</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>properties-maven-plugin</artifactId>
+            <version>1.0.0</version>
+            <executions>
+              <execution>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>read-project-properties</goal>
+                </goals>
+                <configuration>
+                  <files>
+                    <file>${toolsdir}/cf/bluemix.properties</file>
+                  </files>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>skip-compile</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>default-compile</id>
+                <phase>compile</phase>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <skipMain>true</skipMain>
+                </configuration>
               </execution>
             </executions>
           </plugin>
