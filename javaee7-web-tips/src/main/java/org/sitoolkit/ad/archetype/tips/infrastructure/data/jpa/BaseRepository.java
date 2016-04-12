@@ -14,7 +14,8 @@ import org.sitoolkit.ad.archetype.tips.infrastructure.search.SearchConditionDo;
  *
  * @author SIToolkit
  */
-public abstract class BaseRepository<E extends BaseEntity, I extends Serializable> implements Serializable {
+public abstract class BaseRepository<E extends BaseEntity, I extends Serializable>
+        implements Serializable {
 
     /**
      * 
