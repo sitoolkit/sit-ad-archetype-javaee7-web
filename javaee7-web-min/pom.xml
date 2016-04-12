@@ -28,6 +28,12 @@
     <db.was-liberty.ds-properties><![CDATA[<properties.derby.client createDatabase="create" databaseName="${db.name}" serverName="${db.host}" portNumber="${db.port}" user="${db.username}" password="${db.password}" />]]></db.was-liberty.ds-properties>
     <db.was-liberty.fileset><![CDATA[<fileset dir="${db.client.lib}" />]]></db.was-liberty.fileset>
     <selenium.version>2.53.0</selenium.version>
+    <cf.appname>${project.artifactId}</cf.appname>
+    <cf.target>your target</cf.target>
+    <cf.org>your org</cf.org>
+    <cf.space>your space</cf.space>
+    <cf.instances>1</cf.instances>
+    <cf.memory>512</cf.memory>    
   </properties>
 
   <profiles>
@@ -43,45 +49,23 @@
         <db.client.lib>${settings.localRepository}/com/ibm/db2/db2jcc/${db.client.version}</db.client.lib>
         <db.jdbc.driver>com.ibm.db2.jcc.DB2Driver</db.jdbc.driver>
         <db.jdbc.dsclass>com.ibm.db2.jcc.DB2ConnectionPoolDataSource</db.jdbc.dsclass>
-        <db.name>${db2.db.name}</db.name>
-        <db.host>${db2.db.host}</db.host>
-        <db.port>${db2.db.port}</db.port>
+        <db.name>SAMPLE</db.name>
+        <db.host>localhost</db.host>
+        <db.port>50000</db.port>
         <db.jdbc.url>jdbc:db2://${db.host}:${db.port}/${db.name}</db.jdbc.url>
-        <db.username>${db2.db.username}</db.username>
-        <db.password>${db2.db.password}</db.password>
+        <db.username>app</db.username>
+        <db.password>app</db.password>
         <db.flyway.comment>--</db.flyway.comment>
         <db.was-liberty.ds-properties><![CDATA[<properties.db2.jcc databaseName="${db.name}" serverName="${db.host}" portNumber="${db.port}" driverType="4" user="${db.username}" password="${db.password}"/>]]></db.was-liberty.ds-properties>
         <db.was-liberty.fileset><![CDATA[<fileset dir="${db.client.lib}" includes="db2jcc-${db.client.version}.jar"/>]]></db.was-liberty.fileset>
-        <db2.property.file>${toolsdir}/db2/db2-local.properties</db2.property.file>
       </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>properties-maven-plugin</artifactId>
-            <version>1.0.0</version>
-            <executions>
-              <execution>
-                <phase>initialize</phase>
-                <goals>
-                  <goal>read-project-properties</goal>
-                </goals>
-                <configuration>
-                  <files>
-                    <file>${db2.property.file}</file>
-                  </files>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
     </profile>
 
     <profile>
       <id>sqldb-bluemix</id>
       <properties>
-        <db2.property.file>${toolsdir}/db2/sqldb-bluemix.properties</db2.property.file>
+        <cf.service.label>sqldb</cf.service.label>
+        <cf.service.plan>sqldb_free</cf.service.plan>
       </properties>
     </profile>
 

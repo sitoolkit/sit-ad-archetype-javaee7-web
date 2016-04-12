@@ -800,8 +800,9 @@
         </plugins>
       </build>
     </profile>
+    
     <profile>
-      <id>bluemix</id>
+      <id>cf</id>
       <build>
         <plugins>
           <plugin>
@@ -809,85 +810,20 @@
             <artifactId>cf-maven-plugin</artifactId>
             <version>1.1.2</version>
             <configuration>
-              <target>${cf.target}</target>
-              <appname>${cf.appname}</appname>
-              <org>${cf.org}</org>
-              <space>${cf.space}</space>
-              <username>${cf.username}</username>
-              <password>${cf.password}</password>
-              <instances>${cf.instances}</instances>
-              <memory>${cf.memory}</memory>
+              <server>cloud-foundry-credentials</server>
               <services>
-                <!-- Add services you want to create and bind here -->
                 <service>
-                  <name>javaee7-web-min-ds</name>
-                  <label>sqldb</label>
-                  <plan>sqldb_free</plan>
+                  <name>${project.artifactId}-ds</name>
+                  <label>${cf.service.label}</label>
+                  <plan>${cf.service.plan}</plan>
                 </service>
               </services>
-              <env>
-                <!-- Set any environment variables -->
-                <!--
-                <myvar>myvalue</myvar>
-                -->
-              </env>
             </configuration>
-            <executions>
-              <execution>
-                <phase>package</phase>
-                <goals>
-                  <goal>push</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>properties-maven-plugin</artifactId>
-            <version>1.0.0</version>
-            <executions>
-              <execution>
-                <phase>initialize</phase>
-                <goals>
-                  <goal>read-project-properties</goal>
-                </goals>
-                <configuration>
-                  <files>
-                    <file>${toolsdir}/cf/bluemix.properties</file>
-                  </files>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>skip-compile</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>default-compile</id>
-                <phase>compile</phase>
-                <goals>
-                  <goal>compile</goal>
-                </goals>
-                <configuration>
-                  <skipMain>true</skipMain>
-                </configuration>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
     </profile>
 
   </profiles>
-
 
 </project>
