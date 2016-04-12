@@ -27,6 +27,7 @@
     <db.flyway.comment>aaa</db.flyway.comment>
     <db.was-liberty.ds-properties><![CDATA[<properties.derby.client createDatabase="create" databaseName="${db.name}" serverName="${db.host}" portNumber="${db.port}" user="${db.username}" password="${db.password}" />]]></db.was-liberty.ds-properties>
     <db.was-liberty.fileset><![CDATA[<fileset dir="${db.client.lib}" />]]></db.was-liberty.fileset>
+    <selenium.version>2.53.0</selenium.version>
   </properties>
 
   <profiles>

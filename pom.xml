@@ -98,7 +98,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <webappDirectory>${project.build.directory}/webapp</webappDirectory>
+    <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
     <as.host>localhost</as.host>
     <as.port>8080</as.port>
     <toolsdir>${project.basedir}/tools</toolsdir>
@@ -207,6 +207,24 @@
               <sources>
                 <source>${hibernate-tools.destdir}</source>
               </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.10</version>
+        <executions>
+          <execution>
+            <id>copy</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${webappDirectory}/WEB-INF/lib</outputDirectory>
+              <includeScope>runtime</includeScope>
             </configuration>
           </execution>
         </executions>
@@ -701,11 +719,11 @@
                 <goals>
                   <goal>run</goal>
                 </goals>
-                  <configuration>
-                    <target>
-                      <ant antfile="${toolsdir}/wildfly/build.xml" />
-                    </target>
-                  </configuration>
+                <configuration>
+                  <target>
+                    <ant antfile="${toolsdir}/wildfly/build.xml" />
+                  </target>
+                </configuration>
               </execution>
             </executions>
           </plugin>
@@ -720,6 +738,18 @@
           <groupId>org.sitoolkit.wt</groupId>
           <artifactId>sit-wt-runtime</artifactId>
           <version>${sitwt.version}</version>
+          <scope>test</scope>
+          <exclusions>
+            <exclusion>
+              <groupId>org.seleniumhq.selenium</groupId>
+              <artifactId>selenium-java</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+        <dependency>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-java</artifactId>
+          <version>${selenium.version}</version>
           <scope>test</scope>
         </dependency>
       </dependencies>
