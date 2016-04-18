@@ -8,7 +8,7 @@
   <input addproperty="artifactId"
          validargs="javaee7-web-min,javaee7-web-tips"
          defaultvalue="javaee7-web-min" />
-  <property name="newVersion" value="0.12" />
+  <property name="newVersion" value="0.13-SNAPSHOT" />
   <property environment="env" />
   <property name="workdir" value="${basedir}/target" />
   <property name="archresdir"
@@ -219,27 +219,29 @@
   
   
   <target name="set-version">
-    
+
     <exec executable="${mvn.cmd}" dir="${basedir}" failonerror="true">
       <env key="JAVA_HOME" value="${java.home}" />
       <arg value="-DnewVersion=${newVersion}" />
-      <arg value="versions:set" />
       <arg value="clean" />
+      <arg value="versions:set" />
       <arg value="install" />
     </exec>
-
+    
     <exec executable="${mvn.cmd}" dir="${basedir}/javaee7-web-min" failonerror="true">
       <env key="JAVA_HOME" value="${java.home}" />
-      <arg value="-DallowSnapshots=true" />
+      <arg value="clean"/>
+      <arg value="-DallowSnapshots=true"/>
       <arg value="versions:update-parent" />
     </exec>
 
     <exec executable="${mvn.cmd}" dir="${basedir}/javaee7-web-tips" failonerror="true">
       <env key="JAVA_HOME" value="${java.home}" />
-      <arg value="-DallowSnapshots=true" />
+      <arg value="clean"/>
+      <arg value="-DallowSnapshots=true"/>
       <arg value="versions:update-parent" />
     </exec>
-
+    
   </target>
   
 </project>
