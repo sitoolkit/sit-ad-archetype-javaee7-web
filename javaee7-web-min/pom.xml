@@ -12,6 +12,8 @@
     <version>0.13-SNAPSHOT</version>
   </parent>
   <properties>
+    <wildfly.version>10.0.0.Final</wildfly.version>
+    <wildfly.plugin.version>1.1.0.Alpha7</wildfly.plugin.version>
     <db.client.groupId>org.apache.derby</db.client.groupId>
     <db.client.artifactId>derbyclient</db.client.artifactId>
     <db.client.version>10.10.1.1</db.client.version>

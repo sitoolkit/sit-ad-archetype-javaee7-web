@@ -681,7 +681,7 @@
           <plugin>
             <groupId>org.wildfly.plugins</groupId>
             <artifactId>wildfly-maven-plugin</artifactId>
-            <version>1.0.2.Final</version>
+            <version>${wildfly.plugin.version}</version>
             <configuration>
               <propertiesFile>${project.build.directory}/wildfly.properties</propertiesFile>
               <beforeDeployment>
@@ -690,6 +690,10 @@
                   <script>${project.build.directory}/setup.cli</script>
                 </scripts>
               </beforeDeployment>
+              <version>${wildfly.version}</version>
+              <env>
+                <JBOSS_HOME>${project.build.directory}/wildfly-run/wildfly-${wildfly.version}</JBOSS_HOME>
+              </env>
             </configuration>
             <executions>
               <execution>
