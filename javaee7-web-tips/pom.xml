@@ -24,6 +24,12 @@
       <version>1.1.3</version>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.persistence</groupId>
+      <artifactId>org.eclipse.persistence.jpa</artifactId>
+      <version>2.6.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>${db.client.groupId}</groupId>
       <artifactId>${db.client.artifactId}</artifactId>
       <version>${db.client.version}</version>
@@ -36,6 +42,9 @@
     <version>0.13-SNAPSHOT</version>
   </parent>
   <properties>
+    <payara.version>4.1.153</payara.version>
+    <was-liberty.version>8.5.5.9</was-liberty.version>
+    <was-liberty.plugin.version>1.2-SNAPSHOT</was-liberty.plugin.version>
     <wildfly.version>10.0.0.Final</wildfly.version>
     <wildfly.plugin.version>1.1.0.Alpha7</wildfly.plugin.version>
     <db.client.groupId>org.apache.derby</db.client.groupId>

@@ -87,12 +87,6 @@
       <version>${deltaspike.version}</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.eclipse.persistence</groupId>
-      <artifactId>org.eclipse.persistence.jpa</artifactId>
-      <version>2.6.2</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -104,7 +98,6 @@
     <toolsdir>${project.basedir}/tools</toolsdir>
     <hibernate-tools.basedir>${toolsdir}/hibernate-tools</hibernate-tools.basedir>
     <hibernate-tools.destdir>${project.build.directory}/generated-sources/hibernate-tools</hibernate-tools.destdir>
-    <payara.version>4.1.153</payara.version>
     <deltaspike.version>1.5.4</deltaspike.version>
     <jpa.provider>org.eclipse.persistence.jpa.PersistenceProvider</jpa.provider>
     <skipUTs>false</skipUTs>
@@ -587,12 +580,12 @@
           <plugin>
             <groupId>net.wasdev.wlp.maven.plugins</groupId>
             <artifactId>liberty-maven-plugin</artifactId>
-            <version>1.2-SNAPSHOT</version>
+            <version>${was-liberty.plugin.version}</version>
             <configuration>
               <assemblyArtifact>
                 <groupId>com.ibm.websphere.appserver.runtime</groupId>
                 <artifactId>wlp-javaee7</artifactId>
-                <version>8.5.5.9</version>
+                <version>${was-liberty.version}</version>
                 <type>zip</type>
               </assemblyArtifact>
               <configFile>${project.build.directory}/server.xml</configFile>
