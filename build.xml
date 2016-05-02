@@ -5,26 +5,50 @@
          basedir="."
          default="install">
 
+  <!--
+    javaee7-web
+      target                             <= work directory to test archetype > ${workdir}
+        javaee7-web-min-test-site
+      javaee7-web-min
+        pom.xml
+        distribution
+          pom.xml                        <= *1
+        target
+          generated-sources/archetype    <= output of archetype:create-from-project
+                                            and files of new archetype > ${newarchres}
+            pom.xml                      <= copy overwrite with *1
+            src/main/resources
+              META-INF
+              archetype-resources        <= fillerd javaee7-web-min files > ${archresdir}
+                pom.xml                       
+                src
+                testscript
+                tools
+  -->
+  <property environment="env" />
+
+  <property name="newVersion" value="0.13-SNAPSHOT" />
   <input addproperty="artifactId"
          validargs="javaee7-web-min,javaee7-web-tips"
          defaultvalue="javaee7-web-min" />
-  <property name="newVersion" value="0.13-SNAPSHOT" />
-  <property environment="env" />
-  <property name="workdir" value="${basedir}/target" />
+
+  <property name="workdir" value="${basedir}/${artifactId}/target" />
   <property name="archresdir"
-            value="${artifactId}/target/generated-sources/archetype/src"
-            description="「mvn archetye:create-from-project」コマンドで作成された、アーキタイプとして格納される資源のディレクトリ" />
-  <property name="newarchdir" value="${workdir}/${artifactId}/newarch" description="新しいアーキタイプを作成するディレクトリ" />
-  <property name="resdir" value="${newarchdir}/src" />
-  <property name="db" value="derby" />
+            value="${artifactId}/target/generated-sources/archetype/src/main/resources/archetype-resources" />
+  <property name="newarchdir" value="${basedir}/${artifactId}/target/generated-sources/archetype" />
+
+  <condition property="test.glassfish">
+    <equals arg1="${artifactId}" arg2="javaee7-web-min" />
+  </condition>
+  <property name="test.site" value="false" />
+  <property name="test.glassfish" value="false" />
+  <property name="test.was-liberty" value="true" />
+  <property name="test.wildfly" value="false" />
 
   <condition property="mvn.cmd" value="${env.MAVEN_HOME}/bin/mvn.cmd" else="/usr/local/bin/mvn">
     <os family="windows" />
   </condition>
 
-  <condition property="glassfish">
-    <equals arg1="${artifactId}" arg2="javaee7-web-min" />
-  </condition>
 
 
   <target name="install">
@@ -43,59 +67,53 @@
 
   <target name="process-all">
     <antcall target="01_create-from-archetype" />
-    <antcall target="02_copy-archetype-resource" />
+    <antcall target="02_modify-archetype-resource" />
     <antcall target="03_process-archetype" />
     <antcall target="04_acceptance-test" />
   </target>
 
-
   <target name="01_create-from-archetype">
 
+    <echo message="${basedir}/${archresdir}>mvn clean archetype:create-from-project"/>
     <exec executable="${mvn.cmd}" dir="${basedir}/${artifactId}" failonerror="true">
       <env key="JAVA_HOME" value="${java.home}" />
-      <arg value="-Darchetype.filteredExtentions=java,xml,txt,groovy,cs,mdo,aj,jsp,gsp,vm,html,xhtml,properties,.classpath,.project,launch,component" />
       <arg value="clean" />
       <arg value="archetype:create-from-project" />
+      <arg value="-Darchetype.filteredExtentions=java,xml,txt,groovy,cs,mdo,aj,jsp,gsp,vm,html,xhtml,properties,.classpath,.project,launch,component" />
     </exec>
 
   </target>
 
+  
+  <target name="02_modify-archetype-resource">
+    
+    <delete dir="${archresdir}/distribution" verbose="true"/>
+    <delete dir="${archresdir}/tools/derby/target" verbose="true"/>
+    <delete dir="${archresdir}/tools/mysql/data" verbose="true"/>
+    <delete dir="${archresdir}/tools/mysql/target" verbose="true"/>
+    <delete verbose="true">
+      <fileset dir="${archresdir}" includes="**/.DS_Store"/>
+    </delete>
 
-
-  <target name="02_copy-archetype-resource">
-
-    <copy todir="${resdir}">
-      <fileset dir="${archresdir}">
-        <exclude name=".git" />
-        <exclude name=".gitignore" />
-        <exclude name="/archetype/**" />
-        <exclude name="generated-sources/archetype/target" />
-        <exclude name="LICENSE" />
-        <exclude name="NOTICE" />
-        <exclude name="README.md" />
-        <exclude name="**/target/**" />
-      </fileset>
-    </copy>
-
-    <property name="settings" value="${resdir}/main/resources/archetype-resources/.settings" />
-
+    <property name="settings" value="${archresdir}/.settings" />
     <move todir="${settings}" includeemptydirs="false">
       <fileset dir="${settings}" includes="*.launch" />
       <globmapper from="${artifactId}*.launch" to="__artifactId__*.launch" />
     </move>
 
-    <copy file="${basedir}/${artifactId}/distribution/pom.xml" todir="${newarchdir}" />
+    <copy file="${basedir}/${artifactId}/distribution/pom.xml" todir="${newarchdir}" overwrite="true" />
 
   </target>
 
 
-
   <target name="03_process-archetype">
 
+    <echo message="${newarchdir}>mvn version:set -DnewVewsion=${newVersion}"/>
     <exec executable="${mvn.cmd}" dir="${newarchdir}" failonerror="true">
       <env key="JAVA_HOME" value="${java.home}" />
-      <arg value="-DnewVersion=${newVersion}" />
       <arg value="versions:set" />
+      <arg value="-DnewVersion=${newVersion}" />
+      <arg value="-e"/>
     </exec>
 
     <condition property="mvn.phase" value="install">
@@ -104,10 +122,13 @@
       </not>
     </condition>
 
+    <echo message="${newarchdir}>mvn clean ${mvn.phase} -DperformReleease=${mvn.performRelease}"/>
     <exec executable="${mvn.cmd}" dir="${newarchdir}" failonerror="true">
       <env key="JAVA_HOME" value="${java.home}" />
-      <arg value="-DperformRelease=${mvn.performRelease}" />
+      <arg value="clean" />
       <arg value="${mvn.phase}" />
+      <arg value="-DperformRelease=${mvn.performRelease}" />
+      <arg value="-e"/>
     </exec>
 
   </target>
@@ -115,18 +136,16 @@
 
   <target name="04_acceptance-test">
 
-    <antcall target="test-site"/>
-    <antcall target="test-glassfish"/>
-    <antcall target="test-was-liberty"/>
-    <antcall target="test-wildfly"/>
+    <antcall target="test-site" />
+    <antcall target="test-glassfish" />
+    <antcall target="test-was-liberty" />
+    <antcall target="test-wildfly" />
 
   </target>
-  
-  
+
+
   <target name="archetype-generate">
-    
-    <delete dir="${workdir}/${testArtifactId}"/>
-    
+
     <exec executable="${mvn.cmd}" dir="${workdir}" failonerror="true">
       <env key="JAVA_HOME" value="${java.home}" />
       <arg value="-DarchetypeGroupId=org.sitoolkit.ad.archetype" />
@@ -142,82 +161,95 @@
 
   </target>
 
-  
-  <target name="test-site">
 
-    <property name="testArtifactId" value="${artifactId}-test-site"/>
-    <antcall target="archetype-generate"/>    
+  <target name="test-site" if="${test.site}">
+
+    <property name="testArtifactId" value="${artifactId}-test-site" />
+    <antcall target="archetype-generate" />
+
+    <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}">
+      <env key="JAVA_HOME" value="${java.home}" />
+      <arg value="-Ddb.port=3307" />
+      <arg value="-Dmysql=stop" />
+    </exec>
 
     <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}" failonerror="true">
       <env key="JAVA_HOME" value="${java.home}" />
       <arg value="-Dfile.encoding=UTF-8" />
-      <arg value="-Ddb.port=1528" />
-      <arg value="-P${db},db-migrate" />
+      <arg value="-Ddb.port=3307" />
+      <arg value="-Dmpir.skip=true" />
+      <arg value="-Pmysql,db-migrate" />
       <arg value="site" />
+    </exec>
+
+    <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}">
+      <env key="JAVA_HOME" value="${java.home}" />
+      <arg value="-Dmysql=stop" />
     </exec>
 
   </target>
 
 
-  <target name="test-glassfish">
-  
-    <property name="testArtifactId" value="${artifactId}-test-glassfish"/>
-    <antcall target="archetype-generate"/>    
-  
-    <exec executable="${mvn.cmd}"
-          dir="${workdir}/${testArtifactId}"
-          failonerror="true"
-          if:set="glassfish">
+  <target name="test-glassfish" if="${test.glassfish}">
+
+    <property name="testArtifactId" value="${artifactId}-test-glassfish" />
+    <antcall target="archetype-generate" />
+
+    <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}" failonerror="true">
       <env key="JAVA_HOME" value="${java.home}" />
-      <arg value="-P${db},db-migrate,embedded-glassfish,it" />
+      <arg value="verify" />
+      <arg value="-Pderby,db-migrate,embedded-glassfish,it" />
       <arg value="-Devidence.open=false" />
       <arg value="-Dfile.encoding=UTF-8" />
       <arg value="-Ddb.port=1528" />
       <arg value="-Das.port=8081" />
-      <arg value="verify" />
+      <arg value="-e"/>
     </exec>
-    
+
   </target>
-  
-  
-  <target name="test-was-liberty">
-    
-    <property name="testArtifactId" value="${artifactId}-test-was-liberty"/>
-    <antcall target="archetype-generate"/>    
+
+
+  <target name="test-was-liberty" if="${test.was-liberty}">
+
+    <property name="testArtifactId" value="${artifactId}-test-was-liberty" />
+    <antcall target="archetype-generate" />
 
     <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}" failonerror="true">
       <env key="JAVA_HOME" value="${java.home}" />
-      <arg value="-P${db},db-migrate,was-liberty,it" />
+      <arg value="verify" />
+      <arg value="-Pmysql,db-migrate,was-liberty,it" />
       <arg value="-Devidence.open=false" />
       <arg value="-Dfile.encoding=UTF-8" />
-      <arg value="-Ddb.port=1529" />
+      <arg value="-Ddb.port=3308" />
       <arg value="-Das.port=8082" />
-      <arg value="verify" />
+      <arg value="-e"/>
     </exec>
 
   </target>
 
-  
-  <target name="test-wildfly">
 
-    <property name="testArtifactId" value="${artifactId}-test-wildfly"/>
-    <antcall target="archetype-generate"/>    
+  <target name="test-wildfly" if="${test.wildfly}">
+
+    <property name="testArtifactId" value="${artifactId}-test-wildfly" />
+    <antcall target="archetype-generate" />
 
     <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}" failonerror="true">
       <env key="JAVA_HOME" value="${java.home}" />
-      <env key="JBOSS_HOME" value="${workdir}/${testArtifactId}/target/wildfly-run/wildfly-10.0.0.Final" />
-      <arg value="-P${db},db-migrate,wildfly,it" />
+      <env key="JBOSS_HOME"
+           value="${workdir}/${testArtifactId}/target/wildfly-run/wildfly-10.0.0.Final" />
+      <arg value="verify" />
+      <arg value="-Pderby,db-migrate,wildfly,it" />
       <arg value="-Dmaven.test.skip=false" />
       <arg value="-Devidence.open=false" />
       <arg value="-Dfile.encoding=UTF-8" />
       <arg value="-Ddb.port=1530" />
       <arg value="-Das.port=8083" />
-      <arg value="verify" />
+      <arg value="-e"/>
     </exec>
-    
+
   </target>
-  
-  
+
+
   <target name="set-version">
 
     <exec executable="${mvn.cmd}" dir="${basedir}" failonerror="true">
@@ -227,21 +259,21 @@
       <arg value="versions:set" />
       <arg value="install" />
     </exec>
-    
+
     <exec executable="${mvn.cmd}" dir="${basedir}/javaee7-web-min" failonerror="true">
       <env key="JAVA_HOME" value="${java.home}" />
-      <arg value="clean"/>
-      <arg value="-DallowSnapshots=true"/>
+      <arg value="clean" />
+      <arg value="-DallowSnapshots=true" />
       <arg value="versions:update-parent" />
     </exec>
 
     <exec executable="${mvn.cmd}" dir="${basedir}/javaee7-web-tips" failonerror="true">
       <env key="JAVA_HOME" value="${java.home}" />
-      <arg value="clean"/>
-      <arg value="-DallowSnapshots=true"/>
+      <arg value="clean" />
+      <arg value="-DallowSnapshots=true" />
       <arg value="versions:update-parent" />
     </exec>
-    
+
   </target>
-  
+
 </project>

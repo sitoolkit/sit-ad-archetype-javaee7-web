@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:if="ant:if" xmlns:unless="ant:unless" name="mysql-build" default="install">
+
+  <dirname property="tool.home" file="${ant.file}" />
+
+
+  <condition property="os" value="win" else="osx">
+    <os family="windows"/>
+  </condition>
+  <import file="${tool.home}/build-${os}.xml" />
+
+
+  <property name="repository" value="${user.home}/.sitoolkit/repository/mysql" />
+  <property name="download.home" value="${repository}/download" />
+  <property name="mysql.basedir" value="${repository}/runtime/${mysql.binary}" />
+  <condition property="mysql.data" value="data">
+    <not>
+      <isset property="mysql.data" />
+    </not>
+  </condition>
+  <property name="mysql.datadir" value="${tool.home}/${mysql.data}" />
+  <property name="mysql.socket" value="${user.home}/.sitoolkit/project/${project.artifactId}/mysql/${mysql.data}/mysql.sock" />
+  <available property="mysql.downloaded" file="${download.home}/${mysql.binary.file}" />
+  <available property="mysql.unarchived" file="${mysql.basedir}" type="dir" />
+  <available property="mysql.datadir.created" file="${mysql.datadir}" type="dir" />
+  <available property="mysql.db-created" file="${mysql.datadir}/${db.name}" type="dir" />
+
+
+  <target name="install">
+    <antcall target="download" />
+    <echo message="MySQL binary is downloaded in ${download.home}" if:true="${mysql.downloaded}" />
+    <antcall target="unarchive" />
+    <echo message="MySQL binary is unarchived in ${mysql.basedir}" if:true="${mysql.unarchived}" />
+    <antcall target="create-datadir" />
+    <echo message="MySQL data directory is created in ${mysql.datadir}"
+          if:true="${mysql.datadir.created}" />
+    <antcall target="start" />
+    <antcall target="create-db" />
+    <echo message="${db.name} is created in ${mysql.datadir}" if:true="${mysql.db-created}" />
+  </target>
+
+
+  <target name="download" unless="${mysql.downloaded}">
+    <mkdir dir="${download.home}" />
+    <get src="http://dev.mysql.com/get/Downloads/MySQL-5.7/${mysql.binary.file}"
+         dest="${download.home}" />
+  </target>
+
+
+  <target name="drop-datadir">
+    <echo message="Deleting MySQL data directory ${mysql.datadir}" />
+    <antcall target="stop" />
+
+    <delete dir="${mysql.datadir}" />
+  </target>
+</project>

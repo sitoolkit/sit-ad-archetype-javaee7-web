@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-reverse-engineering 
+<!DOCTYPE hibernate-reverse-engineering
   SYSTEM "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
 
 <!-- See also -->
@@ -12,6 +12,7 @@
   </type-mapping>
 
   <table-filter match-name="schema_version" exclude="true" />
+  <table-filter match-name="user_entity" package="org.sitoolkit.ad.archetype.tips.domain.user"></table-filter>
   <table-filter match-name="USER_ENTITY" package="org.sitoolkit.ad.archetype.tips.domain.user"></table-filter>
 
 </hibernate-reverse-engineering>

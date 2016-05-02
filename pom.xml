@@ -148,7 +148,7 @@
             <user>${db.username}</user>
             <password>${db.password}</password>
             <locations>
-              <location>filesystem:${toolsdir}/flyway</location>
+              <location>${flyway.location}</location>
             </locations>
             <placeholders>
               <data>${toolsdir}/flyway/data</data>
@@ -356,32 +356,101 @@
             <artifactId>derby-maven-plugin</artifactId>
             <executions>
               <execution>
-                <id>start-on-initialize</id>
+                <id>start-in-initialize</id>
                 <phase>initialize</phase>
                 <goals>
                   <goal>start</goal>
                 </goals>
               </execution>
               <execution>
-                <id>stop-on-post-integration-test</id>
+                <id>stop-in-post-integration-test</id>
                 <phase>post-integration-test</phase>
                 <goals>
                   <goal>stop</goal>
                 </goals>
               </execution>
               <execution>
-                <id>start-on-presite</id>
+                <id>start-in-pre-site</id>
                 <phase>pre-site</phase>
                 <goals>
                   <goal>start</goal>
                 </goals>
               </execution>
               <execution>
-                <id>stop-on-post-site</id>
+                <id>stop-in-post-site</id>
                 <phase>post-site-test</phase>
                 <goals>
                   <goal>stop</goal>
                 </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>mysql</id>
+      <activation>
+        <property>
+          <name>mysql</name>
+        </property>
+      </activation>
+      <properties>
+        <mysql.antfile>${toolsdir}/mysql/build.xml</mysql.antfile>
+        <mysql>install</mysql>
+      </properties>
+      <build>
+        <defaultGoal>antrun:run</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <configuration>
+              <target>
+                <property name="db.port.local" value="${db.port}" />
+                <echo message="set property : db.port.local=${db.port.local}" />
+                <ant antfile="${mysql.antfile}" target="${mysql}" />
+              </target>
+            </configuration>
+            <executions>
+              <execution>
+                <id>mysql-run-in-initialize</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>mysql-stop-in-post-integration-test</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <ant antfile="${mysql.antfile}" target="stop" />
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>mysql-run-in-pre-site</id>
+                <phase>pre-site</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>mysql-stop-in-post-site</id>
+                <phase>post-site</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <ant antfile="${mysql.antfile}" target="stop" />
+                  </target>
+                </configuration>
               </execution>
             </executions>
           </plugin>
@@ -399,6 +468,7 @@
             <artifactId>flyway-maven-plugin</artifactId>
             <executions>
               <execution>
+                <id>flyway-migrate-in-generate-sources</id>
                 <phase>generate-sources</phase>
                 <goals>
                   <goal>migrate</goal>
@@ -413,7 +483,7 @@
               <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-tools</artifactId>
-                <version>4.3.2.Final</version>
+                <version>4.3.3.Final</version>
                 <exclusions>
                   <exclusion>
                     <groupId>ant</groupId>
@@ -429,15 +499,18 @@
             </dependencies>
             <executions>
               <execution>
-                <id>run-hibernate-tools</id>
+                <id>hibernate-tools-run-in-generate-sources</id>
                 <phase>generate-sources</phase>
                 <goals>
                   <goal>run</goal>
                 </goals>
                 <configuration>
                   <target>
+                    <!-- このdummyプロパティを入れずにmvn compile -P mysql,db-migrationを実行するとantのbuildがエラーとなる。 -->
+                    <!-- (Hibernate Toolsがクラスパスに含まれずコンパイルエラー) -->
+                    <property name="dummy" value="dummy" />
                     <property name="maven.classpath" refid="maven.plugin.classpath" />
-                    <ant antfile="${hibernate-tools.basedir}/build.xml" />
+                    <ant antfile="${hibernate-tools.basedir}/build.xml" target="hbm2java" />
                   </target>
                 </configuration>
               </execution>
@@ -797,7 +870,7 @@
         </plugins>
       </build>
     </profile>
-    
+
     <profile>
       <id>cf</id>
       <build>
