@@ -131,15 +131,6 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.carlspring.maven</groupId>
-          <artifactId>derby-maven-plugin</artifactId>
-          <version>1.10</version>
-          <configuration>
-            <derbyHome>${toolsdir}/derby/target</derbyHome>
-            <port>${db.port}</port>
-          </configuration>
-        </plugin>
-        <plugin>
           <groupId>org.flywaydb</groupId>
           <artifactId>flyway-maven-plugin</artifactId>
           <version>3.2.1</version>
@@ -344,7 +335,7 @@
               <artifactId>derby-maven-plugin</artifactId>
               <version>1.10</version>
               <configuration>
-                <derbyHome>${toolsdir}/derby/target</derbyHome>
+                <derbyHome>${toolsdir}/derby/data</derbyHome>
                 <port>${db.port}</port>
               </configuration>
             </plugin>

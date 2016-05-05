@@ -1,2 +1,6 @@
-target
+/target/
+/tools/derby/data/
+/tools/hibernate-tools/target
+/tools/mysql/data/
+/tools/mysql/target
 .DS_Store
