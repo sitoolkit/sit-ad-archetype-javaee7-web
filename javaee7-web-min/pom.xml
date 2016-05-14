@@ -19,6 +19,8 @@
     <wildfly.version>10.0.0.Final</wildfly.version>
     <wildfly.plugin.version>1.1.0.Alpha7</wildfly.plugin.version>
     <selenium.version>2.53.0</selenium.version>
+    <appium.version>3.4.1</appium.version>
+    <sitwt.version>0.12.2</sitwt.version>
     <cf.appname>${project.artifactId}</cf.appname>
     <cf.target>your target</cf.target>
     <cf.org>your org</cf.org>
