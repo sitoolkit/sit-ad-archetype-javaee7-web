@@ -398,6 +398,7 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-antrun-plugin</artifactId>
             <configuration>
+              <skip>${mysql.remote}</skip>
               <target>
                 <property name="db.port.local" value="${db.port}" />
                 <echo message="set property : db.port.local=${db.port.local}" />

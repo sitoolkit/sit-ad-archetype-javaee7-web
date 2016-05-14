@@ -117,6 +117,19 @@
     </profile>
 
     <profile>
+      <id>mysql-bluemix</id>
+      <properties>
+        <mysql.remote>true</mysql.remote>
+        <db.name></db.name>
+        <db.host></db.host>
+        <db.username></db.username>
+        <db.password></db.password>
+        <cf.service.label>cleardb</cf.service.label>
+        <cf.service.plan>spark</cf.service.plan>
+      </properties>
+    </profile>
+
+    <profile>
       <id>db2</id>
       <properties>
         <db.client.groupId>com.ibm.db2</db.client.groupId>

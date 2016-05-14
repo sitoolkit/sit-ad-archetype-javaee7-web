@@ -5,10 +5,10 @@ import org.sitoolkit.ad.archetype.tips.infrastructure.code.Code;
 /**
  * 
  **/
-public enum 性別Cd implements Code {
+public enum GenderCd implements Code {
     男性("1"), 女性("2"),;
 
-    private 性別Cd(String value) {
+    private GenderCd(String value) {
         this.value = value;
     }
 
