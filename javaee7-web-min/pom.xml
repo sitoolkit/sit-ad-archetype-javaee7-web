@@ -9,7 +9,7 @@
   <parent>
     <groupId>org.sitoolkit.ad.archetype</groupId>
     <artifactId>javaee7-web</artifactId>
-    <version>0.13-SNAPSHOT</version>
+    <version>0.13</version>
   </parent>
   <properties>
     <flyway.location>filesystem:${toolsdir}/flyway</flyway.location>
@@ -88,10 +88,10 @@
       <id>mysql-bluemix</id>
       <properties>
         <mysql.remote>true</mysql.remote>
-        <db.name></db.name>
-        <db.host></db.host>
-        <db.username></db.username>
-        <db.password></db.password>
+        <db.name>dbname</db.name>
+        <db.host>host</db.host>
+        <db.username>username</db.username>
+        <db.password>password</db.password>
         <cf.service.label>cleardb</cf.service.label>
         <cf.service.plan>spark</cf.service.plan>
       </properties>
