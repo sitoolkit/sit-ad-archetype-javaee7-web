@@ -7,7 +7,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.sitoolkit.ad.archetype.tips.domain.code.性別Cd;
+import org.sitoolkit.ad.archetype.tips.domain.code.GenderCd;
 import org.sitoolkit.ad.archetype.tips.infrastructure.code.CodeUtils;
 import org.sitoolkit.ad.archetype.tips.infrastructure.data.jpa.BaseEntityListener;
 
@@ -34,11 +34,11 @@ public class UserEntity extends BaseUserEntity {
         return super.getPassword();
     }
 
-    public 性別Cd getGenderCd() {
-        return CodeUtils.decode(getGender(), 性別Cd.class);
+    public GenderCd getGenderCd() {
+        return CodeUtils.decode(getGender(), GenderCd.class);
     }
 
-    public void setGenderCd(性別Cd gender) {
+    public void setGenderCd(GenderCd gender) {
         setGender(gender.getValue());
     }
 

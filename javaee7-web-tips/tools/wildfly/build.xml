@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="javaee7-web-tips-wildfly" basedir="../../" default="add-user">
-  
-  <property name="jboss.home" value="${basedir}/target/wildfly-run/wildfly-10.0.0.Final"/>
-  
+<project name="javaee7-web-tips-wildfly" basedir="../../" default="add-user" xmlns:if="ant:if">
+
+  <property name="jboss.home" value="${basedir}/target/wildfly-run/wildfly-${wildfly.version}"/>
+
   <condition property="add-user" value="${jboss.home}/bin/add-user.bat" else="${jboss.home}/bin/add-user.sh">
     <os family="windows"/>
   </condition>
-  
+
+  <condition property="exec.chmod">
+    <not>
+      <os family="windows"/>
+    </not>
+  </condition>
+
+
   <target name="add-user">
 
-    <exec executable="chmod">
+    <exec executable="chmod" if:true="${exec.chmod}">
       <arg value="777" />
       <arg value="${add-user}" />
     </exec>

@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.sitoolkit.ad.archetype</groupId>
   <artifactId>javaee7-web</artifactId>
-  <version>0.12</version>
+  <version>0.13</version>
   <packaging>pom</packaging>
 
   <!-- The Basics -->
@@ -87,12 +87,6 @@
       <version>${deltaspike.version}</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.eclipse.persistence</groupId>
-      <artifactId>org.eclipse.persistence.jpa</artifactId>
-      <version>2.6.2</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -104,7 +98,6 @@
     <toolsdir>${project.basedir}/tools</toolsdir>
     <hibernate-tools.basedir>${toolsdir}/hibernate-tools</hibernate-tools.basedir>
     <hibernate-tools.destdir>${project.build.directory}/generated-sources/hibernate-tools</hibernate-tools.destdir>
-    <payara.version>4.1.153</payara.version>
     <deltaspike.version>1.5.4</deltaspike.version>
     <jpa.provider>org.eclipse.persistence.jpa.PersistenceProvider</jpa.provider>
     <skipUTs>false</skipUTs>
@@ -138,15 +131,6 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.carlspring.maven</groupId>
-          <artifactId>derby-maven-plugin</artifactId>
-          <version>1.10</version>
-          <configuration>
-            <derbyHome>${toolsdir}/derby/target</derbyHome>
-            <port>${db.port}</port>
-          </configuration>
-        </plugin>
-        <plugin>
           <groupId>org.flywaydb</groupId>
           <artifactId>flyway-maven-plugin</artifactId>
           <version>3.2.1</version>
@@ -155,7 +139,7 @@
             <user>${db.username}</user>
             <password>${db.password}</password>
             <locations>
-              <location>filesystem:${toolsdir}/flyway</location>
+              <location>${flyway.location}</location>
             </locations>
             <placeholders>
               <data>${toolsdir}/flyway/data</data>
@@ -351,7 +335,7 @@
               <artifactId>derby-maven-plugin</artifactId>
               <version>1.10</version>
               <configuration>
-                <derbyHome>${toolsdir}/derby/target</derbyHome>
+                <derbyHome>${toolsdir}/derby/data</derbyHome>
                 <port>${db.port}</port>
               </configuration>
             </plugin>
@@ -363,32 +347,102 @@
             <artifactId>derby-maven-plugin</artifactId>
             <executions>
               <execution>
-                <id>start-on-initialize</id>
+                <id>start-in-initialize</id>
                 <phase>initialize</phase>
                 <goals>
                   <goal>start</goal>
                 </goals>
               </execution>
               <execution>
-                <id>stop-on-post-integration-test</id>
+                <id>stop-in-post-integration-test</id>
                 <phase>post-integration-test</phase>
                 <goals>
                   <goal>stop</goal>
                 </goals>
               </execution>
               <execution>
-                <id>start-on-presite</id>
+                <id>start-in-pre-site</id>
                 <phase>pre-site</phase>
                 <goals>
                   <goal>start</goal>
                 </goals>
               </execution>
               <execution>
-                <id>stop-on-post-site</id>
+                <id>stop-in-post-site</id>
                 <phase>post-site-test</phase>
                 <goals>
                   <goal>stop</goal>
                 </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>mysql</id>
+      <activation>
+        <property>
+          <name>mysql</name>
+        </property>
+      </activation>
+      <properties>
+        <mysql.antfile>${toolsdir}/mysql/build.xml</mysql.antfile>
+        <mysql>install</mysql>
+      </properties>
+      <build>
+        <defaultGoal>antrun:run</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <configuration>
+              <skip>${mysql.remote}</skip>
+              <target>
+                <property name="db.port.local" value="${db.port}" />
+                <echo message="set property : db.port.local=${db.port.local}" />
+                <ant antfile="${mysql.antfile}" target="${mysql}" />
+              </target>
+            </configuration>
+            <executions>
+              <execution>
+                <id>mysql-run-in-initialize</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>mysql-stop-in-post-integration-test</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <ant antfile="${mysql.antfile}" target="stop" />
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>mysql-run-in-pre-site</id>
+                <phase>pre-site</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>mysql-stop-in-post-site</id>
+                <phase>post-site</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <ant antfile="${mysql.antfile}" target="stop" />
+                  </target>
+                </configuration>
               </execution>
             </executions>
           </plugin>
@@ -406,6 +460,7 @@
             <artifactId>flyway-maven-plugin</artifactId>
             <executions>
               <execution>
+                <id>flyway-migrate-in-generate-sources</id>
                 <phase>generate-sources</phase>
                 <goals>
                   <goal>migrate</goal>
@@ -420,7 +475,7 @@
               <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-tools</artifactId>
-                <version>4.3.2.Final</version>
+                <version>4.3.3.Final</version>
                 <exclusions>
                   <exclusion>
                     <groupId>ant</groupId>
@@ -436,15 +491,18 @@
             </dependencies>
             <executions>
               <execution>
-                <id>run-hibernate-tools</id>
+                <id>hibernate-tools-run-in-generate-sources</id>
                 <phase>generate-sources</phase>
                 <goals>
                   <goal>run</goal>
                 </goals>
                 <configuration>
                   <target>
+                    <!-- このdummyプロパティを入れずにmvn compile -P mysql,db-migrationを実行するとantのbuildがエラーとなる。 -->
+                    <!-- (Hibernate Toolsがクラスパスに含まれずコンパイルエラー) -->
+                    <property name="dummy" value="dummy" />
                     <property name="maven.classpath" refid="maven.plugin.classpath" />
-                    <ant antfile="${hibernate-tools.basedir}/build.xml" />
+                    <ant antfile="${hibernate-tools.basedir}/build.xml" target="hbm2java" />
                   </target>
                 </configuration>
               </execution>
@@ -587,12 +645,12 @@
           <plugin>
             <groupId>net.wasdev.wlp.maven.plugins</groupId>
             <artifactId>liberty-maven-plugin</artifactId>
-            <version>1.2-SNAPSHOT</version>
+            <version>${was-liberty.plugin.version}</version>
             <configuration>
               <assemblyArtifact>
                 <groupId>com.ibm.websphere.appserver.runtime</groupId>
                 <artifactId>wlp-javaee7</artifactId>
-                <version>8.5.5.9</version>
+                <version>${was-liberty.version}</version>
                 <type>zip</type>
               </assemblyArtifact>
               <configFile>${project.build.directory}/server.xml</configFile>
@@ -681,7 +739,7 @@
           <plugin>
             <groupId>org.wildfly.plugins</groupId>
             <artifactId>wildfly-maven-plugin</artifactId>
-            <version>1.0.2.Final</version>
+            <version>${wildfly.plugin.version}</version>
             <configuration>
               <propertiesFile>${project.build.directory}/wildfly.properties</propertiesFile>
               <beforeDeployment>
@@ -690,6 +748,10 @@
                   <script>${project.build.directory}/setup.cli</script>
                 </scripts>
               </beforeDeployment>
+              <version>${wildfly.version}</version>
+              <env>
+                <JBOSS_HOME>${project.build.directory}/wildfly-run/wildfly-${wildfly.version}</JBOSS_HOME>
+              </env>
             </configuration>
             <executions>
               <execution>
@@ -739,12 +801,6 @@
           <artifactId>sit-wt-runtime</artifactId>
           <version>${sitwt.version}</version>
           <scope>test</scope>
-          <exclusions>
-            <exclusion>
-              <groupId>org.seleniumhq.selenium</groupId>
-              <artifactId>selenium-java</artifactId>
-            </exclusion>
-          </exclusions>
         </dependency>
         <dependency>
           <groupId>org.seleniumhq.selenium</groupId>
@@ -752,13 +808,19 @@
           <version>${selenium.version}</version>
           <scope>test</scope>
         </dependency>
+        <dependency>
+          <groupId>io.appium</groupId>
+          <artifactId>java-client</artifactId>
+          <version>${appium.version}</version>
+          <scope>test</scope>
+        </dependency>
       </dependencies>
       <properties>
         <maven.test.skip>false</maven.test.skip>
         <skipUTs>true</skipUTs>
-        <sitwt.version>0.11.1</sitwt.version>
       </properties>
       <build>
+        <defaultGoal>verify</defaultGoal>
         <plugins>
           <plugin>
             <groupId>org.sitoolkit.wt</groupId>
@@ -800,7 +862,7 @@
         </plugins>
       </build>
     </profile>
-    
+
     <profile>
       <id>cf</id>
       <build>

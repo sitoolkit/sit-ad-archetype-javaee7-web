@@ -32,6 +32,29 @@
     </pluginManagement>
 
     <plugins>
+      <!-- 
+        .gitignore isn't included in new archetype because of this issue. 
+        https://issues.apache.org/jira/browse/MRESOURCES-190
+        So it needs to copy explicitly.
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version>
+        <executions>
+          <execution>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <copy file="${project.basedir}/../../../.gitignore" todir="${project.build.outputDirectory}/archetype-resources"/>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>

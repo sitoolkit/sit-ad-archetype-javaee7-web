@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.sitoolkit.ad.archetype.tips.application.user.UserService;
-import org.sitoolkit.ad.archetype.tips.domain.code.性別Cd;
+import org.sitoolkit.ad.archetype.tips.domain.code.GenderCd;
 import org.sitoolkit.ad.archetype.tips.domain.user.UserEntity;
 import org.sitoolkit.ad.archetype.tips.infrastructure.entitycrud.EntityInputController;
 
@@ -29,8 +29,8 @@ public class UserInputController extends EntityInputController<UserEntity, Strin
     @Inject
     transient UserService service;
 
-    public 性別Cd[] get性別() {
-        return 性別Cd.values();
+    public GenderCd[] get性別() {
+        return GenderCd.values();
     }
 
     @Override
