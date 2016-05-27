@@ -20,14 +20,14 @@
             src/main/resources
               META-INF
               archetype-resources        <= fillerd javaee7-web-min files > ${archresdir}
-                pom.xml                       
+                pom.xml
                 src
                 testscript
                 tools
   -->
   <property environment="env" />
 
-  <property name="newVersion" value="0.13" />
+  <property name="newVersion" value="0.13.1-SNAPSHOT" />
   <input addproperty="artifactId"
          validargs="javaee7-web-min,javaee7-web-tips"
          defaultvalue="javaee7-web-min" />
@@ -84,9 +84,9 @@
 
   </target>
 
-  
+
   <target name="02_modify-archetype-resource">
-    
+
     <delete dir="${archresdir}/distribution" verbose="true"/>
     <delete dir="${archresdir}/tools/derby/target" verbose="true"/>
     <delete dir="${archresdir}/tools/mysql/data" verbose="true"/>
