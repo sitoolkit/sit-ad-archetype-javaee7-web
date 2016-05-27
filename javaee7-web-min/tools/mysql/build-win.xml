@@ -103,6 +103,7 @@
     <echo message="Stopping MySQL server ..." />
 
     <exec executable="${mysql.basedir}/bin/mysqladmin" dir="${mysql.basedir}">
+      <arg value="--port=${db.port.local}" />
       <arg value="-u" />
       <arg value="root" />
       <arg value="shutdown" />

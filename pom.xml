@@ -431,6 +431,8 @@
                 </goals>
                 <configuration>
                   <target>
+                    <property name="db.port.local" value="${db.port}" />
+                    <echo message="set property : db.port.local=${db.port.local}" />
                     <ant antfile="${mysql.antfile}" target="stop" />
                   </target>
                 </configuration>
@@ -450,6 +452,8 @@
                 </goals>
                 <configuration>
                   <target>
+                    <property name="db.port.local" value="${db.port}" />
+                    <echo message="set property : db.port.local=${db.port.local}" />
                     <ant antfile="${mysql.antfile}" target="stop" />
                   </target>
                 </configuration>
