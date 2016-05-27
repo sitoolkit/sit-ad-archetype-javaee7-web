@@ -107,6 +107,15 @@
       <arg value="root" />
       <arg value="shutdown" />
     </exec>
+
+    <property environment="env"/>
+
+    <waitfor maxwait="10" maxwaitunit="second" checkevery="500" checkeveryunit="millisecond">
+      <not>
+        <available file="${mysql.datadir}/${env.COMPUTERNAME}.pid"/>
+      </not>
+    </waitfor>
+
   </target>
 
 
