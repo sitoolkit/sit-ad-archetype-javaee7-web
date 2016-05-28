@@ -4,17 +4,23 @@
   <property name="mysql.binary" value="mysql-5.7.12-osx10.11-x86_64" />
   <property name="mysql.binary.file" value="${mysql.binary}.tar.gz" />
 
+  <!-- determine socket file name -->
+  <echo message="${tool.home}" file="${tool.home}/.path"/>
+  <checksum file="${tool.home}/.path" property="hash"/>
+  <!-- socket file path length must be < 103 -->
+  <property name="mysql.socket" value="/tmp/mysql.${hash}.sock" />
+
 
   <target name="unarchive" unless="${mysql.unarchived}">
     <untar src="${download.home}/${mysql.binary}.tar.gz"
            dest="${mysql.basedir}"
            compression="gzip" />
     <move file="${mysql.basedir}/${mysql.binary}" tofile="${mysql.basedir}" />
+    <chmod perm="u=rwx" file="${mysql.basedir}/bin/**" type="both" failonerror="true" />
   </target>
 
 
   <target name="create-datadir" unless="${mysql.datadir.created}">
-    <chmod perm="u=rwx" file="${mysql.basedir}/bin/**" type="both" failonerror="true" />
 
     <mkdir dir="${mysql.datadir}" />
 
@@ -88,9 +94,6 @@
         <filter token="mysql.socket" value="${mysql.socket}" />
       </filterset>
     </copy>
-
-    <dirname file="${mysql.socket}" property="mysql.socketdir"/>
-    <mkdir dir="${mysql.socketdir}"/>
 
     <exec executable="${mysql.basedir}/bin/mysqld_safe"
           dir="${mysql.basedir}"
