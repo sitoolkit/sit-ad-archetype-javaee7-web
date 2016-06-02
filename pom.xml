@@ -465,6 +465,42 @@
     </profile>
 
     <profile>
+      <id>db2-install</id>
+      <activation>
+        <property>
+          <name>db2</name>
+        </property>
+      </activation>
+      <properties>
+        <db2.antfile>${toolsdir}/db2/build.xml</db2.antfile>
+        <db2>setup</db2>
+      </properties>
+      <build>
+        <defaultGoal>antrun:run</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <configuration>
+              <target>
+                <ant antfile="${db2.antfile}" target="${db2}" />
+              </target>
+            </configuration>
+            <executions>
+              <execution>
+                <id>db2-run-in-initialize</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
       <id>db-migrate</id>
       <build>
         <defaultGoal>compile</defaultGoal>
