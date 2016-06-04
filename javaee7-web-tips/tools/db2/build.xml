@@ -3,6 +3,7 @@
 
   <dirname property="tool.home" file="${ant.file}" />
 
+  <property environment="env" />
   <property name="db2.installer.path" value="\\host\path\to\v10.5_win64_expc.exe" />
   <property name="download.home" value="C:/ProgramData/sitoolkit/repository/db2" />
   <property name="db2.home" value="C:/Program Files/IBM/SQLLIB" />
@@ -11,8 +12,7 @@
   <available property="db2.installer.exists" file="${db2.installer.path}"/>
   <available property="db2.downloaded" file="${download.home}/${db2.installer.file}" />
   <available property="db2.unarchived" file="${download.home}/EXPC" type="dir" />
-  <available property="db2.installed" file="${db2.home}" type="dir" />
-  <available property="db2.db-created" file="${db2.datadir}/DB2/NODE0000/${db.name}" type="dir" />
+  <available property="db2.installed" file="db2cmd.exe" filepath="${env.Path}" />
 
   <target name="setup">
     <antcall target="download" />
@@ -22,7 +22,6 @@
     <antcall target="install" />
     <echo message="DB2 is installed in ${db2.home}" if:true="${db2.installed}" />
     <antcall target="create-db" />
-    <echo message="${db.name} is created in ${db2.datadir}/DB2/NODE0000/${db.name}" if:true="${db2.db-created}" />
   </target>
 
   <target name="download" unless="${db2.downloaded}">
@@ -36,27 +35,46 @@
   </target>
 
   <target name="install" unless="${db2.installed}">
-    <exec executable="${download.home}/EXPC/image/setup" failonerror="true">
+    <exec executable="${download.home}/EXPC/image/setup" failonerror="true" >
       <arg value="/U" />
       <arg value="${tool.home}/db2expc.rsp" />
       <arg value="/m" />
     </exec>
   </target>
 
-  <target name="create-db" unless="${db2.db-created}">
-    <copy file="${tool.home}/create-db.sql" todir="${tool.home}/target">
+  <target name="create-db">
+    <exec executable="cmd" outputproperty="output" failonerror="false">
+      <arg value="/c" />
+      <arg value="db2cmd" />
+      <arg value="-c" />
+      <arg value="-w" />
+      <arg value="-i" />
+      <arg line="db2 list database directory"/>
+    </exec>
+
+    <condition property="db2.db-created">
+      <contains substring="${db.name}" string="${output}" casesensitive="false" />
+    </condition>
+
+    <copy file="${tool.home}/create-db.sql" todir="${tool.home}/target"
+        overwrite="true" unless:set="db2.db-created">
       <filterset>
         <filter token="db.name" value="${db.name}" />
         <filter token="db.username" value="${db.username}" />
         <filter token="db2.datadir" value="${db2.datadir}" />
       </filterset>
     </copy>
-    <exec executable="${db2.home}/BIN/db2cmd" failonerror="true">
+
+    <exec executable="${db2.home}/BIN/db2cmd" failonerror="true"
+        unless:set="db2.db-created">
       <arg value="-w" />
       <arg value="-c" />
       <arg value="db2" />
-      <arg value="-tvf ${tool.home}/target/create-db.sql" />
+      <arg value="-tvf" />
+      <arg value="${tool.home}/target/create-db.sql" />
     </exec>
+
+    <echo message="${db.name} is created" if:true="${db2.db-created}" />
   </target>
 
 </project>
