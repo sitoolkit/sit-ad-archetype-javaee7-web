@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:if="ant:if" xmlns:unless="ant:unless" name="oracle-build" default="setup">
+
+  <dirname property="tool.home" file="${ant.file}" />
+
+  <property environment="env" />
+  <property name="oracle.installer.path" value="\\host\path\to\OracleXE112_Win64.zip" />
+  <property name="download.home" value="C:/ProgramData/sitoolkit/repository/oracle" />
+  <basename property="oracle.installer.file" file="${oracle.installer.path}" />
+  <available property="oracle.installer.exists" file="${oracle.installer.path}"/>
+  <available property="oracle.downloaded" file="${download.home}/${oracle.installer.file}" />
+  <available property="oracle.unarchived" file="${download.home}/DISK1" type="dir" />
+  <available property="oracle.installed" file="oracle.exe" filepath="${env.Path}" />
+
+  <target name="setup">
+    <antcall target="download" />
+    <echo message="Oracle installer is downloaded in ${download.home}" if:true="${oracle.downloaded}" />
+    <antcall target="unarchive" />
+    <echo message="Oracle installer is unarchived in ${download.home}/DISK1" if:true="${oracle.unarchived}" />
+    <antcall target="install" />
+    <echo message="Oracle database is installed in C:/oraclexe" if:true="${oracle.installed}" />
+    <antcall target="create-user" />
+  </target>
+
+  <target name="download" unless="${oracle.downloaded}">
+    <fail unless="${oracle.installer.exists}" />
+    <mkdir dir="${download.home}" />
+    <copy file="${oracle.installer.path}" todir="${download.home}" />
+  </target>
+
+  <target name="unarchive" unless="${oracle.unarchived}">
+    <unzip src="${download.home}/${oracle.installer.file}" dest="${download.home}" />
+  </target>
+
+  <target name="install" unless="${oracle.installed}">
+    <mkdir dir="${tool.home}/target" />
+    <exec executable="cmd" failonerror="true">
+      <arg value="/c" />
+      <arg value="${download.home}/DISK1/setup.exe" />
+      <arg value="/s" />
+      <arg value='/f1"${tool.home}/OracleXE-install.iss"'/>
+      <arg value='/f2"${tool.home}/target/setup.log"'/>
+    </exec>
+  </target>
+
+  <target name="create-user">
+    <exec executable="sqlplus" resultproperty="result" failonerror="false">
+      <arg value="-L" />
+      <arg value="-S" />
+      <arg value="${db.username}/${db.password}" />
+    </exec>
+
+    <condition property="oracle.user-created">
+      <equals arg1="${result}" arg2="0" />
+    </condition>
+
+    <copy file="${tool.home}/create-user.sql" todir="${tool.home}/target"
+        overwrite="true" unless:set="oracle.user-created">
+      <filterset>
+        <filter token="db.username" value="${db.username}" />
+        <filter token="db.password" value="${db.password}" />
+      </filterset>
+    </copy>
+
+    <exec executable="sqlplus" failonerror="true"
+        unless:set="oracle.user-created">
+      <arg value="/nolog" />
+      <arg value="@${tool.home}/target/create-user.sql" />
+    </exec>
+
+    <echo message="${db.username} is created" if:true="${oracle.user-created}" />
+  </target>
+
+</project>

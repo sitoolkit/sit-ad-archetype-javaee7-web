@@ -5,4 +5,5 @@
 /tools/mysql/target
 /tools/mysql/.path
 /tools/db2/target
+/tools/oracle/target
 .DS_Store
