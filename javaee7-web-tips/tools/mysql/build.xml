@@ -19,7 +19,6 @@
     </not>
   </condition>
   <property name="mysql.datadir" value="${tool.home}/${mysql.data}" />
-  <property name="mysql.socket" value="${user.home}/.sitoolkit/project/${project.artifactId}/mysql/${mysql.data}/mysql.sock" />
   <available property="mysql.downloaded" file="${download.home}/${mysql.binary.file}" />
   <available property="mysql.unarchived" file="${mysql.basedir}" type="dir" />
   <available property="mysql.datadir.created" file="${mysql.datadir}" type="dir" />

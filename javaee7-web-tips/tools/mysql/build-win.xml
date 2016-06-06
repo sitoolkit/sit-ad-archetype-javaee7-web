@@ -102,11 +102,22 @@
   <target name="stop">
     <echo message="Stopping MySQL server ..." />
 
+
     <exec executable="${mysql.basedir}/bin/mysqladmin" dir="${mysql.basedir}">
+      <arg value="--port=${db.port.local}" />
       <arg value="-u" />
       <arg value="root" />
       <arg value="shutdown" />
     </exec>
+
+    <property environment="env"/>
+
+    <waitfor maxwait="10" maxwaitunit="second" checkevery="500" checkeveryunit="millisecond">
+      <not>
+        <available file="${mysql.datadir}/${env.COMPUTERNAME}.pid"/>
+      </not>
+    </waitfor>
+
   </target>
 
 
