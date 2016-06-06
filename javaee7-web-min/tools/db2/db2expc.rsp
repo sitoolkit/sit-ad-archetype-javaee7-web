@@ -1,0 +1,39 @@
+** General Options
+** ---------------
+PROD                     = EXPRESS_C
+FILE                     = C:\Program Files\IBM\SQLLIB
+LIC_AGREEMENT            = ACCEPT
+INSTALL_TYPE             = TYPICAL
+LANG                     = EN
+LANG                     = JP
+
+** Copy Name
+** ---------
+DB2_COPY_NAME            = DB2COPY1
+DEFAULT_COPY             = YES
+
+** Instance Creation Settings
+** --------------------------
+DEFAULT_INSTANCE         = DB2_INST
+INSTANCE                 = DB2_INST
+DB2_INST.NAME            = DB2
+DB2_INST.USERNAME        = LocalSystem
+DB2_INST.AUTOSTART       = YES
+DB2_INST.SVCENAME        = db2c_DB2
+DB2_INST.PORT_NUMBER     = 50000
+
+** IBM Secure Shell Configuration
+** ------------------------------
+AUTOSTART_SSH_SERVER     = YES
+SSH_SERVER_INSTALL_DIR   = C:\Program files\IBM\IBM SSH Server
+
+** Administration Server Creation Settings
+** ---------------------------------------
+DAS_USERNAME             = LocalSystem
+CREATE_DAS               = YES
+
+** Extended Security Settings
+** --------------------------
+DB2_EXTSECURITY          = NO
+DB2_ADMINGROUP_NAME      = DB2ADMNS
+DB2_USERSGROUP_NAME      = DB2USERS

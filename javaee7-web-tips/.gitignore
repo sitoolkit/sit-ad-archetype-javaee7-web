@@ -4,4 +4,5 @@
 /tools/mysql/data/
 /tools/mysql/target
 /tools/mysql/.path
+/tools/db2/target
 .DS_Store
