@@ -6,11 +6,14 @@
   <property environment="env" />
   <property name="oracle.installer.path" value="\\host\path\to\OracleXE112_Win64.zip" />
   <property name="download.home" value="C:/ProgramData/sitoolkit/repository/oracle" />
+  <property name="oracle.szdir" value="C:/oraclexe" />
+  <property name="oracle.home" value="${oracle.szdir}/app/oracle/product/11.2.0/server" />
   <basename property="oracle.installer.file" file="${oracle.installer.path}" />
+  <available property="oracle.szdir.exists" file="${oracle.szdir}" type="dir"/>
   <available property="oracle.installer.exists" file="${oracle.installer.path}"/>
   <available property="oracle.downloaded" file="${download.home}/${oracle.installer.file}" />
   <available property="oracle.unarchived" file="${download.home}/DISK1" type="dir" />
-  <available property="oracle.installed" file="oracle.exe" filepath="${env.Path}" />
+  <available property="oracle.installed" file="${oracle.home}/bin/oracle.exe" />
 
   <target name="setup">
     <antcall target="download" />
@@ -18,7 +21,7 @@
     <antcall target="unarchive" />
     <echo message="Oracle installer is unarchived in ${download.home}/DISK1" if:true="${oracle.unarchived}" />
     <antcall target="install" />
-    <echo message="Oracle database is installed in C:/oraclexe" if:true="${oracle.installed}" />
+    <echo message="Oracle database is installed in ${oracle.szdir}" if:true="${oracle.installed}" />
     <antcall target="create-user" />
   </target>
 
@@ -33,6 +36,7 @@
   </target>
 
   <target name="install" unless="${oracle.installed}">
+    <fail if="${oracle.szdir.exists}" message="${oracle.szdir} already exists" />
     <mkdir dir="${tool.home}/target" />
     <exec executable="cmd" failonerror="true">
       <arg value="/c" />
@@ -44,7 +48,7 @@
   </target>
 
   <target name="create-user">
-    <exec executable="sqlplus" resultproperty="result" failonerror="false">
+    <exec executable="${oracle.home}/bin/sqlplus" resultproperty="result" failonerror="false">
       <arg value="-L" />
       <arg value="-S" />
       <arg value="${db.username}/${db.password}" />
@@ -62,7 +66,7 @@
       </filterset>
     </copy>
 
-    <exec executable="sqlplus" failonerror="true"
+    <exec executable="${oracle.home}/bin/sqlplus" failonerror="true"
         unless:set="oracle.user-created">
       <arg value="/nolog" />
       <arg value="@${tool.home}/target/create-user.sql" />
