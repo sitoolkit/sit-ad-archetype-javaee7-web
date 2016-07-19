@@ -53,23 +53,6 @@
 
 
   <target name="start">
-    <parallel>
-      <daemons>
-        <antcall target="run" />
-      </daemons>
-
-      <sequential>
-        <echo message="Wait for starting MySQL server" />
-        <waitfor maxwait="10" maxwaitunit="second" checkevery="500" checkeveryunit="millisecond">
-          <socket server="${db.host}" port="${db.port.local}" />
-        </waitfor>
-      </sequential>
-    </parallel>
-
-  </target>
-
-
-  <target name="run">
     <condition property="mysql.started">
       <socket server="${db.host}" port="${db.port.local}" />
     </condition>
@@ -89,11 +72,19 @@
       </filterset>
     </copy>
 
-    <exec executable="${mysql.basedir}/bin/mysqld" dir="${mysql.basedir}" failonerror="true" unless:true="${mysql.started}">
+    <exec executable="cmd" dir="${mysql.basedir}" failonerror="true" unless:true="${mysql.started}">
+      <arg value="/C"/>
+      <arg value="start"/>
+      <arg value="/B"/>
+      <arg value="${mysql.basedir}/bin/mysqld"/>
       <arg value="--defaults-extra-file=${mysql.datadir}/my.cnf" />
       <arg value="--basedir=${mysql.basedir}" />
       <arg value="--datadir=${mysql.datadir}" />
     </exec>
+
+    <waitfor maxwait="10" maxwaitunit="second" checkevery="500" checkeveryunit="millisecond">
+      <socket server="${db.host}" port="${db.port.local}" />
+    </waitfor>
 
     <echo message="MySQL server is started" />
   </target>

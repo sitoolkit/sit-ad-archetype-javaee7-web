@@ -43,9 +43,6 @@
             <goals>
                 <goal>-e</goal>
             </goals>
-            <properties>
-                <mysql>run</mysql>
-            </properties>
             <activatedProfiles>
                 <activatedProfile>mysql</activatedProfile>
             </activatedProfiles>
