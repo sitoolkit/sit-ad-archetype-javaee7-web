@@ -217,7 +217,7 @@
     <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}" failonerror="true">
       <env key="JAVA_HOME" value="${java.home}" />
       <arg value="verify" />
-      <arg value="-Pmysql,db-migrate,was-liberty,it" />
+      <arg value="-Pmysql,db-migrate,was-liberty,it,it-parallel" />
       <arg value="-Devidence.open=false" />
       <arg value="-Dfile.encoding=UTF-8" />
       <arg value="-Ddb.port=3308" />
