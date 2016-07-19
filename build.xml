@@ -202,7 +202,7 @@
       <arg value="-Devidence.open=false" />
       <arg value="-Dfile.encoding=UTF-8" />
       <arg value="-Ddb.port=1528" />
-      <arg value="-Das.port=8081" />
+      <arg value="-Das.port=8091" />
       <arg value="-e"/>
     </exec>
 
@@ -221,7 +221,7 @@
       <arg value="-Devidence.open=false" />
       <arg value="-Dfile.encoding=UTF-8" />
       <arg value="-Ddb.port=3308" />
-      <arg value="-Das.port=8082" />
+      <arg value="-Das.port=8092" />
       <arg value="-e"/>
     </exec>
 
@@ -243,7 +243,7 @@
       <arg value="-Devidence.open=false" />
       <arg value="-Dfile.encoding=UTF-8" />
       <arg value="-Ddb.port=1530" />
-      <arg value="-Das.port=8083" />
+      <arg value="-Das.port=8093" />
       <arg value="-e"/>
     </exec>
 
