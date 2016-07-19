@@ -64,21 +64,6 @@
 
 
   <target name="start">
-    <parallel>
-      <daemons>
-        <antcall target="run" />
-      </daemons>
-    </parallel>
-
-    <echo message="Wait for starting MySQL server" />
-    <waitfor maxwait="10" maxwaitunit="second" checkevery="500" checkeveryunit="millisecond">
-      <available file="${mysql.socket}" />
-    </waitfor>
-
-  </target>
-
-
-  <target name="run">
     <condition property="mysql.started">
       <available file="${mysql.socket}" />
     </condition>
@@ -95,15 +80,23 @@
       </filterset>
     </copy>
 
-    <exec executable="${mysql.basedir}/bin/mysqld_safe"
-          dir="${mysql.basedir}"
-          failonerror="true"
-          unless:true="${mysql.started}">
-      <arg value="--defaults-extra-file=${mysql.datadir}/my.cnf" />
-      <arg value="--basedir=${mysql.basedir}" />
-      <arg value="--datadir=${mysql.datadir}" />
-    </exec>
+    <parallel>
+      <daemons>
+        <exec executable="${mysql.basedir}/bin/mysqld_safe"
+              dir="${mysql.basedir}"
+              failonerror="true"
+              unless:true="${mysql.started}">
+          <arg value="--defaults-extra-file=${mysql.datadir}/my.cnf" />
+          <arg value="--basedir=${mysql.basedir}" />
+          <arg value="--datadir=${mysql.datadir}" />
+        </exec>
+      </daemons>
+    </parallel>
 
+    <echo message="Wait for starting MySQL server" />
+    <waitfor maxwait="10" maxwaitunit="second" checkevery="500" checkeveryunit="millisecond">
+      <available file="${mysql.socket}" />
+    </waitfor>
     <echo message="MySQL server is started" />
 
   </target>
