@@ -125,4 +125,24 @@
                 <activatedProfile>db-migrate</activatedProfile>
             </activatedProfiles>
         </action>
+    <action>
+            <actionName>CUSTOM-50_db2-install</actionName>
+            <displayName>50_db2-install</displayName>
+            <goals>
+                <goal>antrun:run</goal>
+            </goals>
+            <activatedProfiles>
+                <activatedProfile>db2-install</activatedProfile>
+            </activatedProfiles>
+        </action>
+    <action>
+            <actionName>CUSTOM-50-oracle-install</actionName>
+            <displayName>50-oracle-install</displayName>
+            <goals>
+                <goal>antrun:run</goal>
+            </goals>
+            <activatedProfiles>
+                <activatedProfile>oracle-install</activatedProfile>
+            </activatedProfiles>
+        </action>
 </actions>
