@@ -10,7 +10,6 @@
   <import file="${tool.home}/build-${os}.xml" />
 
 
-  <property name="repository" value="${user.home}/.sitoolkit/repository/mysql" />
   <property name="download.home" value="${repository}/download" />
   <property name="mysql.basedir" value="${repository}/runtime/${mysql.binary}" />
   <condition property="mysql.data" value="data">

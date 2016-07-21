@@ -3,6 +3,7 @@
 
   <property name="mysql.binary" value="mysql-5.7.12-osx10.11-x86_64" />
   <property name="mysql.binary.file" value="${mysql.binary}.tar.gz" />
+  <property name="repository" value="/usr/share/sitoolkit/repository/mysql" />
 
   <!-- determine socket file name -->
   <echo message="${tool.home}" file="${tool.home}/.path"/>

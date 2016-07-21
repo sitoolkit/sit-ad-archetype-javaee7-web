@@ -3,6 +3,7 @@
 
   <property name="mysql.binary" value="mysql-5.7.12-winx64" />
   <property name="mysql.binary.file" value="${mysql.binary}.zip" />
+  <property name="repository" value="C:/ProgramData/sitoolkit/repository/mysql" />
 
 
   <target name="unarchive" unless="${mysql.unarchived}">
