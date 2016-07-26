@@ -49,7 +49,9 @@
     <os family="windows" />
   </condition>
 
-
+  <property name="db.port.site" value="3307"/>
+  <property name="db.port.was-liberty" value="3308"/>
+  
 
   <target name="install">
     <property name="mvn.phase" value="install" />
@@ -167,26 +169,30 @@
     <property name="testArtifactId" value="${artifactId}-test-site" />
     <antcall target="archetype-generate" />
 
-    <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}">
-      <env key="JAVA_HOME" value="${java.home}" />
-      <arg value="-Ddb.port=3307" />
-      <arg value="-Dmysql=stop" />
-    </exec>
-
-    <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}" failonerror="true">
+    <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}" resultproperty="mvn.site.exitcode">
       <env key="JAVA_HOME" value="${java.home}" />
       <arg value="-Dfile.encoding=UTF-8" />
-      <arg value="-Ddb.port=3307" />
+      <arg value="-Ddb.port=${db.port.site}" />
       <arg value="-Dmpir.skip=true" />
       <arg value="-Pmysql,db-migrate" />
       <arg value="site" />
+      <arg value="-e"/>
     </exec>
 
     <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}">
       <env key="JAVA_HOME" value="${java.home}" />
+      <arg value="-Ddb.port=${db.port.site}" />
       <arg value="-Dmysql=stop" />
     </exec>
 
+    <fail message="${workdir}/${testArtifactId}>mvn site failed!">
+      <condition>
+        <not>
+          <equals arg1="${mvn.site.exitcode}" arg2="0"/>
+        </not>
+      </condition>
+    </fail>
+    
   </target>
 
 
@@ -214,16 +220,30 @@
     <property name="testArtifactId" value="${artifactId}-test-was-liberty" />
     <antcall target="archetype-generate" />
 
-    <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}" failonerror="true">
+    <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}" resultproperty="mvn.verify.exitcode">
       <env key="JAVA_HOME" value="${java.home}" />
       <arg value="verify" />
       <arg value="-Pmysql,db-migrate,was-liberty,it,it-parallel" />
       <arg value="-Devidence.open=false" />
       <arg value="-Dfile.encoding=UTF-8" />
-      <arg value="-Ddb.port=3308" />
+      <arg value="-Ddb.port=${db.port.was-liberty}" />
       <arg value="-Das.port=8092" />
       <arg value="-e"/>
     </exec>
+
+    <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}">
+      <env key="JAVA_HOME" value="${java.home}" />
+      <arg value="-Ddb.port=${db.port.was-liberty}" />
+      <arg value="-Dmysql=stop" />
+    </exec>
+
+    <fail message="${workdir}/${testArtifactId}>mvn verify failed!">
+      <condition>
+        <not>
+          <equals arg1="${mvn.verify.exitcode}" arg2="0"/>
+        </not>
+      </condition>
+    </fail>
 
   </target>
 
