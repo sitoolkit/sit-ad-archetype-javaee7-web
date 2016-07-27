@@ -105,6 +105,7 @@
 
     <replace dir="${archresdir}" token="&lt;?xml version=&quot;${version}&quot;" value="&lt;?xml version=&quot;1.0&quot;" summary="true">
       <include name="**/*.xml"/>
+      <include name="**/*.xhtml"/>
     </replace>
 
     <copy file="${basedir}/${artifactId}/distribution/pom.xml" todir="${newarchdir}" overwrite="true" />
