@@ -714,6 +714,7 @@
       <id>was-liberty</id>
       <properties>
         <maven.test.skip>true</maven.test.skip>
+        <was-liberty.file.encoding>UTF-8</was-liberty.file.encoding>
       </properties>
       <build>
         <defaultGoal>package liberty:run-server</defaultGoal>
@@ -722,6 +723,7 @@
             <directory>${toolsdir}/was-liberty</directory>
             <includes>
               <include>server.xml</include>
+              <include>jvm.options</include>
             </includes>
             <filtering>true</filtering>
             <targetPath>${project.build.directory}</targetPath>
@@ -740,7 +742,7 @@
                 <type>zip</type>
               </assemblyArtifact>
               <configFile>${project.build.directory}/server.xml</configFile>
-              <jvmOptionsFile>${toolsdir}/was-liberty/jvm.options</jvmOptionsFile>
+              <jvmOptionsFile>${project.build.directory}/jvm.options</jvmOptionsFile>
             </configuration>
             <executions>
               <execution>
