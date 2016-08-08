@@ -1,9 +1,10 @@
 ## SIToolkit Archetype for Java EE 7 Web Application
 
-sit-ad-archetype-javaee7-webは、Java EE 7 WebアプリケーションのMavenアーキタイプです。ミドルウェアのインストール、セットアップが不要で、すぐに開発を始めることができます。
+sit-ad-archetype-javaee7-webは、Java EE 7 WebアプリケーションのMavenアーキタイプです。ミドルウェアのインストール、セットアップが自動で行えるため、すぐに開発を始めることができます。
 
 ```
-mvn -DarchetypeGroupId=org.sitoolkit.ad.archetype -DarchetypeArtifactId=javaee7-web-tips -DarchetypeVersion=0.13.1 -DgroupId=a.b.c -DartifactId=myproject -Darchetype.interactive=false -B archetype:generate
+mvn archetype:generate -Dfilter=:javaee7-web-min
+
 cd myproject
 mvn verify -P mysql,db-migrate,was-liberty,it
 ```
