@@ -27,7 +27,7 @@
   -->
   <property environment="env" />
 
-  <property name="newVersion" value="1.0" />
+  <property name="newVersion" value="1.0.1-SNAPSHOT" />
   <input addproperty="artifactId"
          validargs="javaee7-web-min,javaee7-web-tips"
          defaultvalue="javaee7-web-min" />
@@ -51,7 +51,7 @@
 
   <property name="db.port.site" value="3307"/>
   <property name="db.port.was-liberty" value="3308"/>
-  
+
 
   <target name="install">
     <property name="mvn.phase" value="install" />
@@ -197,7 +197,7 @@
         </not>
       </condition>
     </fail>
-    
+
   </target>
 
 
