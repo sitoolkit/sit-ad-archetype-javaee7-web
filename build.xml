@@ -285,17 +285,19 @@
       <arg value="install" />
     </exec>
 
+    <!-- このコマンドで javaee7-web-min、javaee7-web-tipsのparent/versionが上がるはずですが、上がりません。
+    原因は不明です。pom.xmlを手で書き換えてください。-->
     <exec executable="${mvn.cmd}" dir="${basedir}/javaee7-web-min" failonerror="true">
       <env key="JAVA_HOME" value="${java.home}" />
-      <arg value="clean" />
       <arg value="-DallowSnapshots=true" />
+      <arg value="-DparentVersion=${newVersion}" />
       <arg value="versions:update-parent" />
     </exec>
 
     <exec executable="${mvn.cmd}" dir="${basedir}/javaee7-web-tips" failonerror="true">
       <env key="JAVA_HOME" value="${java.home}" />
-      <arg value="clean" />
-      <arg value="-DallowSnapshots=true" />
+      <arg value="-DallowSnanshots=true" />
+      <arg value="-DparentVersion=${newVersion}" />
       <arg value="versions:update-parent" />
     </exec>
 
