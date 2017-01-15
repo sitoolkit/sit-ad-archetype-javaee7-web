@@ -14,7 +14,7 @@ import javax.persistence.PersistenceUnit;
 @ApplicationScoped
 public class EntityManagerProducer {
 
-    @PersistenceUnit
+    @PersistenceUnit(unitName = "javaee7-web-tips-pu")
     private EntityManagerFactory emf;
 
     @Produces

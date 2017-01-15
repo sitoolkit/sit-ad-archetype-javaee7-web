@@ -260,8 +260,6 @@
 
     <exec executable="${mvn.cmd}" dir="${workdir}/${testArtifactId}" failonerror="true">
       <env key="JAVA_HOME" value="${java.home}" />
-      <env key="JBOSS_HOME"
-           value="${workdir}/${testArtifactId}/target/wildfly-run/wildfly-10.0.0.Final" />
       <arg value="verify" />
       <arg value="-Pderby,db-migrate,wildfly,it" />
       <arg value="-Dmaven.test.skip=false" />

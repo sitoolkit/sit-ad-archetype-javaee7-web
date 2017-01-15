@@ -18,7 +18,7 @@
     <dependency>
       <groupId>com.sun.faces</groupId>
       <artifactId>jsf-impl</artifactId>
-      <version>2.2.12</version>
+      <version>2.2.14</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -42,7 +42,7 @@
     <dependency>
       <groupId>org.jglue.cdi-unit</groupId>
       <artifactId>cdi-unit</artifactId>
-      <version>3.1.3</version>
+      <version>3.1.4</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -98,7 +98,7 @@
     <toolsdir>${project.basedir}/tools</toolsdir>
     <hibernate-tools.basedir>${toolsdir}/hibernate-tools</hibernate-tools.basedir>
     <hibernate-tools.destdir>${project.build.directory}/generated-sources/hibernate-tools</hibernate-tools.destdir>
-    <deltaspike.version>1.5.4</deltaspike.version>
+    <deltaspike.version>1.7.2</deltaspike.version>
     <jpa.provider>org.eclipse.persistence.jpa.PersistenceProvider</jpa.provider>
     <skipUTs>false</skipUTs>
   </properties>
@@ -133,7 +133,7 @@
         <plugin>
           <groupId>org.flywaydb</groupId>
           <artifactId>flyway-maven-plugin</artifactId>
-          <version>3.2.1</version>
+          <version>4.0.3</version>
           <configuration>
             <url>${db.jdbc.url}</url>
             <user>${db.username}</user>
@@ -293,6 +293,9 @@
     <developerConnection>scm:git:git//github.com/sitoolkit/sit-ad-archetype-javaee7.git</developerConnection>
     <url>https://github.com/sitoolkit/sit-ad-archetype-javaee7.git</url>
   </scm>
+  <prerequisites>
+    <maven>3.1.1</maven>
+  </prerequisites>
   <distributionManagement>
     <snapshotRepository>
       <id>sonatype-nexus-snapshots</id>
@@ -602,11 +605,11 @@
       <id>embedded-glassfish</id>
       <dependencies>
         <!-- org.jboss.weld.exceptions.DeploymentException: WELD-001408が出る問題の暫定対応 -->
-<!--         <dependency> -->
-<!--           <groupId>org.jboss.weld</groupId> -->
-<!--           <version>2.2.13.Final</version> -->
-<!--           <artifactId>weld-core-impl</artifactId> -->
-<!--         </dependency> -->
+        <!-- <dependency> -->
+        <!-- <groupId>org.jboss.weld</groupId> -->
+        <!-- <version>2.2.13.Final</version> -->
+        <!-- <artifactId>weld-core-impl</artifactId> -->
+        <!-- </dependency> -->
       </dependencies>
       <properties>
         <maven.test.skip>true</maven.test.skip>
@@ -811,7 +814,7 @@
         <jpa.provider>org.hibernate.ejb.HibernatePersistence</jpa.provider>
       </properties>
       <build>
-        <defaultGoal>package wildfly:run</defaultGoal>
+        <defaultGoal>wildfly:start wildfly:execute-commands@setup wildfly:deploy</defaultGoal>
         <resources>
           <resource>
             <directory>${toolsdir}/wildfly</directory>
@@ -823,30 +826,50 @@
             <targetPath>${project.build.directory}</targetPath>
           </resource>
         </resources>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.wildfly.plugins</groupId>
+              <artifactId>wildfly-maven-plugin</artifactId>
+              <version>${wildfly.plugin.version}</version>
+              <configuration>
+                <propertiesFile>${project.build.directory}/wildfly.properties</propertiesFile>
+                <version>${wildfly.version}</version>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
         <plugins>
           <plugin>
             <groupId>org.wildfly.plugins</groupId>
             <artifactId>wildfly-maven-plugin</artifactId>
-            <version>${wildfly.plugin.version}</version>
-            <configuration>
-              <propertiesFile>${project.build.directory}/wildfly.properties</propertiesFile>
-              <beforeDeployment>
-                <batch>false</batch>
-                <scripts>
-                  <script>${project.build.directory}/setup.cli</script>
-                </scripts>
-              </beforeDeployment>
-              <version>${wildfly.version}</version>
-              <env>
-                <JBOSS_HOME>${project.build.directory}/wildfly-run/wildfly-${wildfly.version}</JBOSS_HOME>
-              </env>
-            </configuration>
             <executions>
               <execution>
                 <id>start-server</id>
                 <phase>pre-integration-test</phase>
                 <goals>
                   <goal>start</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>setup</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>execute-commands</goal>
+                </goals>
+                <configuration>
+                  <batch>false</batch>
+                  <fail-on-error>false</fail-on-error>
+                  <scripts>
+                    <script>${project.build.directory}/setup.cli</script>
+                  </scripts>
+                  <jbossHome>${project.build.directory}/wildfly-run/wildfly-${wildfly.version}</jbossHome>
+                </configuration>
+              </execution>
+              <execution>
+                <id>deploy</id>
+                <phase>pre-integration-test</phase>
+                <goals>
                   <goal>deploy</goal>
                 </goals>
               </execution>
@@ -859,23 +882,25 @@
               </execution>
             </executions>
           </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>wildfly-debug</id>
+      <build>
+        <plugins>
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>run-wildfly-settings</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-                <configuration>
-                  <target>
-                    <ant antfile="${toolsdir}/wildfly/build.xml" />
-                  </target>
-                </configuration>
-              </execution>
-            </executions>
+            <groupId>org.wildfly.plugins</groupId>
+            <artifactId>wildfly-maven-plugin</artifactId>
+            <configuration>
+              <configuration>
+                <filename>${project.build.finalName}</filename>
+                <name>${project.build.finalName}.war</name>
+                <java-opts>
+                  <java-opt>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005</java-opt>
+                </java-opts>
+              </configuration>
+            </configuration>
           </plugin>
         </plugins>
       </build>
