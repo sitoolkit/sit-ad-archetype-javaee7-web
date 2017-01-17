@@ -9,6 +9,7 @@ import javax.inject.Named;
 import org.sitoolkit.ad.archetype.tips.application.user.UserService;
 import org.sitoolkit.ad.archetype.tips.domain.code.GenderCd;
 import org.sitoolkit.ad.archetype.tips.domain.user.UserEntity;
+import org.sitoolkit.ad.archetype.tips.infrastructure.code.CodeUtils;
 import org.sitoolkit.ad.archetype.tips.infrastructure.entitycrud.EntityInputController;
 
 @Named
@@ -17,7 +18,7 @@ public class UserInputController extends EntityInputController<UserEntity, Strin
         implements Serializable {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -29,8 +30,12 @@ public class UserInputController extends EntityInputController<UserEntity, Strin
     @Inject
     transient UserService service;
 
-    public GenderCd[] get性別() {
+    public GenderCd[] getGender() {
         return GenderCd.values();
+    }
+
+    public GenderCd decodeGender(String code) {
+        return CodeUtils.decode(code, GenderCd.class);
     }
 
     @Override
@@ -45,7 +50,7 @@ public class UserInputController extends EntityInputController<UserEntity, Strin
 
     /**
      * ユーザーIDを返却する。
-     * 
+     *
      * @return ユーザーID
      */
     public String getUserId() {
@@ -54,7 +59,7 @@ public class UserInputController extends EntityInputController<UserEntity, Strin
 
     /**
      * ユーザーIDを設定する。
-     * 
+     *
      * @param userId
      *            ユーザーID
      */

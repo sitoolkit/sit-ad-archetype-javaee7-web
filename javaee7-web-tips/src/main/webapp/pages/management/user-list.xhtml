@@ -71,7 +71,7 @@
             <f:ajax render="@form" />
           </h:commandLink>
         </f:facet>
-        <h:outputText id="user-gender" value="#{u.genderCd}" styleClass="user-gender ">
+        <h:outputText id="user-gender" value="#{userInputController.decodeGender(u.gender)}" styleClass="user-gender ">
         </h:outputText>
       </h:column>
 

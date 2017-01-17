@@ -34,24 +34,19 @@ public class CustomReverseEngineeringStrategy extends DelegatingReverseEngineeri
         Map map = new HashMap<>();
         addMeta(map, "extends", "BaseEntity");
         addMeta(map, "extra-import",
-                "org.sitoolkit.ad.archetype.tips.infrastructure.data.jpa.BaseEntity");
+                "javax.persistence.AccessType",
+                "org.sitoolkit.ad.archetype.tips.infrastructure.data.jpa.BaseEntity",
+                "org.sitoolkit.ad.archetype.tips.infrastructure.data.jpa.BaseEntityListener");
 
         return map;
     }
 
-    @Override
-    public String tableToClassName(TableIdentifier tableIdentifier) {
-        String qualifierName = super.tableToClassName(tableIdentifier);
-        int lastPeriodIdx = qualifierName.lastIndexOf(".") + 1;
-
-        return qualifierName.substring(0, lastPeriodIdx) + "Base"
-                + qualifierName.substring(lastPeriodIdx);
-    }
-
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    private void addMeta(Map map, String name, String value) {
+    private void addMeta(Map map, String name, String... values) {
         MetaAttribute attr = new MetaAttribute(name);
-        attr.addValue(value);
+        for (String value : values) {
+            attr.addValue(value);
+        }
         map.put(name, attr);
     }
 

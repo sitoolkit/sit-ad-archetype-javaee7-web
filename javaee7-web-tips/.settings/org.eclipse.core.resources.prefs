@@ -6,5 +6,6 @@ encoding//src/test/java=UTF-8
 encoding//src/test/resources=UTF-8
 encoding//tools/hibernate-tools=UTF-8
 encoding//tools/hibernate-tools/src=UTF-8
+encoding//tools/was-liberty=UTF-8
 encoding//tools/wildfly=UTF-8
 encoding/<project>=UTF-8

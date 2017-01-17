@@ -13,7 +13,7 @@
 
     <delete dir="${classdir}" />
     <mkdir dir="${classdir}" />
-    
+
     <javac classpath="${maven.classpath}"
            srcdir="${hibernate-tools.basedir}/src/main/java"
            fork="true"
@@ -26,21 +26,20 @@
         <filter token="db.jdbc.url" value="${db.jdbc.url}" />
         <filter token="db.username" value="${db.username}" />
         <filter token="db.password" value="${db.password}" />
+        <filter token="db.name" value="${db.name}" />
       </filterset>
     </copy>
 
     <hibernatetool destdir="${hibernate-tools.destdir}" templatepath="${hibernate-tools.basedir}/template">
-      
+
       <classpath location="${classdir}"/>
-        
+
       <jdbcconfiguration packagename="package.name"
                          revengfile="${hibernate-tools.basedir}/hibernate.reveng.xml"
                          reversestrategy="CustomReverseEngineeringStrategy"
                          propertyFile="${outdir}//hibernate.properties" />
 
-      <hbmtemplate exporterclass="org.hibernate.tool.hbm2x.POJOExporter"
-                   templateprefix="pojo/"
-                   template="pojo/BaseEntity.ftl">
+      <hbmtemplate exporterclass="org.hibernate.tool.hbm2x.POJOExporter">
         <property key="jdk5" value="true" />
         <property key="ejb3" value="true" />
       </hbmtemplate>

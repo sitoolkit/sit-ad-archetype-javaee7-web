@@ -40,18 +40,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.jglue.cdi-unit</groupId>
-      <artifactId>cdi-unit</artifactId>
-      <version>3.1.4</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>httpclient</artifactId>
-          <groupId>org.apache.httpcomponents</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
       <groupId>org.apache.deltaspike.core</groupId>
       <artifactId>deltaspike-core-api</artifactId>
       <version>${deltaspike.version}</version>
@@ -715,6 +703,26 @@
 
     <profile>
       <id>was-liberty</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.apache.deltaspike.cdictrl</groupId>
+          <artifactId>deltaspike-cdictrl-weld</artifactId>
+          <version>${deltaspike.version}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.weld.se</groupId>
+          <artifactId>weld-se-core</artifactId>
+          <version>2.3.5.Final</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.eclipse.persistence</groupId>
+          <artifactId>org.eclipse.persistence.jpa</artifactId>
+          <version>2.6.2</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
       <properties>
         <maven.test.skip>true</maven.test.skip>
         <was-liberty.file.encoding>UTF-8</was-liberty.file.encoding>
@@ -809,6 +817,26 @@
 
     <profile>
       <id>wildfly</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.apache.deltaspike.cdictrl</groupId>
+          <artifactId>deltaspike-cdictrl-weld</artifactId>
+          <version>${deltaspike.version}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.weld.se</groupId>
+          <artifactId>weld-se-core</artifactId>
+          <version>2.3.5.Final</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.hibernate</groupId>
+          <artifactId>hibernate-core</artifactId>
+          <version>5.2.1.Final</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
       <properties>
         <maven.test.skip>true</maven.test.skip>
         <jpa.provider>org.hibernate.ejb.HibernatePersistence</jpa.provider>
@@ -835,6 +863,8 @@
               <configuration>
                 <propertiesFile>${project.build.directory}/wildfly.properties</propertiesFile>
                 <version>${wildfly.version}</version>
+                <filename>${project.build.finalName}</filename>
+                <name>${project.build.finalName}.war</name>
               </configuration>
             </plugin>
           </plugins>
@@ -894,8 +924,6 @@
             <artifactId>wildfly-maven-plugin</artifactId>
             <configuration>
               <configuration>
-                <filename>${project.build.finalName}</filename>
-                <name>${project.build.finalName}.war</name>
                 <java-opts>
                   <java-opt>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005</java-opt>
                 </java-opts>

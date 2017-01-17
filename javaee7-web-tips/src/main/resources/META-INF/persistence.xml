@@ -16,7 +16,8 @@
     </properties>
   </persistence-unit>
 
-  <persistence-unit name="javaee7-web-tips-pu-test" transaction-type="RESOURCE_LOCAL">
+  <persistence-unit name="javaee7-web-tips-pu-non-ee-container" transaction-type="RESOURCE_LOCAL">
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.driver" value="${db.jdbc.driver}" />
       <property name="javax.persistence.jdbc.url" value="${db.jdbc.url}" />

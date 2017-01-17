@@ -9,7 +9,7 @@ import org.sitoolkit.ad.archetype.tips.infrastructure.layer.Repository;
 
 /**
  * このクラスは、ユーザーマスターのDAOです。
- * 
+ *
  * @author SIToolkit
  */
 @Repository
@@ -24,14 +24,15 @@ public class UserRepository extends BaseRepository<UserEntity, String> {
 
     /**
      * ユーザー姓をキーにUserEntityを抽出します。
-     * 
+     *
      * @param lastName
      *            ユーザー姓
      * @return UserEntity
      */
     @SuppressWarnings("unchecked")
     public List<UserEntity> selectByLastName(String lastName) {
-        Query query = em().createNamedQuery(UserEntity.SELECT_BY_LAST_NAME);
+        Query query = em()
+                .createQuery("SELECT user FROM UserEntity user WHERE user.lastName = :lastName");
         query.setParameter("lastName", lastName);
         return query.getResultList();
     }

@@ -9,6 +9,7 @@
 
   <type-mapping>
     <sql-type jdbc-type="CHAR" length="1" hibernate-type="java.lang.String" />
+    <sql-type jdbc-type="DATE" hibernate-type="java.time.LocalDate" />
   </type-mapping>
 
   <table-filter match-name="schema_version" exclude="true" />
