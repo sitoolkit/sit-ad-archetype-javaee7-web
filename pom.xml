@@ -842,7 +842,7 @@
         <jpa.provider>org.hibernate.ejb.HibernatePersistence</jpa.provider>
       </properties>
       <build>
-        <defaultGoal>wildfly:start wildfly:execute-commands@setup wildfly:deploy</defaultGoal>
+        <defaultGoal>resources:resources wildfly:start wildfly:execute-commands@setup wildfly:deploy</defaultGoal>
         <resources>
           <resource>
             <directory>${toolsdir}/wildfly</directory>
