@@ -207,8 +207,7 @@
         <db.flyway.comment>--</db.flyway.comment>
         <db.was-liberty.ds-properties><![CDATA[<properties.oracle URL="${db.jdbc.url}" user="${db.username}" password="${db.password}"/>]]></db.was-liberty.ds-properties>
         <db.was-liberty.fileset><![CDATA[<fileset dir="${db.client.lib}" includes="ojdbc6-${db.client.version}.jar"/>]]></db.was-liberty.fileset>
-        <hibernate.dialect>Oracle</hibernate.dialect>
-      </properties>
+        <hibernate.dialect>org.hibernate.dialect.Oracle10gDialect</hibernate.dialect>      </properties>
     </profile>
 
   </profiles>
