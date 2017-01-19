@@ -89,6 +89,7 @@
 
   <target name="02_modify-archetype-resource">
 
+    <delete dir="${archresdir}/evidence" verbose="true"/>
     <delete dir="${archresdir}/distribution" verbose="true"/>
     <delete dir="${archresdir}/tools/derby/target" verbose="true"/>
     <delete dir="${archresdir}/tools/mysql/data" verbose="true"/>
