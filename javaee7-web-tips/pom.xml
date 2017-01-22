@@ -192,10 +192,11 @@
     <profile>
       <id>oracle</id>
       <properties>
-        <db.client.groupId>com.oracle</db.client.groupId>
+        <db.client.groupId>com.oracle.jdbc</db.client.groupId>
         <db.client.artifactId>ojdbc6</db.client.artifactId>
-        <db.client.version>11.2.0</db.client.version>
+        <db.client.version>11.2.0.4</db.client.version>
         <db.client.lib>${settings.localRepository}/com/oracle/ojdbc6/${db.client.version}</db.client.lib>
+        <db.client.jar>ojdbc6-${db.client.version}.jar</db.client.jar>
         <db.jdbc.driver>oracle.jdbc.OracleDriver</db.jdbc.driver>
         <db.jdbc.dsclass>oracle.jdbc.pool.OracleDataSource</db.jdbc.dsclass>
         <db.name>XE</db.name>
@@ -206,8 +207,9 @@
         <db.password>app</db.password>
         <db.flyway.comment>--</db.flyway.comment>
         <db.was-liberty.ds-properties><![CDATA[<properties.oracle URL="${db.jdbc.url}" user="${db.username}" password="${db.password}"/>]]></db.was-liberty.ds-properties>
-        <db.was-liberty.fileset><![CDATA[<fileset dir="${db.client.lib}" includes="ojdbc6-${db.client.version}.jar"/>]]></db.was-liberty.fileset>
-        <hibernate.dialect>org.hibernate.dialect.Oracle10gDialect</hibernate.dialect>      </properties>
+        <db.was-liberty.fileset><![CDATA[<fileset dir="${db.client.lib}" includes="${db.client.jar}"/>]]></db.was-liberty.fileset>
+        <hibernate.dialect>org.hibernate.dialect.Oracle10gDialect</hibernate.dialect>
+      </properties>
     </profile>
 
   </profiles>

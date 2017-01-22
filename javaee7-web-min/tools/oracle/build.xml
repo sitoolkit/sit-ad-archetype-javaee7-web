@@ -4,7 +4,8 @@
   <dirname property="tool.home" file="${ant.file}" />
 
   <property environment="env" />
-  <property name="oracle.installer.path" value="\\host\path\to\OracleXE112_Win64.zip" />
+  <!--replace to your actual installer path-->
+  <property name="oracle.installer.path" value="C:\ProgramData\sitoolkit\repository\oracle\OracleXE112_Win64.zip" />
   <property name="download.home" value="C:/ProgramData/sitoolkit/repository/oracle" />
   <property name="oracle.szdir" value="C:/oraclexe" />
   <property name="oracle.home" value="${oracle.szdir}/app/oracle/product/11.2.0/server" />
@@ -22,6 +23,7 @@
     <echo message="Oracle installer is unarchived in ${download.home}/DISK1" if:true="${oracle.unarchived}" />
     <antcall target="install" />
     <echo message="Oracle database is installed in ${oracle.szdir}" if:true="${oracle.installed}" />
+    <antcall target="copy-jdbc-driver"/>
     <antcall target="create-user" />
   </target>
 
@@ -45,6 +47,10 @@
       <arg value='/f1"${tool.home}/OracleXE-install.iss"'/>
       <arg value='/f2"${tool.home}/target/setup.log"'/>
     </exec>
+  </target>
+
+  <target name="copy-jdbc-driver">
+    <copy file="${oracle.home}/jdbc/lib/ojdbc6.jar" todir="${project.build.directory}"/>
   </target>
 
   <target name="create-user">
