@@ -15,7 +15,6 @@ import javax.persistence.PersistenceUnit;
 /**
  *
  * @author SIToolkit
- * @see https://deltaspike.apache.org/documentation/jpa.html
  */
 @Named
 @ApplicationScoped
