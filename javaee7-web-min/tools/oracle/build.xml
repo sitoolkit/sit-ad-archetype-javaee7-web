@@ -81,4 +81,13 @@
     <echo message="${db.username} is created" if:true="${oracle.user-created}" />
   </target>
 
+  <target name="uninstall">
+    <exec executable="cmd" failonerror="true">
+      <arg value="/c" />
+      <arg value="${download.home}/DISK1/setup.exe" />
+      <arg value="/s" />
+      <arg value='/f1"${tool.home}/OracleXE-remove.iss"'/>
+      <arg value='/f2"${tool.home}/target/uninstall.log"'/>
+    </exec>
+  </target>
 </project>
