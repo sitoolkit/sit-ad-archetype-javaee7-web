@@ -923,11 +923,9 @@
             <groupId>org.wildfly.plugins</groupId>
             <artifactId>wildfly-maven-plugin</artifactId>
             <configuration>
-              <configuration>
-                <java-opts>
-                  <java-opt>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005</java-opt>
-                </java-opts>
-              </configuration>
+              <java-opts>
+                <java-opt>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005</java-opt>
+              </java-opts>
             </configuration>
           </plugin>
         </plugins>
