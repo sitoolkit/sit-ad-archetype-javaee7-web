@@ -13,16 +13,20 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.sitoolkit.ad.archetype.tips.infrastructure.data.jpa.RollbackRule;
+import org.sitoolkit.ad.archetype.tips.test.TestCaseLog;
 
 @RunWith(CdiTestRunner.class)
 public class UserRepositoryTest {
 
-    @Inject
-    UserRepository repo;
+    @Rule
+    public TestCaseLog log = new TestCaseLog(getClass());
 
     @Inject
     @Rule
     public RollbackRule rollbackRule;
+
+    @Inject
+    UserRepository repo;
 
     @Test
     public void testSelectByLastName() {

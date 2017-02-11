@@ -59,7 +59,6 @@
       <plugin>
         <groupId>org.wildfly.plugins</groupId>
         <artifactId>wildfly-maven-plugin</artifactId>
-        <version>${wildfly.plugin.version}</version>
         <configuration>
           <add-user>
             <users>
@@ -94,6 +93,9 @@
   <profiles>
     <profile>
       <id>derby</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <properties>
         <db.client.groupId>org.apache.derby</db.client.groupId>
         <db.client.artifactId>derbyclient</db.client.artifactId>
@@ -102,6 +104,7 @@
         <db.jdbc.driver>org.apache.derby.jdbc.ClientDriver</db.jdbc.driver>
         <db.jdbc.dsclass>org.apache.derby.jdbc.ClientConnectionPoolDataSource40</db.jdbc.dsclass>
         <db.name>${project.artifactId}-db</db.name>
+        <db.catalog></db.catalog>
         <db.host>localhost</db.host>
         <db.port>1527</db.port>
         <db.jdbc.url>jdbc:derby://${db.host}:${db.port}/${db.name};create=true</db.jdbc.url>
@@ -117,9 +120,6 @@
 
     <profile>
       <id>mysql</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
       <properties>
         <db.client.groupId>mysql</db.client.groupId>
         <db.client.artifactId>mysql-connector-java</db.client.artifactId>
@@ -131,6 +131,7 @@
         <!-- https://hibernate.atlassian.net/browse/HBX-1175 -->
         <!-- <db.name>${project.artifactId}-db</db.name> -->
         <db.name>mydb</db.name>
+        <db.catalog>${db.name}</db.catalog>
         <db.host>localhost</db.host>
         <db.port>3306</db.port>
         <db.jdbc.url>jdbc:mysql://${db.host}:${db.port}/${db.name}</db.jdbc.url>
@@ -169,6 +170,7 @@
         <db.jdbc.driver>com.ibm.db2.jcc.DB2Driver</db.jdbc.driver>
         <db.jdbc.dsclass>com.ibm.db2.jcc.DB2ConnectionPoolDataSource</db.jdbc.dsclass>
         <db.name>SAMPLE</db.name>
+        <db.catalog></db.catalog>
         <db.host>localhost</db.host>
         <db.port>50000</db.port>
         <db.jdbc.url>jdbc:db2://${db.host}:${db.port}/${db.name}</db.jdbc.url>
@@ -200,6 +202,7 @@
         <db.jdbc.driver>oracle.jdbc.OracleDriver</db.jdbc.driver>
         <db.jdbc.dsclass>oracle.jdbc.pool.OracleDataSource</db.jdbc.dsclass>
         <db.name>XE</db.name>
+        <db.catalog></db.catalog>
         <db.host>localhost</db.host>
         <db.port>1521</db.port>
         <db.jdbc.url>jdbc:oracle:thin://@${db.host}:${db.port}:${db.name}</db.jdbc.url>

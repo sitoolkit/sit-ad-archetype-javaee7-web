@@ -3,23 +3,24 @@
 
 
   <property name="outdir" value="${basedir}/target"/>
-  
+
   <taskdef name="hibernatetool"
            classname="org.hibernate.tool.ant.HibernateToolTask" />
 
 
   <target name="hbm2java">
-  
+
     <copy file="${hibernate-tools.basedir}/hibernate.properties" todir="${outdir}" overwrite="true">
       <filterset>
         <filter token="db.jdbc.driver" value="${db.jdbc.driver}"/>
         <filter token="db.jdbc.url" value="${db.jdbc.url}"/>
         <filter token="db.username" value="${db.username}"/>
         <filter token="db.password" value="${db.password}"/>
+        <filter token="db.catalog" value="${db.catalog}" />
       </filterset>
     </copy>
 
-    
+
     <hibernatetool destdir="${hibernate-tools.destdir}">
 
       <jdbcconfiguration packagename="package.name"
@@ -32,5 +33,5 @@
 
   </target>
 
-  
+
 </project>

@@ -8,13 +8,27 @@
       <level>trace</level>
     </filter>
     <encoder>
-      <pattern>%d{yyyy/MM/dd HH:mm:ss.SSS} [%-7.7thread] %-5p %-30.30logger{2} - %m%n</pattern>
+      <pattern>%d{yyyy/MM/dd HH:mm:ss.SSS} [%-7.7thread] %-5p %-30.30logger{1} - %m%n</pattern>
     </encoder>
   </appender>
 
-  <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="trace" additivity="false">
-    <appender-ref ref="stdout" />
+  <appender name="rawstdout" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%m%n</pattern>
+    </encoder>
+  </appender>
+
+  <logger name="raw" additivity="false">
+    <appender-ref ref="rawstdout" />
   </logger>
+
+  <logger name="org.hibernate" level="warn" />
+
+  <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="trace" />
+
+  <logger name="org.hibernate.SQL" level="debug" />
+
+  <logger name="org.jboss.weld" level="warn" />
 
   <root level="info">
     <appender-ref ref="stdout" />
