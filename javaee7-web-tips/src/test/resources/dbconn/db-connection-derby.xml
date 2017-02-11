@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DataTools.ServerProfiles version="1.0">
+  <profile autoconnect="No" desc="" id="d24df860-ef31-11e6-b83c-8d5142d612ac"
+    name="${db.jdbc.url}" providerID="org.eclipse.datatools.connectivity.db.derby.embedded.connectionProfile">
+    <baseproperties>
+      <property name="org.eclipse.datatools.connectivity.db.connectionProperties" value="" />
+      <property name="org.eclipse.datatools.connectivity.db.savePWD" value="true" />
+      <property name="org.eclipse.datatools.connectivity.drivers.defnType" value="org.eclipse.datatools.connectivity.db.derby102.clientDriver" />
+      <property name="org.eclipse.datatools.connectivity.db.username" value="${db.username}" />
+      <property name="org.eclipse.datatools.connectivity.db.driverClass" value="${db.jdbc.driver}" />
+      <property name="org.eclipse.datatools.connectivity.db.databaseName" value="${db.name}" />
+      <property name="org.eclipse.datatools.connectivity.driverDefinitionID"
+        value="DriverDefn.org.eclipse.datatools.connectivity.db.derby102.clientDriver.Derby クライアント JDBC ドライバー" />
+      <property name="org.eclipse.datatools.connectivity.db.password" value="${db.password}" />
+      <property name="org.eclipse.datatools.connectivity.db.URL" value="${db.jdbc.url}" />
+      <property name="org.eclipse.datatools.connectivity.db.version" value="10.2" />
+      <property name="org.eclipse.datatools.connectivity.db.vendor" value="Derby" />
+      <property name="jarList" value="${db.client.lib}/${db.client.artifactId}-${db.client.version}.jar" />
+    </baseproperties>
+    <org.eclipse.datatools.connectivity.versionInfo>
+      <property name="server.version" value="10.10.1.1 - (1458268)" />
+      <property name="technology.name.jdbc" value="JDBC" />
+      <property name="server.name" value="Apache Derby" />
+      <property name="technology.version.jdbc" value="4.2.0" />
+    </org.eclipse.datatools.connectivity.versionInfo>
+    <org.eclipse.datatools.connectivity.sqm.filterSettings>
+      <property name="DatatoolsSchemaFilterPredicate" value="LIKE 'APP%'" />
+    </org.eclipse.datatools.connectivity.sqm.filterSettings>
+    <driverreference>
+      <property name="driverName" value="Derby クライアント JDBC ドライバー" />
+      <property name="driverTypeID" value="org.eclipse.datatools.connectivity.db.derby102.clientDriver" />
+    </driverreference>
+  </profile>
+</DataTools.ServerProfiles>

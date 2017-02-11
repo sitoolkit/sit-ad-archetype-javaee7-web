@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DataTools.ServerProfiles version="1.0">
+  <profile autoconnect="No" desc="" id="0bce1d61-d423-11e6-8c6e-eaa4e56a3a0d" name="${db.jdbc.url}"
+    providerID="org.eclipse.datatools.enablement.mysql.connectionProfile">
+    <baseproperties>
+      <property name="org.eclipse.datatools.connectivity.db.connectionProperties" value="" />
+      <property name="org.eclipse.datatools.connectivity.db.savePWD" value="true" />
+      <property name="org.eclipse.datatools.connectivity.drivers.defnType" value="org.eclipse.datatools.enablement.mysql.5_1.driverTemplate" />
+      <property name="org.eclipse.datatools.connectivity.db.username" value="${db.username}" />
+      <property name="org.eclipse.datatools.connectivity.db.driverClass" value="${db.jdbc.driver}" />
+      <property name="org.eclipse.datatools.connectivity.db.databaseName" value="${db.name}" />
+      <property name="org.eclipse.datatools.connectivity.driverDefinitionID"
+        value="DriverDefn.org.eclipse.datatools.enablement.mysql.5_1.driverTemplate.MySQL JDBC ドライバー" />
+      <property name="org.eclipse.datatools.connectivity.db.password" value="${db.password}" />
+      <property name="org.eclipse.datatools.connectivity.db.version" value="5.1" />
+      <property name="org.eclipse.datatools.connectivity.db.URL" value="${db.jdbc.url}" />
+      <property name="org.eclipse.datatools.connectivity.db.vendor" value="MySql" />
+      <property name="jarList"
+        value="${db.client.lib}/${db.client.artifactId}-${db.client.version}.jar" />
+    </baseproperties>
+    <org.eclipse.datatools.connectivity.versionInfo>
+      <property name="server.version" value="5.7.12" />
+      <property name="technology.name.jdbc" value="JDBC" />
+      <property name="server.name" value="MySQL" />
+      <property name="technology.version.jdbc" value="4.0.0" />
+    </org.eclipse.datatools.connectivity.versionInfo>
+    <org.eclipse.datatools.connectivity.sqm.filterSettings />
+    <driverreference>
+      <property name="driverName" value="MySQL JDBC ドライバー" />
+      <property name="driverTypeID" value="org.eclipse.datatools.enablement.mysql.5_1.driverTemplate" />
+    </driverreference>
+  </profile>
+</DataTools.ServerProfiles>

@@ -93,9 +93,6 @@
   <profiles>
     <profile>
       <id>derby</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
       <properties>
         <db.client.groupId>org.apache.derby</db.client.groupId>
         <db.client.artifactId>derbyclient</db.client.artifactId>
@@ -110,7 +107,6 @@
         <db.jdbc.url>jdbc:derby://${db.host}:${db.port}/${db.name};create=true</db.jdbc.url>
         <db.username>app</db.username>
         <db.password>app</db.password>
-        <db.flyway.comment></db.flyway.comment>
         <db.was-liberty.ds-properties><![CDATA[<properties.derby.client createDatabase="create" databaseName="${db.name}" serverName="${db.host}" portNumber="${db.port}" user="${db.username}" password="${db.password}" />]]></db.was-liberty.ds-properties>
         <db.was-liberty.fileset><![CDATA[<fileset dir="${db.client.lib}" />]]></db.was-liberty.fileset>
         <flyway.location>filesystem:${toolsdir}/derby</flyway.location>
@@ -120,6 +116,9 @@
 
     <profile>
       <id>mysql</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <properties>
         <db.client.groupId>mysql</db.client.groupId>
         <db.client.artifactId>mysql-connector-java</db.client.artifactId>
