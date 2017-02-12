@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_112" class="java.beans.XMLDecoder">
+ <array class="zigen.plugin.db.core.IDBConfig" length="1">
+  <void index="0">
+   <object class="zigen.plugin.db.core.DBConfig" id="DBConfig0">
+    <void property="charset">
+     <string></string>
+    </void>
+    <void property="classPaths">
+     <array class="java.lang.String" length="1">
+      <void index="0">
+       <string>${db.jdbc.url}</string>
+      </void>
+     </array>
+    </void>
+    <void property="convertUnicode">
+     <boolean>true</boolean>
+    </void>
+    <void property="databaseProductVersion">
+     <string>10.10.1.1 - (1458268)</string>
+    </void>
+    <void property="dbName">
+     <string>${db.jdbc.url}</string>
+    </void>
+    <void property="dbType">
+     <int>6</int>
+    </void>
+    <void property="displayedSchemas">
+     <array class="zigen.plugin.db.core.SchemaInfo" length="11">
+      <void index="0">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="checked">
+         <boolean>true</boolean>
+        </void>
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>APP</string>
+        </void>
+       </object>
+      </void>
+      <void index="1">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>NULLID</string>
+        </void>
+       </object>
+      </void>
+      <void index="2">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>SQLJ</string>
+        </void>
+       </object>
+      </void>
+      <void index="3">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>SYS</string>
+        </void>
+       </object>
+      </void>
+      <void index="4">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>SYSCAT</string>
+        </void>
+       </object>
+      </void>
+      <void index="5">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>SYSCS_DIAG</string>
+        </void>
+       </object>
+      </void>
+      <void index="6">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>SYSCS_UTIL</string>
+        </void>
+       </object>
+      </void>
+      <void index="7">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>SYSFUN</string>
+        </void>
+       </object>
+      </void>
+      <void index="8">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>SYSIBM</string>
+        </void>
+       </object>
+      </void>
+      <void index="9">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>SYSPROC</string>
+        </void>
+       </object>
+      </void>
+      <void index="10">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>SYSSTAT</string>
+        </void>
+       </object>
+      </void>
+     </array>
+    </void>
+    <void property="driverName">
+     <string>${db.jdbc.driver}</string>
+    </void>
+    <void property="driverVersion">
+     <string>10.10.1.1 - (1458268)</string>
+    </void>
+    <void property="filterPattern">
+     <string></string>
+    </void>
+    <void property="noLockMode">
+     <boolean>true</boolean>
+    </void>
+    <void property="password">
+     <string>${db.password}</string>
+    </void>
+    <void property="schema">
+     <string>${db.name}</string>
+    </void>
+    <void property="url">
+     <string>${db.jdbc.url}</string>
+    </void>
+    <void property="userId">
+     <string>${db.username}</string>
+    </void>
+   </object>
+  </void>
+ </array>
+</java>

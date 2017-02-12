@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_112" class="java.beans.XMLDecoder">
+ <array class="zigen.plugin.db.core.IDBConfig" length="1">
+  <void index="0">
+   <object class="zigen.plugin.db.core.DBConfig" id="DBConfig0">
+    <void property="charset">
+     <string></string>
+    </void>
+    <void property="classPaths">
+     <array class="java.lang.String" length="1">
+      <void index="0">
+       <string>${db.jdbc.url}</string>
+      </void>
+     </array>
+    </void>
+    <void property="convertUnicode">
+     <boolean>true</boolean>
+    </void>
+    <void property="dbName">
+       <string>${db.jdbc.url}</string>
+    </void>
+    <void property="dbType">
+     <int>1</int>
+    </void>
+    <void property="displayedSchemas">
+     <array class="zigen.plugin.db.core.SchemaInfo" length="17">
+      <void index="0">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>ANONYMOUS</string>
+        </void>
+       </object>
+      </void>
+      <void index="1">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>APEX_040000</string>
+        </void>
+       </object>
+      </void>
+      <void index="2">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>APEX_PUBLIC_USER</string>
+        </void>
+       </object>
+      </void>
+      <void index="3">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="checked">
+         <boolean>true</boolean>
+        </void>
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>APP</string>
+        </void>
+       </object>
+      </void>
+      <void index="4">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>APPQOSSYS</string>
+        </void>
+       </object>
+      </void>
+      <void index="5">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>CTXSYS</string>
+        </void>
+       </object>
+      </void>
+      <void index="6">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>DBSNMP</string>
+        </void>
+       </object>
+      </void>
+      <void index="7">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>DIP</string>
+        </void>
+       </object>
+      </void>
+      <void index="8">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>FLOWS_FILES</string>
+        </void>
+       </object>
+      </void>
+      <void index="9">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>HR</string>
+        </void>
+       </object>
+      </void>
+      <void index="10">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>MDSYS</string>
+        </void>
+       </object>
+      </void>
+      <void index="11">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>ORACLE_OCM</string>
+        </void>
+       </object>
+      </void>
+      <void index="12">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>OUTLN</string>
+        </void>
+       </object>
+      </void>
+      <void index="13">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>SYS</string>
+        </void>
+       </object>
+      </void>
+      <void index="14">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>SYSTEM</string>
+        </void>
+       </object>
+      </void>
+      <void index="15">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>XDB</string>
+        </void>
+       </object>
+      </void>
+      <void index="16">
+       <object class="zigen.plugin.db.core.SchemaInfo">
+        <void property="config">
+         <object idref="DBConfig0"/>
+        </void>
+        <void property="name">
+         <string>XS$NULL</string>
+        </void>
+       </object>
+      </void>
+     </array>
+    </void>
+    <void property="driverName">
+     <string>${db.jdbc.driver}</string>
+    </void>
+    <void property="filterPattern">
+     <string></string>
+    </void>
+    <void property="noLockMode">
+     <boolean>true</boolean>
+    </void>
+    <void property="password">
+     <string>${db.password}</string>
+    </void>
+    <void property="schema">
+     <string>${db.username}</string>
+    </void>
+    <void property="url">
+     <string>${db.jdbc.url}</string>
+    </void>
+    <void property="userId">
+     <string>${db.username}</string>
+    </void>
+   </object>
+  </void>
+ </array>
+</java>
