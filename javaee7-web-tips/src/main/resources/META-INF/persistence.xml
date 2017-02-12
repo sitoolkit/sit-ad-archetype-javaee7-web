@@ -5,6 +5,7 @@
   version="2.1">
   <persistence-unit name="javaee7-web-tips-pu" transaction-type="JTA">
     <jta-data-source>jdbc/javaee7-web-tips-ds</jta-data-source>
+    <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
       <property name="eclipselink.logging.logger" value="JavaLogger" />
       <property name="eclipselink.logging.level" value="FINE" />
@@ -18,6 +19,7 @@
 
   <persistence-unit name="javaee7-web-tips-pu-non-ee-container" transaction-type="RESOURCE_LOCAL">
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
       <property name="javax.persistence.jdbc.driver" value="${db.jdbc.driver}" />
       <property name="javax.persistence.jdbc.url" value="${db.jdbc.url}" />

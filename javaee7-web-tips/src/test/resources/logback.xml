@@ -12,16 +12,6 @@
     </encoder>
   </appender>
 
-  <appender name="rawstdout" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
-      <pattern>%m%n</pattern>
-    </encoder>
-  </appender>
-
-  <logger name="raw" additivity="false">
-    <appender-ref ref="rawstdout" />
-  </logger>
-
   <logger name="org.hibernate" level="warn" />
 
   <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="trace" />
