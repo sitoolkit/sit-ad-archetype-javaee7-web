@@ -81,7 +81,7 @@
       <env key="JAVA_HOME" value="${java.home}" />
       <arg value="clean" />
       <arg value="archetype:create-from-project" />
-      <arg value="-Darchetype.filteredExtentions=java,xml,txt,groovy,cs,mdo,aj,jsp,gsp,vm,html,xhtml,properties,.classpath,.project,launch,component" />
+      <arg value="-Darchetype.filteredExtentions=java,xml,txt,groovy,cs,mdo,aj,jsp,gsp,vm,html,properties,.classpath,.project,launch,component" />
     </exec>
 
   </target>
