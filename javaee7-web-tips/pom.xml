@@ -33,7 +33,7 @@
   <parent>
     <groupId>org.sitoolkit.ad.archetype</groupId>
     <artifactId>javaee7-web</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1</version>
   </parent>
   <properties>
     <flyway.location>filesystem:${toolsdir}/flyway</flyway.location>
@@ -44,7 +44,7 @@
     <wildfly.plugin.version>1.1.0.Final</wildfly.plugin.version>
     <selenium.version>2.53.1</selenium.version>
     <appium.version>3.4.1</appium.version>
-    <sitwt.version>2.0.2</sitwt.version>
+    <sitwt.version>2.1.1</sitwt.version>
     <cf.appname>${project.artifactId}</cf.appname>
     <cf.target>your target</cf.target>
     <cf.org>your org</cf.org>
