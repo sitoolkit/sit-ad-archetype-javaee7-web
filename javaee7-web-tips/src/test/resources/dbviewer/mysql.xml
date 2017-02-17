@@ -9,7 +9,7 @@
     <void property="classPaths">
      <array class="java.lang.String" length="1">
       <void index="0">
-       <string>${db.jdbc.url}</string>
+       <string>${db.client.lib}/${db.client.artifactId}-${db.client.version}.jar</string>
       </void>
      </array>
     </void>
