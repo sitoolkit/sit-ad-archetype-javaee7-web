@@ -27,7 +27,7 @@
   -->
   <property environment="env" />
 
-  <property name="newVersion" value="1.1.1-SNAPSHOT" />
+  <property name="newVersion" value="1.1.1" />
   <input addproperty="artifactId"
          validargs="javaee7-web-min,javaee7-web-tips"
          defaultvalue="javaee7-web-min" />
